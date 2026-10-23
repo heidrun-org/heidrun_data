@@ -1,0 +1,3 @@
+# Databases, created by the command "heidrun_data initialize", and their lock files
+*.sqlite
+*.sqlite.lock

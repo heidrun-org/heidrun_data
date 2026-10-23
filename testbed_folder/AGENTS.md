@@ -12,3 +12,12 @@ The skills are in `.agents/skills/`. Each skill in `.agents/skills/` is a symbol
 
 - `CLAUDE.md` imports this file.
 - `.claude/skills/` is a symbolic link to `.agents/skills/`.
+
+## Database
+
+- The database is `heidrun_data_example_database.sqlite` in the folder `testbed_folder/`. It holds the data of the repository `heidrun-org/heidrun_notebook`.
+- Give `--database heidrun_data_example_database.sqlite` to every `heidrun_data` command.
+
+## Outputs
+
+- Put every artifact (image, chart, report, data file) in the folder `outputs/` of the folder `testbed_folder/`.
