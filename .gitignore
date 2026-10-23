@@ -1,0 +1,11 @@
+# Installed packages, created by the command "pnpm install"
+node_modules
+
+# Compiled Rust files
+target
+
+# Folder settings that macOS Finder creates
+.DS_Store
+
+# Log files
+*.log

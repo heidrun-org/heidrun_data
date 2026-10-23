@@ -11,4 +11,4 @@ pnpm --silent data_layer:heidrun_code_data operations replay --id <operation id>
 pnpm --silent data_layer:heidrun_code_data operations overhead
 ```
 
-The log file is in the folder of the variable `HEIDRUN_CODE_DIR`, else in `~/.config/heidrun_code`. The variable `HEIDRUN_CODE_OPERATION_LOG_FILE` gives another file, and the value `off` turns the log off. The full description, the format, and the measures are in [data_layer_operation_log.md](../../../docs/statistics/data_layer_operation_log.md). The rules of the package are in [CONTEXT.md](CONTEXT.md). Run `pnpm --filter data_layer_operation_log test` to test the package.
+The log file is in the folder of the variable `HEIDRUN_CODE_DIR`, else in `~/.config/heidrun_code`. The variable `HEIDRUN_CODE_OPERATION_LOG_FILE` gives another file, and the value `off` turns the log off. The full description, the format, and the measures are in [data_layer_operation_log.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/statistics/data_layer_operation_log.md). The rules of the package are in [CONTEXT.md](CONTEXT.md). Run `pnpm --filter data_layer_operation_log test` to test the package.

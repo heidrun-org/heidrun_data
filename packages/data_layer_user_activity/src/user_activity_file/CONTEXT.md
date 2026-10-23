@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers/data_layer_user_activity/src/user_activity_file`
+# Directory Context: `/packages/data_layer_user_activity/src/user_activity_file`
 
 ## Purpose
 Reads the file `user_activity.jsonl`, which the web frontend writes: one JSON line for each active period of the developer. Each valid line becomes a record with its times in UTC.

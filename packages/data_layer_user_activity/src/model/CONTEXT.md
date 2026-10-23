@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers/data_layer_user_activity/src/model`
+# Directory Context: `/packages/data_layer_user_activity/src/model`
 
 ## Purpose
 Holds the facts that the package stores, the JSON schema check that guards them, and the conversion of a time to UTC.

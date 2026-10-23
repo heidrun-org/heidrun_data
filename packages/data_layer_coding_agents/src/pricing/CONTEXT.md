@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers/data_layer_coding_agents/src/pricing`
+# Directory Context: `/packages/data_layer_coding_agents/src/pricing`
 
 ## Purpose
 Reads the public price list of the models of Claude Code and of Codex, and calculates the estimated cost in US dollars of tokens. It holds the rules of the prices. It does not open the SQLite file: `src/storage/model_price_database.rs` stores the versions.

@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers/heidrun_code_data`
+# Directory Context: `/packages/heidrun_code_data`
 
 ## Purpose
 A Rust library and one command line tool, `heidrun_code_data`, that give a coding agent the data of the four data layers of Heidrun Code in one SQLite file, and the `SKILL.md` that teaches a coding agent to use it. It is not a data layer package: it calls the libraries of the four data layer packages, and stores nothing of its own.
@@ -24,7 +24,7 @@ A Rust library and one command line tool, `heidrun_code_data`, that give a codin
 - `query` and `sources` open the SQLite file read only. `query` adds `LIMIT <count>` (default 1000) to a statement that has none, and `--limit 0` adds nothing.
 - The output is `jsonl`, `json`, or `table`: `table` on a terminal, `jsonl` otherwise. With a JSON format, every error is one JSON object on one line of the standard error output.
 - `src/output.rs` only turns rows into text. Only `src/main.rs` prints progress lines.
-- Every public function records its operation with `data_layer_operation_log`, with the package name `heidrun_code_data`. A replay of a query opens the SQLite file read only. A replay of a synchronization writes only `--isolated-database`, never the default file ([rule](../../../docs/agents_rules/data_layer_operation_log.md)).
+- Every public function records its operation with `data_layer_operation_log`, with the package name `heidrun_code_data`. A replay of a query opens the SQLite file read only. A replay of a synchronization writes only `--isolated-database`, never the default file ([rule](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_operation_log.md)).
 - The calls are blocking. The package knows nothing about Tauri. The file `.cargo/config.toml` puts the compiled files in the Cargo target folder of `desktop_tauri`.
 
 ## Background

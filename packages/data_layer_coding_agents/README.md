@@ -1,6 +1,6 @@
 # data_layer_coding_agents
 
-A Rust library and a command line tool for [Heidrun Code](../../../README.md). Both read the chat sessions that Claude Code and Codex saved for a repository, and the coding agent configuration (the memory files, the subagents, and the skills), and write the facts of each one in a SQLite file. They also store the tokens that each chat session used in each minute, and the prices of the models, so that the estimated cost in US dollars of any period is one SQL query away. It is the coding agents source of the data layer of Heidrun Code. The package was named `data_layer_chat_sessions` until [issue 569](https://github.com/heidrun-org/heidrun/issues/569) added the coding agent configuration. The data layer as a whole is [issue 452](https://github.com/heidrun-org/heidrun/issues/452), and this package comes from [issue 463](https://github.com/heidrun-org/heidrun/issues/463). The name `data_layer_coding_agents` is the name of the package and the name of the executable. A chat session is what the rest of Heidrun Code calls a chat.
+A Rust library and a command line tool for [Heidrun Code](https://github.com/heidrun-org/heidrun_code/blob/main/README.md). Both read the chat sessions that Claude Code and Codex saved for a repository, and the coding agent configuration (the memory files, the subagents, and the skills), and write the facts of each one in a SQLite file. They also store the tokens that each chat session used in each minute, and the prices of the models, so that the estimated cost in US dollars of any period is one SQL query away. It is the coding agents source of the data layer of Heidrun Code. The package was named `data_layer_chat_sessions` until [issue 569](https://github.com/heidrun-org/heidrun/issues/569) added the coding agent configuration. The data layer as a whole is [issue 452](https://github.com/heidrun-org/heidrun/issues/452), and this package comes from [issue 463](https://github.com/heidrun-org/heidrun/issues/463). The name `data_layer_coding_agents` is the name of the package and the name of the executable. A chat session is what the rest of Heidrun Code calls a chat.
 
 ## What it contains
 
@@ -87,7 +87,7 @@ The three tables `memory_files`, `subagents`, and `skills` have the same four co
 | `subagents` | `.claude/agents/*.md` of the repository and of `~/.claude` | The name and the description. |
 | `skills` | The folders with a `SKILL.md` in `.claude/skills` and `.agents/skills` of the repository, `~/.claude/skills`, `~/.codex/skills`, and `~/.agents/skills` | The name and the description. |
 
-Every row also has the coding agent (`CLAUDE_CODE`, `CODEX`, or `null` for a folder `.agents`), the scope (`PROJECT` or `USER`), the folder, and the dates `createdAt`, `updatedAt`, and `removedAt`. The words are in the [glossary](../../../docs/agents_rules/glossary/coding_agent_configuration.md).
+Every row also has the coding agent (`CLAUDE_CODE`, `CODEX`, or `null` for a folder `.agents`), the scope (`PROJECT` or `USER`), the folder, and the dates `createdAt`, `updatedAt`, and `removedAt`. The words are in the [glossary](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/glossary/coding_agent_configuration.md).
 
 ### The token usage and the prices
 
@@ -100,7 +100,7 @@ Every row also has the coding agent (`CLAUDE_CODE`, `CODEX`, or `null` for a fol
 | `latest_model_prices` (view) | The prices of the latest version. |
 | `token_usage_with_cost` (view) | The rows of `token_usage_minutes` with `priceVersion`, `priceModel`, and `costUsd`. `costUsd` is null when the model has no known price, and never zero. |
 
-The rules of the minutes, of the workspaces, of the prices, and of the time zones are in [token_usage_and_cost.md](../../../docs/statistics/token_usage_and_cost.md).
+The rules of the minutes, of the workspaces, of the prices, and of the time zones are in [token_usage_and_cost.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/statistics/token_usage_and_cost.md).
 
 ## Query
 
@@ -155,4 +155,4 @@ The command runs `cargo test`. The tests of the executable use fake folders of t
 
 ## Operation log
 
-Every public function of this package writes a start line and an end line in the operation log of the data layer, with the library [data_layer_operation_log](../data_layer_operation_log/README.md): the package `coding_agents`, the operation, the parameters that decide the workload, the duration, and the outcome. A synchronization, its collection, its writes, and its lock appear as nested operations. The command `heidrun_code_data operations summary` shows the usage patterns and the durations, and `heidrun_code_data operations replay` runs a recorded operation again. The log never changes a result and never holds a secret. The description is in [data_layer_operation_log.md](../../../docs/statistics/data_layer_operation_log.md).
+Every public function of this package writes a start line and an end line in the operation log of the data layer, with the library [data_layer_operation_log](../data_layer_operation_log/README.md): the package `coding_agents`, the operation, the parameters that decide the workload, the duration, and the outcome. A synchronization, its collection, its writes, and its lock appear as nested operations. The command `heidrun_code_data operations summary` shows the usage patterns and the durations, and `heidrun_code_data operations replay` runs a recorded operation again. The log never changes a result and never holds a secret. The description is in [data_layer_operation_log.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/statistics/data_layer_operation_log.md).

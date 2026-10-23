@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers/data_layer_code_hosting`
+# Directory Context: `/packages/data_layer_code_hosting`
 
 ## Purpose
 The Code hosting source of Heidrun Code: reads GitHub issues and pull requests into SQLite. The library and executable are named `data_layer_code_hosting`; desktop callers use `refresh_code_hosting` and `find_*`.
@@ -27,9 +27,9 @@ The Code hosting source of Heidrun Code: reads GitHub issues and pull requests i
 - The default SQLite file is `data_layer.sqlite` in `HEIDRUN_CODE_DIR`, or `~/.config/heidrun_code/data_layer.sqlite` when the variable is unset or empty. The option `--database` changes it.
 - `--verbose` sends progress through a log function; only `src/main.rs` prints it.
 - The folder `src/model/` imports from no other folder of `src/`. The folder `src/github/` and the folder `src/storage/` import from `src/model/` only, and never from each other. Only `src/synchronization.rs` uses `src/github/` and `src/storage/` together.
-- Calls are blocking; the package imports only `data_layer_operation_log` from other repository packages and knows nothing about Tauri. Every public function records its operation and tests its events ([rule](../../../docs/agents_rules/data_layer_operation_log.md)).
+- Calls are blocking; the package imports only `data_layer_operation_log` from other repository packages and knows nothing about Tauri. Every public function records its operation and tests its events ([rule](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_operation_log.md)).
 - `.cargo/config.toml` selects the target folder of `desktop_tauri`, cloned by `pnpm worktree:create`; Cargo reads this configuration only from inside the package.
-- Desktop callers use only `refresh_*` and `find_*`, as [data_layer_access.md](../../../docs/agents_rules/data_layer_access.md) requires; `data_layer_boundary_checker` enforces the boundary.
+- Desktop callers use only `refresh_*` and `find_*`, as [data_layer_access.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_access.md) requires; `data_layer_boundary_checker` enforces the boundary.
 
 ## Background
 - The package comes from [issue #455](https://github.com/heidrun-org/heidrun/issues/455). The data layer as a whole is [issue #452](https://github.com/heidrun-org/heidrun/issues/452).

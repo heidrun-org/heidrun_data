@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers/data_layer_coding_agents/src/storage`
+# Directory Context: `/packages/data_layer_coding_agents/src/storage`
 
 ## Purpose
 Holds the SQLite file with its tables and views, and turns the rows of a query into text.

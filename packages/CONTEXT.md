@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers`
+# Directory Context: `/packages`
 
 ## Purpose
 The data layer packages of Heidrun Code. Each package reads the facts of one source into tables of a SQLite file, in the mode initialize or update, and runs read-only SQL queries on them.
@@ -14,9 +14,9 @@ The data layer packages of Heidrun Code. Each package reads the facts of one sou
 ## Rules
 - Every data layer package goes in this folder, and the name of its folder starts with `data_layer_`.
 - `heidrun_code_data` and `data_layer_operation_log` are the only packages here that are not data layer packages. Every other package that is not a data layer package goes in `packages/apps`, `packages/auxiliary`, or `packages/dev_tools`, never here.
-- The Past chats sidebar section and the Statistics window get all their data from these packages, through the functions `refresh_*` (they write the SQLite file) and `find_*` (they read the SQLite file only). The rule is in [data_layer_access.md](../../docs/agents_rules/data_layer_access.md), and the test of the package `data_layer_boundary_checker` checks it.
-- No data layer package imports another data layer package: the packages share only the SQLite file. `heidrun_code_data` is the only package that imports more than one of them, and no data layer package imports `heidrun_code_data`. The one exception is `packages/data_layers/data_layer_operation_log`: every package of this folder may import it, and it imports no package of the repository.
-- Every public function of every package of this folder is recorded in the operation log with `data_layer_operation_log`, and a new public function includes the same instrumentation and a test of its events ([rule](../../docs/agents_rules/data_layer_operation_log.md)).
+- The Past chats sidebar section and the Statistics window get all their data from these packages, through the functions `refresh_*` (they write the SQLite file) and `find_*` (they read the SQLite file only). The rule is in [data_layer_access.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_access.md), and the test of the package `data_layer_boundary_checker` checks it.
+- No data layer package imports another data layer package: the packages share only the SQLite file. `heidrun_code_data` is the only package that imports more than one of them, and no data layer package imports `heidrun_code_data`. The one exception is `packages/data_layer_operation_log`: every package of this folder may import it, and it imports no package of the repository.
+- Every public function of every package of this folder is recorded in the operation log with `data_layer_operation_log`, and a new public function includes the same instrumentation and a test of its events ([rule](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_operation_log.md)).
 
 ## Background
 - The three data layer packages moved here from `packages/auxiliary` in [issue #470](https://github.com/heidrun-org/heidrun/issues/470). The data layer as a whole is [issue #452](https://github.com/heidrun-org/heidrun/issues/452). The package `heidrun_code_data` is the plan of [issue #564](https://github.com/heidrun-org/heidrun/issues/564). The access boundary is [issue #617](https://github.com/heidrun-org/heidrun/issues/617).

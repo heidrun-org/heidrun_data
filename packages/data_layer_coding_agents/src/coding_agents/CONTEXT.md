@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers/data_layer_coding_agents/src/coding_agents`
+# Directory Context: `/packages/data_layer_coding_agents/src/coding_agents`
 
 ## Purpose
 Finds the chat session files of Claude Code and of Codex for one folder, reads what each file holds without a model, and turns it into the stored shape. Reads the coding agent configuration of a repository: the memory files, the subagents, and the skills.

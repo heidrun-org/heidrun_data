@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers/data_layer_source_control`
+# Directory Context: `/packages/data_layer_source_control`
 
 ## Purpose
 A Rust library and a command line tool that read every commit of a Git repository, merges included, and write the facts of each one in the table `commits` of a SQLite file. It is the Source control source of the data layer of Heidrun Code. The desktop application uses the library through `refresh_source_control`, `find_commits`, and the status functions of `src/git/working_copy.rs`. The name `data_layer_source_control` is the name of the package and the name of the executable.
@@ -24,9 +24,9 @@ A Rust library and a command line tool that read every commit of a Git repositor
 - The dates are in UTC. The line counts of a merge compare it with its first parent.
 - The default SQLite file is `data_layer.sqlite` in `HEIDRUN_CODE_DIR`, or `~/.config/heidrun_code/data_layer.sqlite` when the variable is unset or empty, shared with the other data layer packages. Each package writes only its own tables, and a query on a file that has no table of this package gives no row.
 - `query` and `SourceControlDatabase::query` only work on a database that is open read only, so a query never changes the file and never creates it.
-- The desktop application calls only the functions `refresh_*` and `find_*` of this package, as [data_layer_access.md](../../../docs/agents_rules/data_layer_access.md) says. The test of the package `data_layer_boundary_checker` fails otherwise.
+- The desktop application calls only the functions `refresh_*` and `find_*` of this package, as [data_layer_access.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_access.md) says. The test of the package `data_layer_boundary_checker` fails otherwise.
 - The folder `src/model/` imports from no other folder of `src/`. The folders `src/git/` and `src/storage/` import from `src/model/` only, and never from each other. Only `src/synchronization.rs` and `src/refresh.rs` use both.
-- The library calls are blocking. The package imports only `data_layer_operation_log` from the other packages of the repository, and it knows nothing about Tauri. Every public function records its operation with `data_layer_operation_log::record`, a new operation does the same in the same change, and its test reads the events ([rule](../../../docs/agents_rules/data_layer_operation_log.md)).
+- The library calls are blocking. The package imports only `data_layer_operation_log` from the other packages of the repository, and it knows nothing about Tauri. Every public function records its operation with `data_layer_operation_log::record`, a new operation does the same in the same change, and its test reads the events ([rule](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_operation_log.md)).
 - The name of the repository comes from the address of the remote `origin`, for GitHub and for GitLab alike.
 - The file `.cargo/config.toml` puts the compiled files in the Cargo target folder of `desktop_tauri`, so the folder that `pnpm worktree:create` clones is the only one.
 

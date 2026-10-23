@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers/data_layer_user_activity/src/storage`
+# Directory Context: `/packages/data_layer_user_activity/src/storage`
 
 ## Purpose
 Holds the SQLite file with the table `user_activity_records`, and writes the rows of a query as text.

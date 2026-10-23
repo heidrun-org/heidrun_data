@@ -1,4 +1,4 @@
-# Directory Context: `/packages/data_layers/data_layer_operation_log`
+# Directory Context: `/packages/data_layer_operation_log`
 
 ## Purpose
 A Rust library that writes the operation log of the data layer: a start event before and a completion event after each public function of the four data layer packages and of `heidrun_code_data`. It also reads the log, groups the operations into usage patterns with their durations, and measures what the log costs. It has no executable: the command is `heidrun_code_data operations`.
@@ -19,5 +19,5 @@ A Rust library that writes the operation log of the data layer: a start event be
 - The package imports no other package of the repository, and it knows nothing about Tauri and SQLite. Every data layer package, `heidrun_code_data`, and `desktop_tauri` import it.
 
 ## Background
-- The package comes from [issue #618](https://github.com/heidrun-org/heidrun/issues/618). It was named `request_log` and sat in `packages/auxiliary` until [issue #664](https://github.com/heidrun-org/heidrun/issues/664) moved it here and renamed "request" to "operation". The rules for agents are in [data_layer_operation_log.md](../../../docs/agents_rules/data_layer_operation_log.md), and the description with the measures is in [data_layer_operation_log.md](../../../docs/statistics/data_layer_operation_log.md).
+- The package comes from [issue #618](https://github.com/heidrun-org/heidrun/issues/618). It was named `request_log` and sat in `packages/auxiliary` until [issue #664](https://github.com/heidrun-org/heidrun/issues/664) moved it here and renamed "request" to "operation". The rules for agents are in [data_layer_operation_log.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_operation_log.md), and the description with the measures is in [data_layer_operation_log.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/statistics/data_layer_operation_log.md).
 - One shared package, and not a copy in each data layer package, gives one record format, one nesting across the packages, and one implementation of the rotation and of the redaction. The rule "no data layer package imports another data layer package" is unchanged.

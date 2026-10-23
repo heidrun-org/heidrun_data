@@ -1,6 +1,6 @@
 # heidrun_code_data
 
-A Rust library and one command line tool for [Heidrun Code](../../../README.md). It gives a coding agent (Claude Code, Codex, or Antigravity) the data of the [four data layers](../../../docs/statistics/the_four_data_layers.md) of Heidrun Code with one command, in place of four. It is not a data layer: it calls the libraries of [data_layer_source_control](../data_layer_source_control/README.md), [data_layer_code_hosting](../data_layer_code_hosting/README.md), [data_layer_coding_agents](../data_layer_coding_agents/README.md), and [data_layer_user_activity](../data_layer_user_activity/README.md), and adds no table to the SQLite file. The package comes from the plan of [issue 564](https://github.com/heidrun-org/heidrun/issues/564).
+A Rust library and one command line tool for [Heidrun Code](https://github.com/heidrun-org/heidrun_code/blob/main/README.md). It gives a coding agent (Claude Code, Codex, or Antigravity) the data of the [four data layers](https://github.com/heidrun-org/heidrun_code/blob/main/docs/statistics/the_four_data_layers.md) of Heidrun Code with one command, in place of four. It is not a data layer: it calls the libraries of [data_layer_source_control](../data_layer_source_control/README.md), [data_layer_code_hosting](../data_layer_code_hosting/README.md), [data_layer_coding_agents](../data_layer_coding_agents/README.md), and [data_layer_user_activity](../data_layer_user_activity/README.md), and adds no table to the SQLite file. The package comes from the plan of [issue 564](https://github.com/heidrun-org/heidrun/issues/564).
 
 ## What it contains
 
@@ -20,7 +20,7 @@ A Rust library and one command line tool for [Heidrun Code](../../../README.md).
 
 ## Install the Agent Plugin
 
-The repository's [Agent Plugin catalog](../../../.agents/plugins/marketplace.json) points to this package. In Codex, add the Heidrun Code repository as a marketplace, then install the Agent Plugin:
+The repository's [Agent Plugin catalog](https://github.com/heidrun-org/heidrun_code/blob/main/.agents/plugins/marketplace.json) points to this package. In Codex, add the Heidrun Code repository as a marketplace, then install the Agent Plugin:
 
 ```bash
 codex plugin marketplace add heidrun-org/heidrun_code --ref dev_jerome
@@ -30,10 +30,10 @@ codex plugin add heidrun-code-data@heidrun
 To install only the skill with the skills CLI, use the direct package address:
 
 ```bash
-npx skills add https://github.com/heidrun-org/heidrun_code/tree/dev_jerome/packages/data_layers/heidrun_code_data/skills/heidrun-code-data
+npx skills add https://github.com/heidrun-org/heidrun_code/tree/dev_jerome/packages/heidrun_code_data/skills/heidrun-code-data
 ```
 
-The [repository skill copy](../../../.agents/skills/heidrun-code-data/SKILL.md) lets the skills CLI find the skill from the repository root and stays in sync with the package skill. Installing the skill does not install the `heidrun_code_data` command. Install the Heidrun Code application; it places `heidrun_code_data` in `~/.local/bin` when it starts. When working in the Heidrun Code repository, run the command through `pnpm --silent data_layer:heidrun_code_data` instead.
+The [repository skill copy](https://github.com/heidrun-org/heidrun_code/blob/dev_jerome/.agents/skills/heidrun-code-data/SKILL.md) lets the skills CLI find the skill from the repository root and stays in sync with the package skill. Installing the skill does not install the `heidrun_code_data` command. Install the Heidrun Code application; it places `heidrun_code_data` in `~/.local/bin` when it starts. When working in the Heidrun Code repository, run the command through `pnpm --silent data_layer:heidrun_code_data` instead.
 
 ## Command line
 
@@ -74,7 +74,7 @@ A source that fails does not stop the others: the command prints one error for e
 
 ## The operation log
 
-Every public function of the four data layers and of `heidrun_code_data` is recorded in the operation log: one line when the operation starts and one line when it ends. The command `operations` reads the log. The description, the format, and the measures are in [data_layer_operation_log.md](../../../docs/statistics/data_layer_operation_log.md).
+Every public function of the four data layers and of `heidrun_code_data` is recorded in the operation log: one line when the operation starts and one line when it ends. The command `operations` reads the log. The description, the format, and the measures are in [data_layer_operation_log.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/statistics/data_layer_operation_log.md).
 
 | Action | What it does |
 | --- | --- |
