@@ -1,9 +1,9 @@
-//! The arguments of the command line `heidrun_code_data`, and the texts of its help.
+//! The arguments of the command line `heidrun_data`, and the texts of its help.
 
-use heidrun_code_data::{Format, Source, SynchronizationMode, DEFAULT_LIMIT};
+use heidrun_data::{Format, Source, SynchronizationMode, DEFAULT_LIMIT};
 
-/// The text of `heidrun_code_data --help`.
-pub const HELP: &str = r#"Usage: heidrun_code_data <command> [options]
+/// The text of `heidrun_data --help`.
+pub const HELP: &str = r#"Usage: heidrun_data <command> [options]
 
 Gives a coding agent the data of the four data layers of Heidrun Code, in one SQLite file:
   source_control   the commits of the Git repository         (table commits)
@@ -49,7 +49,7 @@ Options of every command:
                              terminal, table when it is)
   --json                     The same as --format json.
   --verbose                  Print the progress on the standard error output.
-  -h, --help                 Print the help. "heidrun_code_data <command> --help" prints the
+  -h, --help                 Print the help. "heidrun_data <command> --help" prints the
                              options of that command.
 
 Output:
@@ -65,19 +65,19 @@ Exit codes:
       standard error output.
 
 Examples:
-  $ heidrun_code_data sources --format jsonl
-  $ heidrun_code_data update --format jsonl
-  $ heidrun_code_data update coding_agents code_hosting --format jsonl
-  $ heidrun_code_data schema --format jsonl
-  $ heidrun_code_data schema chat_sessions
-  $ heidrun_code_data query --format jsonl "SELECT json_extract(data, '$.subject') AS subject FROM commits ORDER BY committedAt DESC LIMIT 5"
-  $ heidrun_code_data usage --by day --since 2026-09-14 --format jsonl
-  $ heidrun_code_data read issue 500 --format jsonl
-  $ heidrun_code_data operations summary --format jsonl
+  $ heidrun_data sources --format jsonl
+  $ heidrun_data update --format jsonl
+  $ heidrun_data update coding_agents code_hosting --format jsonl
+  $ heidrun_data schema --format jsonl
+  $ heidrun_data schema chat_sessions
+  $ heidrun_data query --format jsonl "SELECT json_extract(data, '$.subject') AS subject FROM commits ORDER BY committedAt DESC LIMIT 5"
+  $ heidrun_data usage --by day --since 2026-09-14 --format jsonl
+  $ heidrun_data read issue 500 --format jsonl
+  $ heidrun_data operations summary --format jsonl
 "#;
 
-/// The text of `heidrun_code_data usage --help`.
-pub const USAGE_HELP: &str = r#"Usage: heidrun_code_data usage [options]
+/// The text of `heidrun_data usage --help`.
+pub const USAGE_HELP: &str = r#"Usage: heidrun_data usage [options]
 
 Prints the tokens and the estimated cost of a workspace in a time range, one row per
 period. It reads the SQLite file only and never a chat session file, so it is fast. The
@@ -128,13 +128,13 @@ Options:
   -h, --help                 Print this help.
 
 Examples:
-  $ heidrun_code_data usage --by day --since 2026-09-14 --until 2026-10-14 --format jsonl
-  $ heidrun_code_data usage --by hour --since 2026-10-14 --time-zone UTC --format table
-  $ heidrun_code_data usage --by-chat --by day --since 2026-10-01 --format jsonl
+  $ heidrun_data usage --by day --since 2026-09-14 --until 2026-10-14 --format jsonl
+  $ heidrun_data usage --by hour --since 2026-10-14 --time-zone UTC --format table
+  $ heidrun_data usage --by-chat --by day --since 2026-10-01 --format jsonl
 "#;
 
-/// The text of `heidrun_code_data read --help`.
-pub const READ_HELP: &str = r#"Usage: heidrun_code_data read <kind> <key> [options]
+/// The text of `heidrun_data read --help`.
+pub const READ_HELP: &str = r#"Usage: heidrun_data read <kind> <key> [options]
 
 Prints the content of one thing, which the tables do not store, from its source. It
 reads the source each time and writes nothing.
@@ -193,15 +193,15 @@ Options:
   -h, --help                 Print this help.
 
 Examples:
-  $ heidrun_code_data read chat_session 0b7c2c5e-8f5d-4a59-9a43-0b6c1b1b2f10 --format jsonl
-  $ heidrun_code_data read commit HEAD --no-diff --format jsonl
-  $ heidrun_code_data read issue 500 --format jsonl
-  $ heidrun_code_data read pull_request 565 --no-diff --format jsonl
-  $ heidrun_code_data read file_history /Users/me/.claude/projects/-Users-me-app/memory/MEMORY.md --format table
+  $ heidrun_data read chat_session 0b7c2c5e-8f5d-4a59-9a43-0b6c1b1b2f10 --format jsonl
+  $ heidrun_data read commit HEAD --no-diff --format jsonl
+  $ heidrun_data read issue 500 --format jsonl
+  $ heidrun_data read pull_request 565 --no-diff --format jsonl
+  $ heidrun_data read file_history /Users/me/.claude/projects/-Users-me-app/memory/MEMORY.md --format table
 "#;
 
-/// The text of `heidrun_code_data sources --help`.
-pub const SOURCES_HELP: &str = r#"Usage: heidrun_code_data sources [options]
+/// The text of `heidrun_data sources --help`.
+pub const SOURCES_HELP: &str = r#"Usage: heidrun_data sources [options]
 
 Prints one row per source: its tables with the number of rows of each one, and the
 newest date of the source ("lastUpdatedAt"). It is not the time of the last update
@@ -221,12 +221,12 @@ Options:
   -h, --help                 Print this help.
 
 Examples:
-  $ heidrun_code_data sources --format jsonl
-  $ heidrun_code_data sources --format table
+  $ heidrun_data sources --format jsonl
+  $ heidrun_data sources --format table
 "#;
 
-/// The text of `heidrun_code_data schema --help`.
-pub const SCHEMA_HELP: &str = r#"Usage: heidrun_code_data schema [<table>] [options]
+/// The text of `heidrun_data schema --help`.
+pub const SCHEMA_HELP: &str = r#"Usage: heidrun_data schema [<table>] [options]
 
 With no table, prints one row per table of the SQLite file: its source, its columns,
 its primary key, the name of the JSON schema of its column "data", and, for a link
@@ -249,15 +249,15 @@ Options:
   -h, --help                 Print this help.
 
 Examples:
-  $ heidrun_code_data schema --format jsonl
-  $ heidrun_code_data schema --format sql
-  $ heidrun_code_data schema commits
-  $ heidrun_code_data schema chat_sessions
+  $ heidrun_data schema --format jsonl
+  $ heidrun_data schema --format sql
+  $ heidrun_data schema commits
+  $ heidrun_data schema chat_sessions
 "#;
 
-/// The text of `heidrun_code_data update --help` and of `heidrun_code_data initialize --help`.
-pub const SYNCHRONIZATION_HELP: &str = r#"Usage: heidrun_code_data update [<source>...] [options]
-       heidrun_code_data initialize [<source>...] [options]
+/// The text of `heidrun_data update --help` and of `heidrun_data initialize --help`.
+pub const SYNCHRONIZATION_HELP: &str = r#"Usage: heidrun_data update [<source>...] [options]
+       heidrun_data initialize [<source>...] [options]
 
 update reads only what is new in each source. initialize reads each source since the
 beginning. With no source, both read the four sources. The sources always run in this
@@ -310,13 +310,13 @@ Options:
 An option that a source does not use is not an error: the other sources use it.
 
 Examples:
-  $ heidrun_code_data update --format jsonl
-  $ heidrun_code_data update coding_agents --format jsonl
-  $ heidrun_code_data initialize source_control --verbose --format jsonl
+  $ heidrun_data update --format jsonl
+  $ heidrun_data update coding_agents --format jsonl
+  $ heidrun_data initialize source_control --verbose --format jsonl
 "#;
 
-/// The text of `heidrun_code_data query --help`.
-pub const QUERY_HELP: &str = r#"Usage: heidrun_code_data query <sql> [options]
+/// The text of `heidrun_data query --help`.
+pub const QUERY_HELP: &str = r#"Usage: heidrun_data query <sql> [options]
 
 Runs one SQL statement on the SQLite file, and prints the rows. The file is open read
 only, so a statement that writes fails, and a query never creates the file. The column
@@ -338,9 +338,9 @@ Options:
   -h, --help                 Print this help.
 
 Examples:
-  $ heidrun_code_data query --format jsonl "SELECT hash, json_extract(data, '$.subject') AS subject FROM commits ORDER BY committedAt DESC LIMIT 5"
-  $ heidrun_code_data query --format jsonl "SELECT number, json_extract(data, '$.title') AS title FROM issues WHERE json_extract(data, '$.state') = 'OPEN'"
-  $ echo "SELECT count(*) AS count FROM chat_sessions" | heidrun_code_data query - --format jsonl
+  $ heidrun_data query --format jsonl "SELECT hash, json_extract(data, '$.subject') AS subject FROM commits ORDER BY committedAt DESC LIMIT 5"
+  $ heidrun_data query --format jsonl "SELECT number, json_extract(data, '$.title') AS title FROM issues WHERE json_extract(data, '$.state') = 'OPEN'"
+  $ echo "SELECT count(*) AS count FROM chat_sessions" | heidrun_data query - --format jsonl
 "#;
 
 /// The options of every command.

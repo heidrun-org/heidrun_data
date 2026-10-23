@@ -1,4 +1,4 @@
-# heidrun_code_data
+# heidrun_data
 
 A Rust library and one command line tool for [Heidrun Code](https://github.com/heidrun-org/heidrun_code/blob/main/README.md). It gives a coding agent (Claude Code, Codex, or Antigravity) the data of the [four data layers](https://github.com/heidrun-org/heidrun_code/blob/main/docs/statistics/the_four_data_layers.md) of Heidrun Code with one command, in place of four. It is not a data layer: it calls the libraries of [data_layer_source_control](../data_layer_source_control/README.md), [data_layer_code_hosting](../data_layer_code_hosting/README.md), [data_layer_coding_agents](../data_layer_coding_agents/README.md), and [data_layer_user_activity](../data_layer_user_activity/README.md), and adds no table to the SQLite file. The package comes from the plan of [issue 564](https://github.com/heidrun-org/heidrun/issues/564).
 
@@ -13,7 +13,7 @@ A Rust library and one command line tool for [Heidrun Code](https://github.com/h
 - `src/usage.rs`: the command `usage`: the tokens and the estimated cost of a workspace in a time range, by minute, hour, or day, read from the SQLite file only.
 - `src/database_lock.rs`: the one lock of the SQLite file, which the desktop application takes too.
 - `src/reading/`: the command `read`: a chat session, a commit, an issue, or a pull request.
-- `plugin.json` and `skills/heidrun-code-data/`: the Agent Plugin manifest and the portable skill for a coding agent. The skill includes its reference documents.
+- `plugin.json` and `skills/heidrun-data/`: the Agent Plugin manifest and the portable skill for a coding agent. The skill includes its reference documents.
 - `src/query_limit.rs`: the `LIMIT` added to a query that has none.
 - `src/output.rs`: the three output formats, and the errors.
 - `tests/`: the tests of the executable.
@@ -24,27 +24,27 @@ The repository's [Agent Plugin catalog](https://github.com/heidrun-org/heidrun_c
 
 ```bash
 codex plugin marketplace add heidrun-org/heidrun_code --ref dev_jerome
-codex plugin add heidrun-code-data@heidrun
+codex plugin add heidrun-data@heidrun
 ```
 
 To install only the skill with the skills CLI, use the direct package address:
 
 ```bash
-npx skills add https://github.com/heidrun-org/heidrun_code/tree/dev_jerome/packages/heidrun_code_data/skills/heidrun-code-data
+npx skills add https://github.com/heidrun-org/heidrun_code/tree/dev_jerome/packages/heidrun_data/skills/heidrun-data
 ```
 
-The [repository skill copy](https://github.com/heidrun-org/heidrun_code/blob/dev_jerome/.agents/skills/heidrun-code-data/SKILL.md) lets the skills CLI find the skill from the repository root and stays in sync with the package skill. Installing the skill does not install the `heidrun_code_data` command. Install the Heidrun Code application; it places `heidrun_code_data` in `~/.local/bin` when it starts. When working in the Heidrun Code repository, run the command through `pnpm --silent data_layer:heidrun_code_data` instead.
+The [repository skill copy](https://github.com/heidrun-org/heidrun_code/blob/dev_jerome/.agents/skills/heidrun-data/SKILL.md) lets the skills CLI find the skill from the repository root and stays in sync with the package skill. Installing the skill does not install the `heidrun_data` command. Install the Heidrun Code application; it places `heidrun_data` in `~/.local/bin` when it starts. When working in the Heidrun Code repository, run the command through `pnpm --silent data_layer:heidrun_data` instead.
 
 ## Command line
 
-Run the command from the root of the repository, with the npm script `data_layer:heidrun_code_data`. The option `--silent` of `pnpm` removes the lines that `pnpm` prints before the answer. The command runs in the folder of the package, which is inside the repository of Heidrun Code, so the sources read the repository of Heidrun Code when the option `--folder` is not given.
+Run the command from the root of the repository, with the npm script `data_layer:heidrun_data`. The option `--silent` of `pnpm` removes the lines that `pnpm` prints before the answer. The command runs in the folder of the package, which is inside the repository of Heidrun Code, so the sources read the repository of Heidrun Code when the option `--folder` is not given.
 
 ```sh
-pnpm --silent data_layer:heidrun_code_data sources --format jsonl
-pnpm --silent data_layer:heidrun_code_data update --format jsonl
-pnpm --silent data_layer:heidrun_code_data update coding_agents code_hosting --format jsonl
-pnpm --silent data_layer:heidrun_code_data query --format jsonl "SELECT json_extract(data, '$.subject') AS subject FROM commits ORDER BY committedAt DESC LIMIT 5"
-pnpm --silent data_layer:heidrun_code_data --help
+pnpm --silent data_layer:heidrun_data sources --format jsonl
+pnpm --silent data_layer:heidrun_data update --format jsonl
+pnpm --silent data_layer:heidrun_data update coding_agents code_hosting --format jsonl
+pnpm --silent data_layer:heidrun_data query --format jsonl "SELECT json_extract(data, '$.subject') AS subject FROM commits ORDER BY committedAt DESC LIMIT 5"
+pnpm --silent data_layer:heidrun_data --help
 ```
 
 | Command | Effect |
@@ -68,13 +68,13 @@ pnpm --silent data_layer:heidrun_code_data --help
 | `--price-list <address>` | `update`, `initialize` | The web address, or the path of a file, of the price list of the models, for `coding_agents`. The default is the public price list of LiteLLM. |
 | `--refresh-prices` | `update`, `initialize` | Fetches the price list even when the latest version was checked less than a day ago. |
 
-The prices are fetched when the latest version is one day old. A price list that cannot be fetched is a warning on the standard error output, and not an error: the latest known prices stay in use, and the exit code stays 0. The rules of the token usage and of the cost are in [token_usage_and_cost.md](skills/heidrun-code-data/references/token_usage_and_cost.md).
+The prices are fetched when the latest version is one day old. A price list that cannot be fetched is a warning on the standard error output, and not an error: the latest known prices stay in use, and the exit code stays 0. The rules of the token usage and of the cost are in [token_usage_and_cost.md](skills/heidrun-data/references/token_usage_and_cost.md).
 
 A source that fails does not stop the others: the command prints one error for each, and exits with the code 1. `update` and `initialize` take the lock of the SQLite file, so they wait for the desktop application. The lock is `lock_database`, and it uses the file `data_layer.sqlite.lock` next to the SQLite file. The `read` of an issue or of a pull request needs the command `gh`, and GitLab is not supported yet, as in `data_layer_code_hosting`.
 
 ## The operation log
 
-Every public function of the four data layers and of `heidrun_code_data` is recorded in the operation log: one line when the operation starts and one line when it ends. The command `operations` reads the log. The description, the format, and the measures are in [data_layer_operation_log.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/statistics/data_layer_operation_log.md).
+Every public function of the four data layers and of `heidrun_data` is recorded in the operation log: one line when the operation starts and one line when it ends. The command `operations` reads the log. The description, the format, and the measures are in [data_layer_operation_log.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/statistics/data_layer_operation_log.md).
 
 | Action | What it does |
 | --- | --- |
@@ -87,4 +87,4 @@ Every public function of the four data layers and of `heidrun_code_data` is reco
 
 ## Tests
 
-`pnpm --filter heidrun_code_data test` runs the tests, with a real Git repository in a temporary folder, a fake `gh` command, fake folders of Claude Code and of Codex, and a fake file of user activity records.
+`pnpm --filter heidrun_data test` runs the tests, with a real Git repository in a temporary folder, a fake `gh` command, fake folders of Claude Code and of Codex, and a fake file of user activity records.

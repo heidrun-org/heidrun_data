@@ -304,8 +304,8 @@ mod tests {
     fn puts_the_file_in_the_folder_of_the_variable_heidrun_dir_when_it_is_given() {
         let home = Path::new("/home/ada");
         assert_eq!(
-            user_activity_file_path(Some("/tmp/heidrun_code_data"), home),
-            Path::new("/tmp/heidrun_code_data/user_activity.jsonl")
+            user_activity_file_path(Some("/tmp/heidrun_data"), home),
+            Path::new("/tmp/heidrun_data/user_activity.jsonl")
         );
         assert_eq!(user_activity_file_path(None, home), Path::new("/home/ada/.config/heidrun_code/user_activity.jsonl"));
     }

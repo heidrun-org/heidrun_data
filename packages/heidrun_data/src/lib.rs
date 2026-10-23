@@ -1,4 +1,4 @@
-//! `heidrun_code_data`: one command line that gives a coding agent the data of the four data layers of Heidrun Code. It calls the
+//! `heidrun_data`: one command line that gives a coding agent the data of the four data layers of Heidrun Code. It calls the
 //! libraries of the four data layer packages, and never their executables.
 //!
 //! The library has ten parts:
@@ -54,7 +54,7 @@ pub use usage::{read_usage, UsageAnswer, UsageRequest};
 use std::path::PathBuf;
 
 /// The name of this package in the log of the operations of the data layer.
-pub(crate) const OPERATION_PACKAGE: &str = "heidrun_code_data";
+pub(crate) const OPERATION_PACKAGE: &str = "heidrun_data";
 
 /// The path of the SQLite file when nobody gives another path: `~/.config/heidrun_code/data_layer.sqlite`. It is the file that the
 /// four data layer packages write.

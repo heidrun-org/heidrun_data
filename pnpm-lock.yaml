@@ -18,4 +18,4 @@ importers:
 
   packages/data_layer_user_activity: {}
 
-  packages/heidrun_code_data: {}
+  packages/heidrun_data: {}

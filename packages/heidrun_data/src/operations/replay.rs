@@ -173,7 +173,7 @@ struct PreparedSynchronization {
 enum Prepared {
     /// A query: nothing to prepare, because the file is open read only.
     Nothing,
-    /// A synchronization of `heidrun_code_data` or of one package.
+    /// A synchronization of `heidrun_data` or of one package.
     Synchronization(PreparedSynchronization),
     /// A `refresh_*` call of the desktop application: the isolated file that it writes.
     Refresh(PathBuf),
@@ -218,7 +218,7 @@ fn prepare_synchronization(operation: &PairedOperation, options: &ReplayOptions)
         _ => default,
     };
     let sources: Vec<Source> = match start.package.as_str() {
-        "heidrun_code_data" => parameters
+        "heidrun_data" => parameters
             .get("sources")
             .and_then(Value::as_array)
             .map(|names| names.iter().filter_map(|name| name.as_str().and_then(Source::from_name)).collect())
@@ -245,7 +245,7 @@ fn prepare_synchronization(operation: &PairedOperation, options: &ReplayOptions)
         folder: recorded_or("folder", options.folder.clone()),
         repository: text("repository"),
         user_activity_file: recorded_or(
-            if start.package == "heidrun_code_data" { "userActivityFile" } else { "file" },
+            if start.package == "heidrun_data" { "userActivityFile" } else { "file" },
             data_layer_user_activity::default_user_activity_file_path(),
         ),
         claude_dir,
@@ -293,7 +293,7 @@ fn run_once(operation: &PairedOperation, options: &ReplayOptions, prepared: &Pre
             let rows = query_rows(&start.package, sql, &options.database_path)?;
             Ok(Some(rows as u64))
         }
-        ("heidrun_code_data", "read_usage") => {
+        ("heidrun_data", "read_usage") => {
             let text = |name: &str| parameters.get(name).and_then(Value::as_str).map(str::to_string);
             let usage_operation = UsageRequest {
                 database_path: options.database_path.clone(),

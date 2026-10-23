@@ -1,5 +1,5 @@
 [package]
-name = "heidrun_code_data"
+name = "heidrun_data"
 version = "0.3.0"
 description = "One command line that reads and queries the four data layers of Heidrun Code, for a coding agent"
 license = "MIT"
@@ -7,11 +7,11 @@ edition = "2021"
 publish = false
 
 [lib]
-name = "heidrun_code_data"
+name = "heidrun_data"
 path = "src/lib.rs"
 
 [[bin]]
-name = "heidrun_code_data"
+name = "heidrun_data"
 path = "src/main.rs"
 
 [dependencies]

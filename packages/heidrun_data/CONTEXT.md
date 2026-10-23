@@ -1,18 +1,18 @@
-# Directory Context: `/packages/heidrun_code_data`
+# Directory Context: `/packages/heidrun_data`
 
 ## Purpose
-A Rust library and one command line tool, `heidrun_code_data`, that give a coding agent the data of the four data layers of Heidrun Code in one SQLite file, and the `SKILL.md` that teaches a coding agent to use it. It is not a data layer package: it calls the libraries of the four data layer packages, and stores nothing of its own.
+A Rust library and one command line tool, `heidrun_data`, that give a coding agent the data of the four data layers of Heidrun Code in one SQLite file, and the `SKILL.md` that teaches a coding agent to use it. It is not a data layer package: it calls the libraries of the four data layer packages, and stores nothing of its own.
 
 ## Key Exports & Entry Points
 - `src/lib.rs`: the only public interface of the library. Its `pub use` lines are the list: `Source`, `synchronize`, `lock_database`, `HeidrunDatabase`, `read_catalog`, `data_schema_text`, `read_usage`, the four `read_` functions of the command `read`, `add_limit`, `Format`, `write_rows`, `default_database_path`, and for the operation log `read_operations`, `summary_rows`, `list_rows`, `info_row`, `overhead_rows`, `replay_operation`, and `make_snapshot`.
-- `src/main.rs`: the command line, and the executable `heidrun_code_data`. The module `src/command_line.rs` reads its arguments and holds the texts of the help.
+- `src/main.rs`: the command line, and the executable `heidrun_data`. The module `src/command_line.rs` reads its arguments and holds the texts of the help.
 - `src/usage.rs`: the command `usage`, which reads the tokens and the cost from the SQLite file only.
 - `src/operations/` and `src/operations_command_line.rs`: the command `operations`, which reads the operation log and runs recorded operations again.
 - `src/reading/`: the command `read`, the content that the tables do not store — see its own CONTEXT.md.
-- `plugin.json` and `skills/heidrun-code-data/`: the Agent Plugin manifest and the standalone skill. The repository copy `.agents/skills/heidrun-code-data/` stays identical to the package skill. A test compares `SKILL.md` with the help and with the output of `schema`.
+- `plugin.json` and `skills/heidrun-data/`: the Agent Plugin manifest and the standalone skill. The repository copy `.agents/skills/heidrun-data/` stays identical to the package skill. A test compares `SKILL.md` with the help and with the output of `schema`.
 - `tests/`: the tests of the executable. The tests of the library sit at the end of each source file.
-- Command to run this folder: `pnpm --silent data_layer:heidrun_code_data --help`
-- Command to test this folder: `pnpm --filter heidrun_code_data test`
+- Command to run this folder: `pnpm --silent data_layer:heidrun_data --help`
+- Command to test this folder: `pnpm --filter heidrun_data test`
 
 ## Rules
 - All four database defaults follow `HEIDRUN_CODE_DIR`; `tests/application_paths.rs` checks development, empty, and unset values in separate processes.
@@ -24,7 +24,7 @@ A Rust library and one command line tool, `heidrun_code_data`, that give a codin
 - `query` and `sources` open the SQLite file read only. `query` adds `LIMIT <count>` (default 1000) to a statement that has none, and `--limit 0` adds nothing.
 - The output is `jsonl`, `json`, or `table`: `table` on a terminal, `jsonl` otherwise. With a JSON format, every error is one JSON object on one line of the standard error output.
 - `src/output.rs` only turns rows into text. Only `src/main.rs` prints progress lines.
-- Every public function records its operation with `data_layer_operation_log`, with the package name `heidrun_code_data`. A replay of a query opens the SQLite file read only. A replay of a synchronization writes only `--isolated-database`, never the default file ([rule](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_operation_log.md)).
+- Every public function records its operation with `data_layer_operation_log`, with the package name `heidrun_data`. A replay of a query opens the SQLite file read only. A replay of a synchronization writes only `--isolated-database`, never the default file ([rule](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_operation_log.md)).
 - The calls are blocking. The package knows nothing about Tauri. The file `.cargo/config.toml` puts the compiled files in the Cargo target folder of `desktop_tauri`.
 
 ## Background

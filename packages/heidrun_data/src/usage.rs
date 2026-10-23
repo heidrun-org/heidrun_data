@@ -120,7 +120,7 @@ fn read_usage_inside(request: &UsageRequest) -> Result<UsageAnswer, String> {
     let synchronizations = database.find_synchronizations(&request.repository)?;
     let Some(synchronization) = synchronizations.first() else {
         return Err(format!(
-            "The token usage of the repository {} was never read. Run \"heidrun_code_data initialize coding_agents\" first: the command usage reads the SQLite file only, and never the chat session files.",
+            "The token usage of the repository {} was never read. Run \"heidrun_data initialize coding_agents\" first: the command usage reads the SQLite file only, and never the chat session files.",
             request.repository
         ));
     };
@@ -167,7 +167,7 @@ mod tests {
     }
 
     fn temp_database(name: &str) -> PathBuf {
-        let folder = std::env::temp_dir().join(format!("heidrun_code_data_usage_{name}_{}", std::process::id()));
+        let folder = std::env::temp_dir().join(format!("heidrun_data_usage_{name}_{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&folder);
         std::fs::create_dir_all(&folder).unwrap();
         folder.join("data_layer.sqlite")

@@ -120,10 +120,10 @@ pub fn data_schema_text(table_name: &str) -> Result<&'static str, String> {
     match (table.data_schema, table.kind) {
         (Some(schema), _) => Ok(schema.text),
         (None, TableKind::Links) => Err(format!(
-            "The table {table_name} is a link table and has no column data. Run \"heidrun_code_data schema\" to see its columns."
+            "The table {table_name} is a link table and has no column data. Run \"heidrun_data schema\" to see its columns."
         )),
         (None, kind) => Err(format!(
-            "The {} {table_name} has plain columns and no column data. Run \"heidrun_code_data schema\" to see its columns.",
+            "The {} {table_name} has plain columns and no column data. Run \"heidrun_data schema\" to see its columns.",
             if kind == TableKind::View { "view" } else { "table" }
         )),
     }
@@ -140,7 +140,7 @@ fn temporary_path() -> PathBuf {
         .map(|duration| duration.as_nanos())
         .unwrap_or_default();
     let count = TEMPORARY_FILE_COUNT.fetch_add(1, std::sync::atomic::Ordering::Relaxed);
-    std::env::temp_dir().join(format!("heidrun_code_data_schema_{}_{nanoseconds}_{count}.sqlite", std::process::id()))
+    std::env::temp_dir().join(format!("heidrun_data_schema_{}_{nanoseconds}_{count}.sqlite", std::process::id()))
 }
 
 /// Creates the tables of the four packages in the file at `path`, and reads their shapes.

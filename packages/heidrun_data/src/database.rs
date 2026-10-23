@@ -193,7 +193,7 @@ mod tests {
 
     /// A new folder for one test.
     fn temp_folder(name: &str) -> PathBuf {
-        let folder = std::env::temp_dir().join(format!("heidrun_code_data_database_{name}_{}", std::process::id()));
+        let folder = std::env::temp_dir().join(format!("heidrun_data_database_{name}_{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&folder);
         std::fs::create_dir_all(&folder).unwrap();
         folder

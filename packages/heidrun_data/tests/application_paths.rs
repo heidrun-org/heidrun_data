@@ -43,5 +43,5 @@ fn every_data_layer_uses_the_selected_application_folder() {
     assert_eq!(data_layer_coding_agents::default_database_path(), database);
     assert_eq!(data_layer_source_control::default_database_path(), database);
     assert_eq!(data_layer_user_activity::default_database_path(), database);
-    assert_eq!(heidrun_code_data::default_database_path(), database);
+    assert_eq!(heidrun_data::default_database_path(), database);
 }

@@ -1,4 +1,4 @@
-//! Tests of the executable `heidrun_code_data`, with a real Git repository of two commits and the remote `origin`
+//! Tests of the executable `heidrun_data`, with a real Git repository of two commits and the remote `origin`
 //! `fake-owner/fake-name`, a fake `gh` command put at the start of the PATH, a fake folder of Claude Code with one chat
 //! session and one memory file, an empty fake folder of Codex, one skill in the folder `.agents` of the repository, a fake
 //! home folder, and a fake file of two user activity records.
@@ -170,7 +170,7 @@ impl CliResult {
 impl Fixture {
     /// Makes the folder and the fake sources.
     fn new(name: &str) -> Self {
-        let folder = std::env::temp_dir().join(format!("heidrun_code_data_cli_{name}_{}", std::process::id()));
+        let folder = std::env::temp_dir().join(format!("heidrun_data_cli_{name}_{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&folder);
         std::fs::create_dir_all(folder.join("repository")).unwrap();
         let repository = folder.join("repository").canonicalize().unwrap();
@@ -241,7 +241,7 @@ impl Fixture {
 
     /// Runs the executable like `run_with_input`, with `log_file` as the value of the variable `HEIDRUN_CODE_OPERATION_LOG_FILE`.
     fn run_with_log_file(&self, arguments: &[&str], input: &str, log_file: &str) -> CliResult {
-        let mut child = Command::new(env!("CARGO_BIN_EXE_heidrun_code_data"))
+        let mut child = Command::new(env!("CARGO_BIN_EXE_heidrun_data"))
             .args(arguments)
             .env("HEIDRUN_CODE_OPERATION_LOG_FILE", log_file)
             .env("PATH", format!("{}:/usr/bin:/bin", self.folder.join("bin").display()))
@@ -297,14 +297,14 @@ fn prints_the_help_of_the_program_and_of_each_command() {
     let fixture = Fixture::new("help");
     let result = fixture.run_with_input(&["--help"], "");
     assert_eq!(result.exit_code, Some(0));
-    assert!(result.stdout.starts_with("Usage: heidrun_code_data <command> [options]"));
+    assert!(result.stdout.starts_with("Usage: heidrun_data <command> [options]"));
     for command in ["sources", "update", "initialize", "query"] {
         assert!(result.stdout.contains(&format!("  {command}")), "{command}");
     }
     let result = fixture.run_with_input(&["query", "--help"], "");
-    assert!(result.stdout.starts_with("Usage: heidrun_code_data query <sql>") && result.stdout.contains("--limit"));
+    assert!(result.stdout.starts_with("Usage: heidrun_data query <sql>") && result.stdout.contains("--limit"));
     let result = fixture.run_with_input(&["update", "--help"], "");
-    assert!(result.stdout.starts_with("Usage: heidrun_code_data update") && result.stdout.contains("--file"));
+    assert!(result.stdout.starts_with("Usage: heidrun_data update") && result.stdout.contains("--file"));
 }
 
 #[test]
@@ -640,7 +640,7 @@ fn read_file_history_prints_the_write_and_the_edit_of_a_memory_file_and_not_its_
 fn the_help_of_read_names_every_sign_of_a_write_of_read_file_history() {
     let fixture = Fixture::new("read_file_history_help");
     let help = fixture.run(&["read", "--help"]).stdout;
-    for sign in heidrun_code_data::WRITE_SIGNS {
+    for sign in heidrun_data::WRITE_SIGNS {
         assert!(help.contains(sign.trim()), "The help of read does not name the sign {sign}");
     }
     let result = fixture.run(&["read", "file_history", "/a.md", "--full", "--format", "jsonl"]);
@@ -722,10 +722,10 @@ fn read_pull_request_prints_the_body_the_review_comments_and_the_diff() {
 #[test]
 fn update_waits_while_another_program_holds_the_lock_of_the_sqlite_file() {
     let fixture = Fixture::new("update_lock");
-    let guard = heidrun_code_data::lock_database(&fixture.database_path).unwrap();
+    let guard = heidrun_data::lock_database(&fixture.database_path).unwrap();
     let file = fixture.user_activity_file.display().to_string();
     let database = fixture.database_path.display().to_string();
-    let mut child = Command::new(env!("CARGO_BIN_EXE_heidrun_code_data"))
+    let mut child = Command::new(env!("CARGO_BIN_EXE_heidrun_data"))
         .args(["update", "user_activity", "--file", &file, "--database", &database, "--format", "jsonl"])
         .env("HEIDRUN_CODE_OPERATION_LOG_FILE", &fixture.operation_log_file)
         .stdout(Stdio::null())
@@ -853,9 +853,9 @@ fn a_price_list_that_cannot_be_read_gives_a_warning_and_the_tokens_are_still_wri
     assert_eq!(fixture.query("SELECT round(costUsd, 8) AS costUsd FROM token_usage_with_cost"), vec![json!({ "costUsd": ANSWER_COST })]);
 }
 
-/// The text of the `SKILL.md` of the package, in the folder `skills/heidrun-code-data`.
+/// The text of the `SKILL.md` of the package, in the folder `skills/heidrun-data`.
 fn skill_text() -> String {
-    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("skills").join("heidrun-code-data").join("SKILL.md");
+    let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("skills").join("heidrun-data").join("SKILL.md");
     std::fs::read_to_string(path).unwrap()
 }
 
@@ -879,8 +879,8 @@ fn the_skill_names_no_command_no_kind_no_source_and_no_option_that_the_help_does
     let help_words = words(&help);
     for line in skill.lines().filter(|line| !line.starts_with("description:")) {
         let mut rest = line;
-        while let Some(at) = rest.find("heidrun_code_data ") {
-            rest = &rest[at + "heidrun_code_data ".len()..];
+        while let Some(at) = rest.find("heidrun_data ") {
+            rest = &rest[at + "heidrun_data ".len()..];
             let command = words(rest).into_iter().next().unwrap_or_default();
             if command.is_empty() || command.starts_with('-') {
                 continue;
@@ -893,7 +893,7 @@ fn the_skill_names_no_command_no_kind_no_source_and_no_option_that_the_help_does
         }
     }
     for kind in ["chat_session", "commit", "issue", "pull_request", "file_history"] {
-        assert!(skill.contains(&format!("heidrun_code_data read {kind}")), "{kind}");
+        assert!(skill.contains(&format!("heidrun_data read {kind}")), "{kind}");
         assert!(help.contains(kind), "{kind}");
     }
     for source in ["source_control", "code_hosting", "coding_agents", "user_activity"] {
@@ -924,8 +924,8 @@ fn the_example_queries_of_the_skill_run_on_the_fixtures_and_give_at_least_one_ro
     let mut ran = 0;
     for block in skill.split("```bash").skip(1) {
         let block = block.split("```").next().unwrap();
-        let Some(start) = block.find("heidrun_code_data query --format jsonl \"") else { continue };
-        let sql = &block[start + "heidrun_code_data query --format jsonl \"".len()..];
+        let Some(start) = block.find("heidrun_data query --format jsonl \"") else { continue };
+        let sql = &block[start + "heidrun_data query --format jsonl \"".len()..];
         let sql = &sql[..sql.rfind('"').unwrap()];
         let has_placeholder = sql.split('<').skip(1).any(|rest| rest.starts_with(|c: char| c.is_ascii_alphabetic()));
         if has_placeholder || sql.contains("...") {
@@ -994,8 +994,8 @@ fn the_summary_tells_an_initial_import_from_an_incremental_synchronization_and_a
     assert_eq!(Fixture::group(&rows, "synchronize", "incremental_synchronization")["count"], 1);
     let queries = Fixture::group(&rows, "query", "stored_data_query");
     assert_eq!(queries["count"], 3);
-    assert_eq!(queries["caller"], "heidrun_code_data");
-    assert_eq!(queries["package"], "heidrun_code_data");
+    assert_eq!(queries["caller"], "heidrun_data");
+    assert_eq!(queries["package"], "heidrun_data");
     assert_eq!(queries["failed"], 0);
     assert!(queries["p95Milliseconds"].as_f64().unwrap() >= queries["medianMilliseconds"].as_f64().unwrap());
     assert!(rows.iter().all(|row| row["operationName"] != "upsert_commits"), "A nested operation is not an operation of its own");
@@ -1059,10 +1059,10 @@ fn the_log_holds_no_secret_and_no_value_of_a_statement_in_its_pattern() {
 #[test]
 fn a_operation_that_never_ended_is_running_while_its_process_lives_and_interrupted_after_the_process_is_killed() {
     let fixture = Fixture::new("operations_unfinished");
-    let guard = heidrun_code_data::lock_database(&fixture.database_path).unwrap();
+    let guard = heidrun_data::lock_database(&fixture.database_path).unwrap();
     let file = fixture.user_activity_file.display().to_string();
     let database = fixture.database_path.display().to_string();
-    let mut child = Command::new(env!("CARGO_BIN_EXE_heidrun_code_data"))
+    let mut child = Command::new(env!("CARGO_BIN_EXE_heidrun_data"))
         .args(["update", "user_activity", "--file", &file, "--database", &database, "--format", "jsonl"])
         .env("HEIDRUN_CODE_OPERATION_LOG_FILE", &fixture.operation_log_file)
         .stdout(Stdio::null())
@@ -1119,7 +1119,7 @@ fn programs_that_run_together_write_whole_lines_and_every_operation_ends() {
     let database = fixture.database_path.display().to_string();
     let children: Vec<_> = (0..6)
         .map(|_| {
-            Command::new(env!("CARGO_BIN_EXE_heidrun_code_data"))
+            Command::new(env!("CARGO_BIN_EXE_heidrun_data"))
                 .args(["query", "--format", "jsonl", "--database", &database, "SELECT count(*) AS count FROM commits"])
                 .env("HEIDRUN_CODE_OPERATION_LOG_FILE", &fixture.operation_log_file)
                 .stdout(Stdio::null())
@@ -1199,7 +1199,7 @@ fn a_replayed_synchronization_writes_only_a_new_isolated_file_and_never_the_real
     let again = fixture.run_with_input(&["operations", "replay", "--id", &id, "--isolated-database", &isolated_text, "--format", "jsonl"], "");
     assert_eq!(again.exit_code, Some(1));
     let replayed = fixture.operations(&["list", "--only-replays", "--nested"]);
-    assert!(replayed.iter().any(|row| row["package"] == "heidrun_code_data" && row["operationName"] == "synchronize"));
+    assert!(replayed.iter().any(|row| row["package"] == "heidrun_data" && row["operationName"] == "synchronize"));
     assert!(replayed.iter().all(|row| row["origin"] == "replay"));
     let real = fixture.operations(&["summary"]);
     assert_eq!(Fixture::group(&real, "synchronize", "incremental_synchronization")["count"], 1);

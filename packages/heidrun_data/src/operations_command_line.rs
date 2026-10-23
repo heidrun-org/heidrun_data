@@ -1,16 +1,16 @@
-//! The arguments of the command `heidrun_code_data operations`, and the text of its help.
+//! The arguments of the command `heidrun_data operations`, and the text of its help.
 //!
 //! The command has its own options, so its arguments are read here and not in `command_line.rs`. The word `operations` must be
 //! the first argument.
 
 use crate::command_line::{CommonOptions, Parsed};
-use heidrun_code_data::Format;
+use heidrun_data::Format;
 
-/// The text of `heidrun_code_data operations --help`.
-pub const OPERATIONS_HELP: &str = r#"Usage: heidrun_code_data operations <action> [options]
+/// The text of `heidrun_data operations --help`.
+pub const OPERATIONS_HELP: &str = r#"Usage: heidrun_data operations <action> [options]
 
 Reads the log of the operations that the data layer receives. Every call of a public function of the four data layer
-packages and of heidrun_code_data is an operation, and writes two lines in the log: one when the operation starts, one when it
+packages and of heidrun_data is an operation, and writes two lines in the log: one when the operation starts, one when it
 ends. The log tells who asked (caller), what (package and operation name), with which parameters, how long it took, and
 how it ended. An operation that never ended stays visible as running or interrupted.
 
@@ -37,9 +37,9 @@ Options for info, summary, list, and replay:
                              "~/.config/heidrun_code/data_layer_operations.jsonl"). The old file "<path>.1" is read too.
 
 Options for summary, list, and replay (which operations):
-  --caller <name>            Only the operations of this caller, for example heidrun or heidrun_code_data.
+  --caller <name>            Only the operations of this caller, for example heidrun or heidrun_data.
   --package <name>           Only the operations of this package: source_control, code_hosting, coding_agents,
-                             user_activity, or heidrun_code_data.
+                             user_activity, or heidrun_data.
   --operation-name <name>    Only the operations with this operation name, for example query, synchronize, or find_usage.
   --since <time>             Only the operations that started at this time or later. A date 2026-10-17 or a time
                              2026-10-17T12:30:00Z, in UTC.
@@ -107,15 +107,15 @@ Environment:
   HEIDRUN_CODE_OPERATION_LOG_CALLER The name of the caller that the log writes. (default: the name of the program)
 
 Examples:
-  $ heidrun_code_data operations info
-  $ heidrun_code_data operations summary --format jsonl
-  $ heidrun_code_data operations summary --by pattern --repeated --since 2026-10-01 --format jsonl
-  $ heidrun_code_data operations summary --unfinished --nested --format jsonl
-  $ heidrun_code_data operations list --slowest --limit 20 --format jsonl
-  $ heidrun_code_data operations snapshot --to /tmp/snapshot.sqlite
-  $ heidrun_code_data operations replay --id r-1792240496789-1 --database /tmp/snapshot.sqlite --repeat 5
-  $ heidrun_code_data operations replay --operation-name synchronize --isolated-database /tmp/isolated.sqlite --format jsonl
-  $ heidrun_code_data operations overhead --format jsonl
+  $ heidrun_data operations info
+  $ heidrun_data operations summary --format jsonl
+  $ heidrun_data operations summary --by pattern --repeated --since 2026-10-01 --format jsonl
+  $ heidrun_data operations summary --unfinished --nested --format jsonl
+  $ heidrun_data operations list --slowest --limit 20 --format jsonl
+  $ heidrun_data operations snapshot --to /tmp/snapshot.sqlite
+  $ heidrun_data operations replay --id r-1792240496789-1 --database /tmp/snapshot.sqlite --repeat 5
+  $ heidrun_data operations replay --operation-name synchronize --isolated-database /tmp/isolated.sqlite --format jsonl
+  $ heidrun_data operations overhead --format jsonl
 "#;
 
 /// The size of the list that `operations replay` runs when the option `--limit` is not given.
@@ -141,7 +141,7 @@ pub enum OperationsAction {
     Overhead,
 }
 
-/// The command `heidrun_code_data operations`.
+/// The command `heidrun_data operations`.
 #[derive(Debug, PartialEq)]
 pub struct OperationsCommand {
     /// The options of every command.
@@ -383,7 +383,7 @@ pub fn parse(arguments: &[String]) -> Result<Parsed, String> {
                     return Err("The option --iterations needs a number that is 1 or more.".to_string());
                 }
             }
-            _ => return Err(format!("The option {name} is not known. Run \"heidrun_code_data operations --help\".")),
+            _ => return Err(format!("The option {name} is not known. Run \"heidrun_data operations --help\".")),
         }
     }
     if is_help {
@@ -391,7 +391,7 @@ pub fn parse(arguments: &[String]) -> Result<Parsed, String> {
     }
     let mut positionals = positionals.into_iter();
     let Some(action) = positionals.next() else {
-        return Err("An action is needed: info, summary, list, replay, snapshot, or overhead. Run \"heidrun_code_data operations --help\".".to_string());
+        return Err("An action is needed: info, summary, list, replay, snapshot, or overhead. Run \"heidrun_data operations --help\".".to_string());
     };
     command.action = match action.as_str() {
         "info" => OperationsAction::Info,
@@ -441,7 +441,7 @@ fn check_options(command: &OperationsCommand, given: &[&'static str]) -> Result<
     let accepted = accepted_options(command.action);
     for option in given {
         if accepted.contains(option) == false {
-            return Err(format!("The option {option} is not for this action. Run \"heidrun_code_data operations --help\"."));
+            return Err(format!("The option {option} is not for this action. Run \"heidrun_data operations --help\"."));
         }
     }
     if command.action == OperationsAction::Snapshot && command.to.is_none() {

@@ -1,7 +1,7 @@
 //! One lock for the SQLite file of the data layer, for the threads of one program and for the programs of one computer.
 //!
 //! The data layer packages set no waiting time on the file, so two writes at the same time fail with the error "database
-//! is locked". The desktop application and the command `heidrun_code_data update` both take this lock before each write. It has
+//! is locked". The desktop application and the command `heidrun_data update` both take this lock before each write. It has
 //! two parts: a lock in the memory of the program, for its threads, and a lock of the file `<database>.lock` with the lock
 //! of the operating system, for the other programs. The operating system frees the lock of the file when the program
 //! ends, even when it crashes.
@@ -99,7 +99,7 @@ mod tests {
 
     /// The path of a SQLite file in a new folder that does not exist yet.
     fn database_path(name: &str) -> PathBuf {
-        let folder = std::env::temp_dir().join(format!("heidrun_code_data_lock_{name}_{}", std::process::id()));
+        let folder = std::env::temp_dir().join(format!("heidrun_data_lock_{name}_{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&folder);
         folder.join("a_folder").join("data_layer.sqlite")
     }

@@ -1,4 +1,4 @@
-# Directory Context: `/packages/heidrun_code_data/src/reading`
+# Directory Context: `/packages/heidrun_data/src/reading`
 
 ## Purpose
 The command `read`: the content of one chat session, one commit, one issue, or one pull request, and the history of one file in the chat sessions, read from its source each time. The tables of the SQLite file store facts only, so this content is never stored.

@@ -1,4 +1,4 @@
-//! The command line `heidrun_code_data`: the commands sources, update, initialize, schema, query, usage, read, and operations.
+//! The command line `heidrun_data`: the commands sources, update, initialize, schema, query, usage, read, and operations.
 
 mod command_line;
 mod operations_command_line;
@@ -7,14 +7,14 @@ use command_line::{
     find_format, parse, CommonOptions, Parsed, QueryRequest, ReadKind, ReadRequest, SchemaRequest, SynchronizationRequest,
     UsageCommand,
 };
-use heidrun_code_data::{
+use heidrun_data::{
     add_limit, data_schema_text, default_database_path, format_error, read_catalog, read_usage, synchronize, write_rows,
     Format, HeidrunDatabase, QueryRow, SynchronizationOptions, UsageRequest,
 };
-use heidrun_code_data::{
+use heidrun_data::{
     read_chat_session, read_code_hosting, read_commit, read_file_history, read_pull_request_diff, CodeHostingKind,
 };
-use heidrun_code_data::{
+use heidrun_data::{
     info_row, list_rows, make_snapshot, overhead_rows, parse_time_bound, read_operations, replay_refusal, replay_operation,
     replay_row, summary_rows, ReplayOptions, DEFAULT_LIST_LIMIT,
 };
@@ -336,7 +336,7 @@ fn run_operations(command: &OperationsCommand) -> Result<(), String> {
             let rows = match &command.id {
                 Some(id) => {
                     let operation = reading.operations.iter().find(|operation| operation.start.operation_id == *id);
-                    vec![heidrun_code_data::operation_row(operation.ok_or_else(|| format!("The operation {id} is not in the log."))?)]
+                    vec![heidrun_data::operation_row(operation.ok_or_else(|| format!("The operation {id} is not in the log."))?)]
                 }
                 None => {
                     let limit = command.limit.unwrap_or(DEFAULT_LIST_LIMIT);
