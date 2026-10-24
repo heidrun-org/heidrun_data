@@ -52,3 +52,18 @@ $HEIDRUN_DATA --help
 ```
 
 The full description of each command is in the [README of the package heidrun_data](packages/heidrun_data/README.md).
+
+## Testbed folder
+
+The folder `testbed_folder/` is a place to try the skill `heidrun-data` with a coding agent. Go to the folder, and then start your coding agent in it.
+
+```sh
+cd testbed_folder
+codex
+```
+
+Use `codex` for Codex or `claude` for Claude Code. Any other coding agent that reads `AGENTS.md` and `.agents/skills/` also works.
+
+Then ask questions about the data in plain words. It is better to talk to the coding agent with your voice than to type: the conversation is more interactive.
+
+The full description of the folder is in the [README of the folder testbed_folder](testbed_folder/README.md).
