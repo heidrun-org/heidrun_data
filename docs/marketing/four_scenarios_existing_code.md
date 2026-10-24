@@ -10,7 +10,7 @@
 
 This document expands the four original scenarios for using Heidrun Data to understand an existing codebase. Each scenario begins with a question a developer may ask and describes the evidence Heidrun Data can gather, the answer it can prepare, and the limits it should make clear.
 
-These scenarios describe passive analysis. Heidrun Data searches and relates information that already exists. It does not need to run or modify the software to answer these questions. The scenarios are proposals, not claims that every capability is implemented today.
+These are four question types, not one analysis method. The first three mainly draw on historical project records; the fourth combines historical records with static code analysis. None requires running or modifying the software. The scenarios are proposals, not claims that every capability is implemented today.
 
 ## Shared foundation
 
@@ -20,8 +20,8 @@ The useful answer is rarely contained in one source. Heidrun Data can connect in
 - Git commits, dates, authors, branches, and changed files.
 - GitHub issues, pull requests, descriptions, and comments.
 - Conversations between developers and coding agents.
-- Static analysis results, such as code relationships and dependencies.
-- Where available, recorded tests, measurements, and previous experiment results.
+- Static code analysis results, which derive code structure such as dependencies and call relationships from source code without executing it.
+- Where available, recorded tests, measurements, and previous experiment results from active runtime analysis.
 
 Finding related records is not the same as proving a reason. Heidrun Data should distinguish a confirmed fact from a likely connection, an interpretation, or missing information. Important statements should link to the original records so a developer can check them.
 
@@ -149,7 +149,7 @@ A module history report can be organized into:
 3. **Timeline:** major changes and the issues, pull requests, commits, or discussions behind them.
 4. **Decisions and constraints:** reasons that were explicitly recorded and alternatives that were considered.
 5. **Attempts and outcomes:** relevant fixes, migrations, or optimizations, including rejected attempts.
-6. **Current relationships:** important dependencies found in the code and static analysis.
+6. **Current relationships:** important dependencies found in the code and static code analysis.
 7. **Open questions:** areas where records are missing, conflicting, or too weak to support a conclusion.
 
 Each important historical claim should point to its source. The current behavior should be checked against current code rather than inferred only from old discussions.
@@ -177,11 +177,11 @@ Examples include:
 
 ### What Heidrun Data investigates
 
-Static analysis can identify code relationships without running the program. Heidrun Data can use dependency and call information to find direct and indirect callers or related modules. It can then add relevant history: earlier bugs, decisions, pull requests, conversations, and attempts associated with those elements.
+Static code analysis can identify code relationships without running the program. Heidrun Data can use dependency and call information to find direct and indirect callers or related modules. It can then add relevant history: earlier bugs, decisions, pull requests, conversations, and attempts associated with those elements.
 
 The result combines two kinds of information:
 
-- **Structural impact:** relationships found in source code and static analysis.
+- **Structural impact:** relationships found in source code and static code analysis.
 - **Historical context:** decisions, defects, constraints, and earlier changes found in project records.
 
 ### What the answer contains
@@ -199,7 +199,7 @@ For example, the report might show that a validation function is called by reque
 
 ### Scope and limits
 
-Static analysis estimates potential impact; it does not prove that all effects have been found. Dynamic calls, reflection, generated code, configuration, and external services can hide relationships. Execution and tests may be needed to validate a proposed code change, but they are outside this passive scenario.
+Static code analysis estimates potential impact; it does not prove that all effects have been found. Dynamic calls, reflection, generated code, configuration, and external services can hide relationships. Execution and tests may be needed to validate a proposed code change, but they are outside this static code analysis estimate.
 
 ### Value
 
@@ -218,7 +218,7 @@ The four questions address different needs:
 
 A developer may combine them. Before changing a module, the developer could read its history, ask why a key design was chosen, check which attempts were made to address a known problem, and estimate which other components could be affected.
 
-All four are passive analysis. Code Spine's profiling and optimization loop is a separate active workflow: it runs the software, measures behavior, tests changes, and can later send experiment records to Heidrun Data. Those measurements can enrich the historical answers, but they are not required for the four original scenarios.
+The first three scenarios mainly use historical project records. The change-impact scenario adds structural findings from static code analysis. All four can be answered without running the software. Code Spine's profiling and optimization loop is a separate active runtime workflow: it runs the software, measures behavior, tests changes, and can later send experiment records to Heidrun Data. Those measurements can enrich later answers, but they are not required for the four original scenarios.
 
 ## Shared answer principles
 

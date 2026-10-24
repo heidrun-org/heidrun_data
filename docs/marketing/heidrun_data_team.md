@@ -33,7 +33,7 @@ The proposal includes:
 - Managing access to shared information.
 - Isolating data between organizations and applying privacy rules.
 
-The proposed knowledge sources include Git, GitHub, coding-agent conversations, and source code. Code Spine could add execution profiles, performance measurements, changes, test outcomes, and optimization decisions. Code Spine would run its active optimization loop near the development environment and send experiment records to Heidrun Data asynchronously.
+The proposal brings together three different kinds of knowledge. Historical records include Git history, GitHub collaboration, and conversations between developers and coding agents. Static code analysis derives structural information, such as dependencies and call relationships, from source code without executing the program. Active runtime analysis, performed by Code Spine, adds execution profiles, performance measurements, changes, test outcomes, and optimization decisions. Code Spine would run its optimization loop near the development environment and send experiment records to Heidrun Data asynchronously.
 
 ## Example: keeping the reason behind a design decision
 
@@ -59,13 +59,13 @@ The performance values and outcomes in this example are not claims about measure
 
 | Component | Proposed responsibility |
 | --- | --- |
-| Heidrun Data | Collect, connect, store, and analyze project knowledge; provide historical answers with evidence. |
+| Heidrun Data | Collect, connect, store, and analyze historical project records and static code analysis results; provide evidence-backed answers. |
 | Heidrun Data Team | Extend the data scope to a team or organization and define sharing, access, isolation, and privacy rules. |
 | Heidrun Code | Provide the developer interface and request historical analysis or start an active optimization. |
 | Code Spine | Profile and modify software, run tests, compare measurements, and accept or reject optimization attempts. |
 | Heidrun Notebook | Remain a separate product; an integration through plugins is optional and is not an architectural requirement here. |
 
-Heidrun Data may own stored static-analysis results and dependency information. Code Spine may reuse those results, while remaining responsible for active profiling and optimization. The proposal aims to avoid building two independent analysis systems that produce the same information.
+Heidrun Data may own stored static code analysis results and dependency information. Code Spine may reuse those structural results, while remaining responsible for active profiling and optimization. Historical records explain what people discussed and changed; static code analysis describes relationships in a code snapshot; active runtime analysis measures what happens when the software runs. The proposal aims to avoid building two independent systems that derive the same code relationships.
 
 ## Value to a team
 

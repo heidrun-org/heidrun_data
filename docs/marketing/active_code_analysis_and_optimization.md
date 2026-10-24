@@ -20,13 +20,15 @@ A developer may ask:
 
 A useful result is not just a code suggestion. It includes a measured baseline, a specific hypothesis, the code change, the test outcome, comparable measurements after the change, and a clear decision to keep or reject the change.
 
-## Passive analysis and active analysis
+## Three kinds of knowledge and analysis
 
-Heidrun Data's passive analysis uses information already available. It can connect source code, static-analysis results, Git history, project discussions, and earlier experiments to explain decisions, find prior attempts, reconstruct module history, or estimate the impact of a change. It can be performed later and does not require running the program.
+**Historical project records** include Git history, GitHub collaboration, conversations between developers and coding agents, and previously recorded experiments. Heidrun Data connects these records to explain decisions, find earlier attempts, and reconstruct how a module changed over time. Historical analysis can be performed after the events have happened; it does not require running the program.
 
-Active analysis requires a suitable environment in which the software can run. Code Spine profiles the program, identifies where execution time is spent, supports an optimization attempt, runs tests, measures again, and compares the result. The active loop depends on the project's runtime, test setup, representative input, and measurement conditions.
+**Static code analysis** is a distinct source of knowledge. It examines source code without executing the program and derives structural facts, such as dependencies and call relationships. It can be run on a code snapshot today, even if the code was written months earlier. It describes the structure of the analyzed code; by itself, it does not explain the historical reasons for that structure.
 
-The two approaches can inform each other. Passive history can help Code Spine understand constraints and prior attempts. Active experiments can later provide new measurements and outcomes for Heidrun Data to retain.
+**Active runtime analysis** requires a suitable environment in which the software can run. Code Spine profiles the program, identifies where execution time is spent, supports an optimization attempt, runs tests, measures again, and compares the result. The active loop depends on the project's runtime, test setup, representative input, and measurement conditions.
+
+These knowledge types can inform each other. Historical records can tell Code Spine about constraints and earlier attempts. Static code analysis can provide structural context. Active experiments can produce new measurements and outcomes for Heidrun Data to retain.
 
 ## Proposed responsibilities
 
@@ -38,7 +40,7 @@ The two approaches can inform each other. Passive history can help Code Spine un
 
 Code Spine should work near the development environment so it can iterate without waiting for remote historical processing. It can send experiment records to Heidrun Data asynchronously. A temporary delay in that transfer should not stop the local optimization loop.
 
-Static-analysis and dependency information may be shared. Heidrun Data can retain indexed results, while Code Spine can reuse them where they help the optimization. The proposal is to avoid maintaining two unrelated systems that calculate the same code relationships.
+Static code analysis and dependency information may be shared. Heidrun Data can retain indexed results, while Code Spine can reuse them where they help the optimization. The proposal is to avoid maintaining two unrelated systems that calculate the same code relationships.
 
 ## End-to-end scenario
 
@@ -123,4 +125,4 @@ When experiment records are shared through Heidrun Data Team, the knowledge can 
 
 ## Summary
 
-Heidrun Data explains project history and keeps evidence. Heidrun Code provides the developer-facing entry point. Code Spine runs the active loop that profiles, changes, tests, and measures software. Code Spine can then publish the experiment record to Heidrun Data so that successful and unsuccessful attempts both inform future work.
+Heidrun Data connects historical project records and static code analysis results, then keeps the evidence available for later questions. Heidrun Code provides the developer-facing entry point. Code Spine runs the active loop that profiles, changes, tests, and measures software. Code Spine can then publish the experiment record to Heidrun Data so that successful and unsuccessful attempts both inform future work.
