@@ -1,0 +1,63 @@
+{
+  "start": "2025-10-24",
+  "end": "2026-10-23",
+  "timeZone": "Europe/Paris",
+  "repositories": [
+    {
+      "name": "Heidrun Code",
+      "repository": "heidrun-org/heidrun_code",
+      "database": "databases/heidrun_code.sqlite",
+      "latestCommitUtc": "2026-10-23T19:28:12Z",
+      "dailyCommits": {
+        "2026-10-05": 42,
+        "2026-10-06": 17,
+        "2026-10-07": 6,
+        "2026-10-08": 10,
+        "2026-10-09": 111,
+        "2026-10-10": 118,
+        "2026-10-11": 151,
+        "2026-10-12": 53,
+        "2026-10-13": 169,
+        "2026-10-14": 72,
+        "2026-10-15": 104,
+        "2026-10-16": 124,
+        "2026-10-17": 36,
+        "2026-10-18": 50,
+        "2026-10-19": 39,
+        "2026-10-20": 19,
+        "2026-10-21": 24,
+        "2026-10-22": 32,
+        "2026-10-23": 38
+      }
+    },
+    {
+      "name": "Heidrun Notebook",
+      "repository": "heidrun-org/heidrun_notebook",
+      "database": "databases/heidrun_data_example_database.sqlite",
+      "latestCommitUtc": "2026-10-23T21:35:47Z",
+      "dailyCommits": {
+        "2026-10-20": 64,
+        "2026-10-21": 43,
+        "2026-10-22": 7,
+        "2026-10-23": 32
+      }
+    },
+    {
+      "name": "Heidrun Data",
+      "repository": "heidrun-org/heidrun_data",
+      "database": "outputs/heidrun_data_commits.sqlite",
+      "latestCommitUtc": "2026-10-23T23:04:06Z",
+      "dailyCommits": {
+        "2026-10-11": 2,
+        "2026-10-14": 3,
+        "2026-10-15": 17,
+        "2026-10-16": 25,
+        "2026-10-17": 8,
+        "2026-10-18": 6,
+        "2026-10-22": 1,
+        "2026-10-23": 13,
+        "2026-10-24": 3
+      }
+    }
+  ]
+}

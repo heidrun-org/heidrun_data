@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Cost Every Three Hours</title>
+<style>
+	:root {
+		--surface: #fcfcfb;
+		--card: #ffffff;
+		--text-primary: #0b0b0b;
+		--text-secondary: #52514e;
+		--text-muted: #8a8984;
+		--grid: #e4e3df;
+		--baseline: #c3c2b7;
+		--tokens: #2a78d6;
+		--cost: #1baf7a;
+		--hover: rgba(11, 11, 11, 0.05);
+		--border: #e4e3df;
+	}
+	@media (prefers-color-scheme: dark) {
+		:root:not([data-theme="light"]) {
+			--surface: #1a1a19;
+			--card: #222221;
+			--text-primary: #f0efec;
+			--text-secondary: #c3c2b7;
+			--text-muted: #8a8984;
+			--grid: #33332f;
+			--baseline: #52514e;
+			--tokens: #3987e5;
+			--cost: #199e70;
+			--hover: rgba(240, 239, 236, 0.06);
+			--border: #33332f;
+		}
+	}
+	:root[data-theme="dark"] {
+		--surface: #1a1a19;
+		--card: #222221;
+		--text-primary: #f0efec;
+		--text-secondary: #c3c2b7;
+		--text-muted: #8a8984;
+		--grid: #33332f;
+		--baseline: #52514e;
+		--tokens: #3987e5;
+		--cost: #199e70;
+		--hover: rgba(240, 239, 236, 0.06);
+		--border: #33332f;
+	}
+	* { box-sizing: border-box; }
+	body {
+		margin: 0;
+		background: var(--surface);
+		color: var(--text-primary);
+		font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
+	}
+	main { max-width: 1040px; margin: 0 auto; padding: 32px 16px 48px; }
+	h1 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+	.subtitle { color: var(--text-secondary); margin: 0 0 24px; }
+	.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 24px; }
+	.tile { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+	.tile .name { color: var(--text-secondary); font-size: 13px; }
+	.tile .value { font-size: 26px; font-weight: 600; font-variant-numeric: tabular-nums; }
+	.chart { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+	.chart h2 { font-size: 15px; font-weight: 600; margin: 0 0 8px; }
+	.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+	.axis-label { fill: var(--text-secondary); font-size: 12px; }
+	.value-label { fill: var(--text-primary); font-size: 12px; font-variant-numeric: tabular-nums; }
+	.slot-hit { fill: transparent; cursor: default; }
+	.slot-hit.active { fill: var(--hover); }
+	#tooltip {
+		position: fixed; pointer-events: none; opacity: 0; transition: opacity 120ms;
+		background: var(--card); color: var(--text-primary); border: 1px solid var(--border);
+		border-radius: 8px; padding: 10px 12px; font-size: 13px; min-width: 240px;
+		box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); z-index: 10;
+	}
+	#tooltip .title { font-weight: 600; margin-bottom: 6px; }
+	#tooltip table { border-collapse: collapse; width: 100%; }
+	#tooltip td { padding: 1px 0; font-variant-numeric: tabular-nums; }
+	#tooltip td:last-child, #tooltip td.number { text-align: right; padding-left: 12px; }
+	#tooltip .section { color: var(--text-muted); padding-top: 6px; }
+	.swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: -1px; }
+	details { margin-top: 16px; }
+	summary { cursor: pointer; color: var(--text-secondary); }
+	.data-table { border-collapse: collapse; width: 100%; margin-top: 8px; font-variant-numeric: tabular-nums; }
+	.data-table th, .data-table td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: right; }
+	.data-table th:first-child, .data-table td:first-child { text-align: left; }
+	.table-scroll { overflow-x: auto; }
+	.note { color: var(--text-muted); font-size: 12px; margin-top: 16px; }
+	.theme-switch { float: right; background: none; border: 1px solid var(--border); color: var(--text-secondary); border-radius: 6px; padding: 4px 10px; cursor: pointer; font: inherit; font-size: 13px; }
+	@media (prefers-reduced-motion: reduce) { #tooltip { transition: none; } }
+</style>
+</head>
+<body>
+<nav aria-label="Back to outputs"><a href="index.html" style="display:inline-block;margin:16px 24px;color:#79aaff">← Outputs navigation</a></nav>
+<main>
+	<button class="theme-switch" id="themeSwitch" type="button">Switch theme</button>
+	<h1>AI cost every three hours</h1>
+	<p class="subtitle" id="subtitle"></p>
+	<div class="tiles" id="tiles"></div>
+	<section class="chart">
+		<h2><span class="swatch" style="background: var(--tokens)"></span>Tokens</h2>
+		<svg id="tokensChart" role="img" aria-label="Tokens every three hours"></svg>
+	</section>
+	<section class="chart">
+		<h2><span class="swatch" style="background: var(--cost)"></span>Estimated cost in US dollars</h2>
+		<svg id="costChart" role="img" aria-label="Estimated cost in US dollars every three hours"></svg>
+	</section>
+	<details>
+		<summary>Show the data as a table</summary>
+		<div class="table-scroll"><table class="data-table" id="dataTable"></table></div>
+	</details>
+	<p class="note" id="note"></p>
+</main>
+<div id="tooltip" role="tooltip"></div>
+<script>
+	const DATA = {"repository": "heidrun-org/heidrun_notebook", "day": "2026-10-23", "slots": [{"label": "00:00\u201303:00", "tokens": 0, "costUsd": 0.0, "unpricedRows": 0, "kinds": {"fresh input": 0, "cached input": 0, "cache write input": 0, "output": 0}, "models": {}}, {"label": "03:00\u201306:00", "tokens": 0, "costUsd": 0.0, "unpricedRows": 0, "kinds": {"fresh input": 0, "cached input": 0, "cache write input": 0, "output": 0}, "models": {}}, {"label": "06:00\u201309:00", "tokens": 21884659, "costUsd": 8.251471099999998, "unpricedRows": 0, "kinds": {"fresh input": 304, "cached input": 21268854, "cache write input": 515286, "output": 100215}, "models": {"claude-opus-5-5": {"tokens": 19892995, "costUsd": 7.6672253999999995}, "claude-sonnet-5-5": {"tokens": 1991664, "costUsd": 0.5842456999999999}}}, {"label": "09:00\u201312:00", "tokens": 34732977, "costUsd": 5.7183227, "unpricedRows": 0, "kinds": {"fresh input": 134843, "cached input": 33875861, "cache write input": 545108, "output": 177165}, "models": {"claude-sonnet-5-5": {"tokens": 28559827, "costUsd": 5.6302001}, "gpt-6-luna": {"tokens": 6173150, "costUsd": 0.08812259999999998}}}, {"label": "12:00\u201315:00", "tokens": 33802001, "costUsd": 7.754814500000002, "unpricedRows": 0, "kinds": {"fresh input": 564, "cached input": 32715215, "cache write input": 850674, "output": 235548}, "models": {"claude-sonnet-5-5": {"tokens": 33802001, "costUsd": 7.754814500000002}}}, {"label": "15:00\u201318:00", "tokens": 34174342, "costUsd": 6.2815923, "unpricedRows": 0, "kinds": {"fresh input": 470, "cached input": 33457923, "cache write input": 563284, "output": 152665}, "models": {"claude-sonnet-5-5": {"tokens": 34174342, "costUsd": 6.2815923}}}, {"label": "18:00\u201321:00", "tokens": 55237767, "costUsd": 2.7367507200000003, "unpricedRows": 0, "kinds": {"fresh input": 714886, "cached input": 54006113, "cache write input": 253064, "output": 263704}, "models": {"claude-sonnet-5-5": {"tokens": 9322736, "costUsd": 2.1123941}, "gpt-6-luna": {"tokens": 45915031, "costUsd": 0.62435662}}}, {"label": "21:00\u201324:00", "tokens": 31908734, "costUsd": 9.472627919999999, "unpricedRows": 0, "kinds": {"fresh input": 96904, "cached input": 31190865, "cache write input": 443851, "output": 177114}, "models": {"claude-sonnet-5-5": {"tokens": 11872323, "costUsd": 2.5292812}, "claude-opus-5-5": {"tokens": 19503803, "costUsd": 6.815232}, "gpt-6-luna": {"tokens": 351424, "costUsd": 0.00837712}, "gpt-6.1-sol": {"tokens": 181184, "costUsd": 0.1197376}}}]};
+	const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
+	const WIDTH = 1000;
+	const HEIGHT = 280;
+	const MARGIN = {
+		top: 24,
+		right: 8,
+		bottom: 32,
+		left: 56,
+	};
+
+	const formatTokens = (value) => {
+		if (value >= 1e6) {
+			return (value / 1e6).toFixed(1) + ' M';
+		}
+		if (value >= 1e3) {
+			return (value / 1e3).toFixed(1) + ' k';
+		}
+		return String(value);
+	};
+	const formatDollars = (value) => '$' + value.toFixed(2);
+	const escapeHtml = (text) => String(text).replace(/[&<>"']/g, (character) => '&#' + character.charCodeAt(0) + ';');
+
+	const slots = DATA.slots;
+	const totalTokens = slots.reduce((sum, slot) => sum + slot.tokens, 0);
+	const totalCost = slots.reduce((sum, slot) => sum + slot.costUsd, 0);
+	const unpricedRows = slots.reduce((sum, slot) => sum + slot.unpricedRows, 0);
+
+	document.getElementById('subtitle').textContent = DATA.repository + ' on ' + DATA.day + ', in slots of three hours, Europe/Paris time.';
+	const busiest = slots.reduce((best, slot) => (slot.tokens > best.tokens ? slot : best), slots[0]);
+	const costliest = slots.reduce((best, slot) => (slot.costUsd > best.costUsd ? slot : best), slots[0]);
+	const tiles = [
+		['Total tokens', formatTokens(totalTokens)],
+		['Total estimated cost', formatDollars(totalCost) + (unpricedRows > 0 ? ' (partial)' : '')],
+		['Most tokens', busiest.label],
+		['Highest cost', costliest.label],
+	];
+	document.getElementById('tiles').innerHTML = tiles.map(([name, value]) => `
+		<div class="tile"><div class="name">${escapeHtml(name)}</div><div class="value">${escapeHtml(value)}</div></div>`).join('');
+	document.getElementById('note').textContent = 'The cost is an estimate: the tokens of each kind multiplied by the public price of the model in the LiteLLM price list. It is not an invoice.'
+		+ (unpricedRows > 0 ? ' Partial: ' + unpricedRows + ' rows have no price.' : ' Every row has a price.');
+
+	const tooltip = document.getElementById('tooltip');
+	const hitRectangles = [];
+
+	const niceMaximum = (value) => {
+		if (value <= 0) {
+			return 1;
+		}
+		const power = Math.pow(10, Math.floor(Math.log10(value)));
+		for (const step of [1, 1.2, 1.6, 2, 2.4, 3, 4, 5, 6, 8, 10]) {
+			if (step * power >= value) {
+				return step * power;
+			}
+		}
+		return 10 * power;
+	};
+
+	const element = (name, attributes, parent) => {
+		const node = document.createElementNS(SVG_NAMESPACE, name);
+		for (const [key, value] of Object.entries(attributes)) {
+			node.setAttribute(key, value);
+		}
+		parent.appendChild(node);
+		return node;
+	};
+
+	const barPath = (x, y, width, height) => {
+		const radius = Math.min(4, height, width / 2);
+		const bottom = y + height;
+		return `M${x},${bottom} V${y + radius} Q${x},${y} ${x + radius},${y} H${x + width - radius} Q${x + width},${y} ${x + width},${y + radius} V${bottom} Z`;
+	};
+
+	const drawChart = (svg, values, color, formatValue, formatAxis) => {
+		svg.setAttribute('viewBox', `0 0 ${WIDTH} ${HEIGHT}`);
+		const plotWidth = WIDTH - MARGIN.left - MARGIN.right;
+		const plotHeight = HEIGHT - MARGIN.top - MARGIN.bottom;
+		const maximum = niceMaximum(Math.max(...values) * 1.1);
+		const scaleY = (value) => MARGIN.top + plotHeight - (value / maximum) * plotHeight;
+		for (let index = 0; index <= 4; index++) {
+			const value = (maximum / 4) * index;
+			const y = scaleY(value);
+			element('line', {
+				x1: MARGIN.left,
+				x2: WIDTH - MARGIN.right,
+				y1: y,
+				y2: y,
+				stroke: index === 0 ? 'var(--baseline)' : 'var(--grid)',
+				'stroke-width': 1,
+			}, svg);
+			element('text', {
+				x: MARGIN.left - 8,
+				y: y + 4,
+				'text-anchor': 'end',
+				class: 'axis-label',
+			}, svg).textContent = formatAxis(value);
+		}
+		const band = plotWidth / values.length;
+		const barWidth = band * 0.72;
+		values.forEach((value, index) => {
+			const x = MARGIN.left + band * index;
+			const hit = element('rect', {
+				x: x,
+				y: MARGIN.top,
+				width: band,
+				height: plotHeight,
+				class: 'slot-hit',
+				'data-slot': index,
+			}, svg);
+			hitRectangles.push(hit);
+			if (value > 0) {
+				const y = scaleY(value);
+				const bar = element('path', {
+					d: barPath(x + (band - barWidth) / 2, MARGIN.top + plotHeight, barWidth, 0),
+					fill: color,
+					'pointer-events': 'none',
+				}, svg);
+				bar.dataset.target = barPath(x + (band - barWidth) / 2, y, barWidth, MARGIN.top + plotHeight - y);
+				element('text', {
+					x: x + band / 2,
+					y: y - 6,
+					'text-anchor': 'middle',
+					class: 'value-label',
+				}, svg).textContent = formatValue(value);
+			}
+			element('text', {
+				x: x + band / 2,
+				y: HEIGHT - 10,
+				'text-anchor': 'middle',
+				class: 'axis-label',
+			}, svg).textContent = slots[index].label;
+		});
+	};
+
+	drawChart(document.getElementById('tokensChart'), slots.map((slot) => slot.tokens), 'var(--tokens)', formatTokens, formatTokens);
+	drawChart(document.getElementById('costChart'), slots.map((slot) => slot.costUsd), 'var(--cost)', formatDollars, (value) => '$' + value.toFixed(value < 10 ? 1 : 0));
+
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const bars = Array.from(document.querySelectorAll('path[data-target]'));
+	if (reduceMotion) {
+		bars.forEach((bar) => bar.setAttribute('d', bar.dataset.target));
+	} else {
+		bars.forEach((bar, index) => {
+			const animation = element('animate', {
+				attributeName: 'd',
+				from: bar.getAttribute('d'),
+				to: bar.dataset.target,
+				dur: '600ms',
+				begin: (index % 8) * 50 + 'ms',
+				fill: 'freeze',
+				calcMode: 'spline',
+				keySplines: '0.2 0.8 0.2 1',
+				keyTimes: '0;1',
+			}, bar);
+			animation.addEventListener('endEvent', () => bar.setAttribute('d', bar.dataset.target));
+		});
+	}
+
+	const tooltipHtml = (slot) => {
+		const models = Object.entries(slot.models).sort((a, b) => b[1].costUsd - a[1].costUsd);
+		const tooltipHtmlContent = /* html */`
+			<div class="title">${escapeHtml(slot.label)}</div>
+			<table>
+				<tr><td><span class="swatch" style="background: var(--tokens)"></span>Tokens</td><td>${formatTokens(slot.tokens)}</td></tr>
+				<tr><td><span class="swatch" style="background: var(--cost)"></span>Estimated cost</td><td>${formatDollars(slot.costUsd)}</td></tr>
+				${slot.tokens === 0 ? '' : `<tr><td class="section" colspan="2">Tokens by kind</td></tr>
+				${Object.entries(slot.kinds).map(([name, value]) => `<tr><td>${escapeHtml(name)}</td><td>${formatTokens(value)}</td></tr>`).join('')}
+				<tr><td class="section" colspan="2">By model (tokens, cost)</td></tr>
+				${models.map(([name, entry]) => `<tr><td>${escapeHtml(name)}</td><td>${formatTokens(entry.tokens)} · ${formatDollars(entry.costUsd)}</td></tr>`).join('')}`}
+			</table>`;
+		return tooltipHtmlContent;
+	};
+
+	const showSlot = (index, event) => {
+		hitRectangles.forEach((hit) => hit.classList.toggle('active', Number(hit.dataset.slot) === index));
+		tooltip.innerHTML = tooltipHtml(slots[index]);
+		tooltip.style.opacity = '1';
+		const box = tooltip.getBoundingClientRect();
+		let left = event.clientX + 16;
+		if (left + box.width > window.innerWidth - 8) {
+			left = event.clientX - box.width - 16;
+		}
+		const top = Math.min(Math.max(8, event.clientY - box.height / 2), window.innerHeight - box.height - 8);
+		tooltip.style.left = Math.max(8, left) + 'px';
+		tooltip.style.top = top + 'px';
+	};
+	const hideSlot = () => {
+		hitRectangles.forEach((hit) => hit.classList.remove('active'));
+		tooltip.style.opacity = '0';
+	};
+	hitRectangles.forEach((hit) => {
+		hit.addEventListener('pointermove', (event) => showSlot(Number(hit.dataset.slot), event));
+		hit.addEventListener('pointerleave', hideSlot);
+	});
+
+	const tableHtmlContent = /* html */`
+		<thead><tr><th>Slot</th><th>Tokens</th><th>Fresh input</th><th>Cached input</th><th>Cache write input</th><th>Output</th><th>Estimated cost</th></tr></thead>
+		<tbody>${slots.map((slot) => `<tr><td>${escapeHtml(slot.label)}</td><td>${slot.tokens.toLocaleString('en')}</td>
+			${Object.values(slot.kinds).map((value) => `<td>${value.toLocaleString('en')}</td>`).join('')}
+			<td>${formatDollars(slot.costUsd)}</td></tr>`).join('')}</tbody>`;
+	document.getElementById('dataTable').innerHTML = tableHtmlContent;
+
+	const themeSwitch = document.getElementById('themeSwitch');
+	themeSwitch.addEventListener('click', () => {
+		const root = document.documentElement;
+		const isDark = root.dataset.theme === 'dark' || (root.dataset.theme === undefined && window.matchMedia('(prefers-color-scheme: dark)').matches);
+		root.dataset.theme = isDark ? 'light' : 'dark';
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{"kind":"commit","id":"bdcceecac64571eb673d82281848f236ff4bc5f7","at":"2026-10-23T06:30:36Z","title":"Show the page My documents as a file explorer and a read-only content area, fixes #100"}
+{"kind":"pull_request","id":106,"at":"2026-10-23T06:32:08Z","title":"Show the page My documents as a file explorer and a read-only content area, fixes #100"}
+{"kind":"commit","id":"a20b8c65107c0eef569c657075eaf02f5e229310","at":"2026-10-23T06:32:18Z","title":"Merge pull request #106 from heidrun-org/documents-file-explorer-100"}
+{"kind":"commit","id":"5b4c4ee4ab8da07208b86ff8ddd8ef4f0101c3ec","at":"2026-10-23T06:35:27Z","title":"Merge remote-tracking branch 'origin/main'"}
+{"kind":"commit","id":"53c14616622d7effd5158f27ab3d347fc2cf4249","at":"2026-10-23T07:09:50Z","title":"Sort out the page addresses: /documents for the document browser, /document/<path> for one document, fixes #107"}
+{"kind":"pull_request","id":111,"at":"2026-10-23T07:09:59Z","title":"Sort out the page addresses: /documents and /document/<path>, fixes #107"}
+{"kind":"commit","id":"e0c9841f5bcbb2a79b39bdab4bd7f659dd957fc1","at":"2026-10-23T07:10:13Z","title":"Merge pull request #111 from heidrun-org/sort-out-document-addresses-107"}
+{"kind":"commit","id":"0e7ffe9065dce6cbc472e645437d648f8e12172f","at":"2026-10-23T07:26:29Z","title":"Add the page Project management and put every project management address under /project_management, fixes #110"}
+{"kind":"pull_request","id":113,"at":"2026-10-23T07:26:45Z","title":"Add the page Project management and put every project management address under /project_management"}
+{"kind":"commit","id":"8efca4d49fcf89883d3f851d9a2afbfb4253997d","at":"2026-10-23T07:26:54Z","title":"Merge pull request #113 from heidrun-org/add-project-management-page-110"}
+{"kind":"commit","id":"8bedf7dc795e767aa9190699462337be508af9f8","at":"2026-10-23T08:56:38Z","title":"Redesign the homepage with a large banner and four feature cards, fixes #114"}
+{"kind":"pull_request","id":116,"at":"2026-10-23T08:56:44Z","title":"Redesign the homepage with a large banner and four feature cards"}
+{"kind":"commit","id":"5e729e5681a29906031e108901ddf1599362e5f2","at":"2026-10-23T08:56:51Z","title":"Merge pull request #116 from heidrun-org/redesign-homepage-114"}
+{"kind":"commit","id":"06a92384154b9e5561aa9def64933d1ca2577690","at":"2026-10-23T10:17:14Z","title":"Share any document with another person and remove the shared summaries, fixes #108"}
+{"kind":"pull_request","id":118,"at":"2026-10-23T10:17:34Z","title":"Share any document with another person and remove the shared summaries"}
+{"kind":"commit","id":"7a4ee3d36477e379b64b0531b5ce5d294881e854","at":"2026-10-23T10:17:50Z","title":"Merge pull request #118 from heidrun-org/share-any-document-108"}
+{"kind":"commit","id":"f5426d4ee5db6452e7ee02c0d8c7613f7557527d","at":"2026-10-23T10:37:55Z","title":"Replace the theme toggle with a theme selector of System, Dark, and Light, fixes #112"}
+{"kind":"pull_request","id":120,"at":"2026-10-23T10:38:17Z","title":"Replace the theme toggle with a theme selector of System, Dark, and Light, fixes #112"}
+{"kind":"commit","id":"e001aa477d3127a6512a7e6dbd7b551105777a55","at":"2026-10-23T10:38:33Z","title":"Merge pull request #120 from heidrun-org/replace-theme-toggle-with-selector-112"}
+{"kind":"commit","id":"fc961ff8c411974ab8f7271c32eff4d7691ead2e","at":"2026-10-23T14:06:05Z","title":"Add a container image to host Heidrun Notebook, with build and run scripts, and document it, fixes #123"}
+{"kind":"pull_request","id":125,"at":"2026-10-23T14:06:23Z","title":"Add a container image to host Heidrun Notebook, with build and run scripts, and document it"}
+{"kind":"commit","id":"eb8ced4b5af1f508510f9f7a50fe57b8d9570bff","at":"2026-10-23T14:06:39Z","title":"Merge pull request #125 from heidrun-org/add-container-image-123"}
+{"kind":"commit","id":"bcc979544584232d6e820a19c315042b09ac4fef","at":"2026-10-23T14:14:45Z","title":"Document the container with the pnpm commands container:build and container:run, follow-up of #123"}
+{"kind":"pull_request","id":126,"at":"2026-10-23T14:14:49Z","title":"Document the container with the pnpm commands container:build and container:run"}
+{"kind":"commit","id":"5b7b3f8a658dfab95b2eea1a0ec03350b815cd99","at":"2026-10-23T14:14:52Z","title":"Merge pull request #126 from heidrun-org/pnpm-container-commands-docs"}
+{"kind":"commit","id":"c7ac3f3214fde29c525f8f5f438df539a5f7b323","at":"2026-10-23T16:02:39Z","title":"Deploy each push to main to the server with a GitHub Actions workflow, and document it, follow-up of #121"}
+{"kind":"pull_request","id":131,"at":"2026-10-23T16:02:42Z","title":"Deploy each push to main to the server with a GitHub Actions workflow"}
+{"kind":"commit","id":"25007485be5c079c13c3d43ce677010dc7556e40","at":"2026-10-23T16:08:29Z","title":"Merge pull request #131 from heidrun-org/deploy-workflow-121"}
+{"kind":"commit","id":"f3c1d855c2fd9785253f97aac03370761c7d8c27","at":"2026-10-23T16:11:55Z","title":"Add a favicon to the website, fixes #129"}
+{"kind":"pull_request","id":132,"at":"2026-10-23T16:12:04Z","title":"Add a favicon to the website"}
+{"kind":"commit","id":"6b16e2dcc571c263315a28cb10fd22d98662d383","at":"2026-10-23T16:12:16Z","title":"Merge pull request #132 from heidrun-org/add-favicon-129"}
+{"kind":"commit","id":"c48228ba988a961884b994a031a80432089cf96c","at":"2026-10-23T18:32:09Z","title":"Redesign project management customer views, fixes #133"}
+{"kind":"pull_request","id":135,"at":"2026-10-23T18:33:13Z","title":"Redesign the project management customer and project views"}
+{"kind":"commit","id":"8914f7cc29730e3717b3f5d499bfda88468272ad","at":"2026-10-23T18:33:34Z","title":"Merge pull request #135 from heidrun-org/review-project-management-design-133"}
+{"kind":"commit","id":"328aae9b72e085d5d75e2559dbb789016dc81ce8","at":"2026-10-23T18:40:00Z","title":"Set up the docs folder and the agent rules folder with the two docs folder skills"}
+{"kind":"commit","id":"2abb052f34af1a65cd7fbd4b4826fb0a420ac3d4","at":"2026-10-23T18:40:00Z","title":"Install the skills docs_folder_system and docs_folder_agents_rules_system"}
+{"kind":"pull_request","id":136,"at":"2026-10-23T18:40:39Z","title":"Install the docs folder skills and set up the docs folder"}
+{"kind":"commit","id":"92100a2d9f9c36502457350260339310c0db9e99","at":"2026-10-23T18:42:14Z","title":"Merge pull request #136 from heidrun-org/docs-folder-skills"}
+{"kind":"commit","id":"a494c88ff3301b892a5faaaa0a5a04e46ed67028","at":"2026-10-23T20:33:51Z","title":"Write the field descriptions as Markdown and show a title in the field tooltip, fixes #134"}
+{"kind":"pull_request","id":137,"at":"2026-10-23T20:34:00Z","title":"Write the field descriptions as Markdown and show a title in the field tooltip"}
+{"kind":"commit","id":"7b3c7c9cb387dd2c009e68d03e9b24fe757a4720","at":"2026-10-23T20:34:13Z","title":"Merge pull request #137 from heidrun-org/improve-field-help-tooltips-134"}
+{"kind":"commit","id":"be7fe038d621e1e0590bbcca791f3cc7e0911089","at":"2026-10-23T21:07:47Z","title":"Support Google authentication, fixes #26"}
+{"kind":"pull_request","id":139,"at":"2026-10-23T21:08:06Z","title":"Support Google authentication, fixes #26"}
+{"kind":"commit","id":"955fe5c56d7af0e1ccc6a402b1bd2b02a8d61266","at":"2026-10-23T21:08:09Z","title":"Merge pull request #139 from heidrun-org/google-authentication-26"}
+{"kind":"commit","id":"26bf0aed68bd93ed0ce2b0a3a2731f868b2be7fd","at":"2026-10-23T21:35:41Z","title":"Temporarily keep the authentication fixture in production, fixes #141"}
+{"kind":"pull_request","id":142,"at":"2026-10-23T21:35:45Z","title":"Temporarily keep the authentication fixture in production, fixes #141"}
+{"kind":"commit","id":"c7525eb1e189a2700d50f0cf2b603781ce81eca7","at":"2026-10-23T21:35:47Z","title":"Merge pull request #142 from heidrun-org/fixture-in-production-141"}
