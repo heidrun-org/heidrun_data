@@ -7,7 +7,8 @@ from html import escape
 import json
 import subprocess
 
-ROOT = Path(__file__).resolve().parent.parent
+EXPERIMENT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[3]
 END = date(2026, 10, 23)
 START = END - timedelta(days=364)
 GRID_START = START - timedelta(days=(START.weekday() + 1) % 7)
@@ -15,12 +16,11 @@ ZONE = ZoneInfo('Europe/Paris')
 SINCE = datetime.combine(START, datetime.min.time(), ZONE).astimezone(ZoneInfo('UTC')).isoformat().replace('+00:00', 'Z')
 UNTIL = datetime.combine(END + timedelta(days=1), datetime.min.time(), ZONE).astimezone(ZoneInfo('UTC')).isoformat().replace('+00:00', 'Z')
 NAME = 'heidrun_code_heidrun_notebook_heidrun_data_daily_activity_metrics_2025-10-24_to_2026-10-23'
-OLD_NAME = 'heidrun_code_heidrun_notebook_heidrun_data_daily_commits_2025-10-24_to_2026-10-23'
 COLORS = ['#161b22', '#5c1821', '#a32938', '#e55361', '#ff9b9b']
 SOURCES = [
     ('Heidrun Code', 'heidrun-org/heidrun_code', 'databases/heidrun_code.sqlite'),
     ('Heidrun Notebook', 'heidrun-org/heidrun_notebook', 'databases/heidrun_data_example_database.sqlite'),
-    ('Heidrun Data', 'heidrun-org/heidrun_data', 'outputs/heidrun_data_commits.sqlite'),
+    ('Heidrun Data', 'heidrun-org/heidrun_data', 'databases/heidrun_data_commits.sqlite'),
 ]
 METRICS = {
     'commits': {'label': 'Commits', 'unit': 'commits', 'description': 'Count commits by committedAt, including merge commits and all authors.'},
@@ -123,21 +123,16 @@ for index, (name, repository, database) in enumerate(SOURCES):
 
 data = {'start': str(START), 'end': str(END), 'timeZone': 'Europe/Paris', 'colors': COLORS, 'metrics': METRICS, 'repositories': repositories}
 options = ''.join(f'<option value="{key}">{escape(value["label"])}</option>' for key, value in METRICS.items())
-script = (ROOT / 'outputs/calendar_metrics.js').read_text()
+script = (EXPERIMENT / 'calendar_metrics.js').read_text()
 embedded = json.dumps(data).replace('<', '\\u003c')
 html = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Heidrun Code, Heidrun Notebook, and Heidrun Data daily activity metrics · 24 October 2025–23 October 2026</title>
 <style>
 :root{{color-scheme:dark;font-family:system-ui,sans-serif;background:#0d1117;color:#e6edf3}}body{{max-width:1200px;margin:48px auto;padding:0 24px;line-height:1.6}}a{{color:#79c0ff}}h1{{font-size:32px;line-height:1.25}}h2{{margin:0;font-size:23px}}.intro,.note,.coverage{{color:#919ba7}}section,.controls{{border:1px solid #30363d;border-radius:12px;padding:28px;margin:28px 0}}.total{{font-size:22px;margin:8px 0 22px}}.calendar{{overflow-x:auto}}svg{{display:block;width:100%;min-width:850px}}.label{{fill:#919ba7;font-size:13px}}rect:focus,rect:hover{{stroke:#fff;stroke-width:2;outline:none}}#legend{{display:flex;flex-wrap:wrap;gap:16px;font-size:13px}}#legend span{{display:inline-flex;gap:6px;align-items:center}}i{{display:inline-block;width:14px;height:14px;border-radius:3px}}.note,.coverage,footer{{font-size:13px}}select{{font:inherit;padding:8px 12px;margin:8px;border:1px solid #606974;border-radius:6px;background:#161b22;color:#e6edf3}}footer{{color:#919ba7}}@media(max-width:600px){{body{{margin:28px auto;padding:0 16px}}section,.controls{{padding:18px}}h1{{font-size:27px}}}}
-</style></head><body><main><a href="index.html">← Outputs navigation</a><h1>Heidrun Code, Heidrun Notebook, and Heidrun Data</h1><p class="intro">24 October 2025 – 23 October 2026 · Europe/Paris<br>Each square represents one day. Hover over or focus a square for the date and value.</p>
+</style></head><body><main><a href="../index.html">← Workspace navigation</a><h1>Heidrun Code, Heidrun Notebook, and Heidrun Data</h1><p class="intro">24 October 2025 – 23 October 2026 · Europe/Paris<br>Each square represents one day. Hover over or focus a square for the date and value.</p>
 <div class="controls"><label for="metric">Measure</label><select id="metric">{options}</select><p id="calculation">{escape(METRICS['commits']['description'])}</p><div id="legend" aria-label="Daily value colour scale"></div><p class="note">Colour thresholds use quarters of the largest daily value across all three repositories for the selected measure. The same scale applies to all three calendars.</p></div>
 <noscript>Enable JavaScript to switch measures. The initial calendars show commits.</noscript>{''.join(sections)}
 <footer><p>All dates are grouped in Europe/Paris time, including daylight saving time. The displayed year ends on 23 October 2026; later activity is excluded. Sources are local snapshots with different collection dates. Empty squares mean no activity recorded, not proof of no historical activity. Grey squares mean data unavailable. The last day may be incomplete.</p><p>Token usage with no timestamp is excluded. AI prices can differ between snapshots; each repository’s price version and retrieval date appear when estimated cost is selected. Missing prices are never treated as a known zero cost.</p></footer></main>
 <script id="calendar-data" type="application/json">{embedded}</script><script>{script}</script></body></html>'''
-(ROOT / f'outputs/{NAME}.html').write_text(html)
-(ROOT / f'outputs/{NAME}.json').write_text(json.dumps(data, indent=2))
-# Preserve the existing open address so automatic refresh leads to the new report.
-(ROOT / f'outputs/{OLD_NAME}.html').write_text(f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0;url={NAME}.html"><title>Calendar report moved</title></head><body><a href="index.html">← Outputs navigation</a><p><a href="{NAME}.html">Open the calendar with selectable activity metrics</a></p></body></html>')
-index = ROOT / 'outputs/index.html'
-content = index.read_text().replace(OLD_NAME + '.html', NAME + '.html').replace('daily commits · 24 October 2025–23 October 2026', 'daily activity metrics · 24 October 2025–23 October 2026')
-index.write_text(content)
+(EXPERIMENT / 'index.html').write_text(html)
+(EXPERIMENT / f'{NAME}.json').write_text(json.dumps(data, indent=2))
 print(json.dumps([{'repository': r['repository'], 'available': r['available'], 'totals': {m: sum(d[m] or 0 for d in r['daily'].values()) for m in METRICS}, 'unpricedRows': sum(d['unpricedRows'] for d in r['daily'].values())} for r in repositories]))

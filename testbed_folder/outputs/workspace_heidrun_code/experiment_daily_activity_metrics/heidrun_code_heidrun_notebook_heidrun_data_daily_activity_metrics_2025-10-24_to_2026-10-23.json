@@ -8126,7 +8126,7 @@
     {
       "name": "Heidrun Data",
       "repository": "heidrun-org/heidrun_data",
-      "database": "outputs/heidrun_data_commits.sqlite",
+      "database": "databases/heidrun_data_commits.sqlite",
       "available": {
         "commits": true,
         "lines": true,

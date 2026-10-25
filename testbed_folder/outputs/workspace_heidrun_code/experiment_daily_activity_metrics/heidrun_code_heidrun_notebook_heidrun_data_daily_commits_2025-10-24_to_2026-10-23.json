@@ -45,7 +45,7 @@
     {
       "name": "Heidrun Data",
       "repository": "heidrun-org/heidrun_data",
-      "database": "outputs/heidrun_data_commits.sqlite",
+      "database": "databases/heidrun_data_commits.sqlite",
       "latestCommitUtc": "2026-10-23T23:04:06Z",
       "dailyCommits": {
         "2026-10-11": 2,
