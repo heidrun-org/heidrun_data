@@ -1,4 +1,4 @@
-# Active Code Analysis and Optimization with Code Spine
+# Active Code Analysis and Optimization with Codespine
 
 - Created: 24 October 2026
 - Last updated: 24 October 2026
@@ -8,7 +8,7 @@
 
 ## Purpose
 
-This document describes the proposed active-analysis workflow built around Code Spine and its relationship to Heidrun Data. The workflow does more than inspect records that already exist: it runs the software, measures its behavior, tests a code change, and compares the result.
+This document describes the proposed active-analysis workflow built around [Codespine](https://github.com/jeromeetienne/codespine) and its relationship to Heidrun Data. The workflow does more than inspect records that already exist: it runs the software, measures its behavior, tests a code change, and compares the result.
 
 The proposal is to use actual measurements to guide optimization, preserve the original behavior through validation, and record the experiment so that its evidence can become part of the project's history. This is a product direction, not a statement that an integrated workflow is already implemented.
 
@@ -26,21 +26,21 @@ A useful result is not just a code suggestion. It includes a measured baseline, 
 
 **Static code analysis** is a distinct source of knowledge. It examines source code without executing the program and derives structural facts, such as dependencies and call relationships. It can be run on a code snapshot today, even if the code was written months earlier. It describes the structure of the analyzed code; by itself, it does not explain the historical reasons for that structure.
 
-**Active runtime analysis** requires a suitable environment in which the software can run. Code Spine profiles the program, identifies where execution time is spent, supports an optimization attempt, runs tests, measures again, and compares the result. The active loop depends on the project's runtime, test setup, representative input, and measurement conditions.
+**Active runtime analysis** requires a suitable environment in which the software can run. Codespine profiles the program, identifies where execution time is spent, supports an optimization attempt, runs tests, measures again, and compares the result. The active loop depends on the project's runtime, test setup, representative input, and measurement conditions.
 
-These knowledge types can inform each other. Historical records can tell Code Spine about constraints and earlier attempts. Static code analysis can provide structural context. Active experiments can produce new measurements and outcomes for Heidrun Data to retain.
+These knowledge types can inform each other. Historical records can tell Codespine about constraints and earlier attempts. Static code analysis can provide structural context. Active experiments can produce new measurements and outcomes for Heidrun Data to retain.
 
 ## Proposed responsibilities
 
 | Component | Responsibility in this workflow |
 | --- | --- |
 | Heidrun Code | Gives the developer an interface to select a target and request historical context or an optimization. |
-| Code Spine | Runs the local optimization loop: profile, identify bottlenecks, guide changes, test, measure again, and accept or reject an attempt. |
+| Codespine | Runs the local optimization loop: profile, identify bottlenecks, guide changes, test, measure again, and accept or reject an attempt. |
 | Heidrun Data | Stores and relates project history and experiment records, then makes that knowledge available to later analysis. |
 
-Code Spine should work near the development environment so it can iterate without waiting for remote historical processing. It can send experiment records to Heidrun Data asynchronously. A temporary delay in that transfer should not stop the local optimization loop.
+Codespine should work near the development environment so it can iterate without waiting for remote historical processing. It can send experiment records to Heidrun Data asynchronously. A temporary delay in that transfer should not stop the local optimization loop.
 
-Static code analysis and dependency information may be shared. Heidrun Data can retain indexed results, while Code Spine can reuse them where they help the optimization. The proposal is to avoid maintaining two unrelated systems that calculate the same code relationships.
+Static code analysis and dependency information may be shared. Heidrun Data can retain indexed results, while Codespine can reuse them where they help the optimization. The proposal is to avoid maintaining two unrelated systems that calculate the same code relationships.
 
 ## End-to-end scenario
 
@@ -48,14 +48,14 @@ The following example shows the intended workflow. The values and outcome are il
 
 1. **Choose a target and objective.** A developer selects a slow function and asks to reduce its execution time while preserving its behavior.
 2. **Gather relevant history.** Heidrun Code can request previous attempts, known constraints, and the function's dependencies from Heidrun Data. This step is useful but does not replace measurement.
-3. **Establish a baseline.** Code Spine runs a representative workload and records the initial performance, runtime configuration, machine, input, and measurement method.
-4. **Find the bottleneck.** Code Spine profiles execution and identifies the functions or operations that account for the measured cost. It distinguishes time spent directly in a function from time spent in its called functions where the profiler supports that view.
+3. **Establish a baseline.** Codespine runs a representative workload and records the initial performance, runtime configuration, machine, input, and measurement method.
+4. **Find the bottleneck.** Codespine profiles execution and identifies the functions or operations that account for the measured cost. It distinguishes time spent directly in a function from time spent in its called functions where the profiler supports that view.
 5. **Form a testable hypothesis.** The agent proposes a targeted change based on the source code, dependency information, profile, and relevant historical evidence. For example, it may suspect that repeated database lookups dominate the measured time.
 6. **Apply a controlled change.** The change is made in an environment where it can be reviewed and reverted. The experiment records which files changed and which hypothesis the change tests.
-7. **Check behavior.** Code Spine runs relevant functional and regression tests. A change that breaks required behavior is rejected even if it is faster.
-8. **Measure again.** If validation succeeds, Code Spine repeats the workload under comparable conditions and compares the new measurements with the baseline.
+7. **Check behavior.** Codespine runs relevant functional and regression tests. A change that breaks required behavior is rejected even if it is faster.
+8. **Measure again.** If validation succeeds, Codespine repeats the workload under comparable conditions and compares the new measurements with the baseline.
 9. **Decide and record.** The change is kept only if it meets the stated objective and constraints. Otherwise, it is rejected or revised. The decision, test evidence, measurement conditions, and before-and-after results are recorded.
-10. **Enrich project history.** Code Spine sends the experiment record to Heidrun Data. A future developer can ask what was attempted and find the hypothesis, exact change, measurements, test outcomes, and reason for the decision.
+10. **Enrich project history.** Codespine sends the experiment record to Heidrun Data. A future developer can ask what was attempted and find the hypothesis, exact change, measurements, test outcomes, and reason for the decision.
 
 ## What an experiment record should contain
 
@@ -99,11 +99,11 @@ The issue records previous experiments with reported speedups as personal observ
 
 ## How this creates a learning loop
 
-1. Code Spine measures and tests a change near the developer's environment.
+1. Codespine measures and tests a change near the developer's environment.
 2. Heidrun Data stores the experiment and connects it with code history, issues, pull requests, and conversations.
 3. A later developer asks about the same function or module.
 4. Heidrun Data returns the earlier attempt and its evidence, including failures.
-5. Code Spine can use that history to form a more informed next hypothesis.
+5. Codespine can use that history to form a more informed next hypothesis.
 
 This is accumulation of structured project knowledge. It does not require training a new language model. The value comes from preserving verifiable evidence and making it retrievable when a similar task arises.
 
@@ -115,14 +115,15 @@ When experiment records are shared through Heidrun Data Team, the knowledge can 
 
 ## Limits and open questions
 
-- Code Spine needs an environment capable of running the target software and its relevant tests.
+- Codespine needs an environment capable of running the target software and its relevant tests.
+- Codespine supports TypeScript only today. Support for Go, Python, Java, Rust, and Node.js is proposed in [issue 234](https://github.com/jeromeetienne/codespine/issues/234).
 - Benchmarks may be unrepresentative, noisy, or affected by hardware and workload differences.
 - Passing tests supports behavior preservation but cannot prove that every behavior is unchanged.
 - Automated changes need review, version control, and a reliable way to reject or revert them.
 - Some bottlenecks depend on external services or production data that are not available in a safe local environment.
-- The experiment format, evidence retention, permissions, and transfer contract between Code Spine and Heidrun Data remain to be defined.
+- The experiment format, evidence retention, permissions, and transfer contract between Codespine and Heidrun Data remain to be defined.
 - The number of iterations and stopping conditions need to respect the developer's time, compute, and inference budget.
 
 ## Summary
 
-Heidrun Data connects historical project records and static code analysis results, then keeps the evidence available for later questions. Heidrun Code provides the developer-facing entry point. Code Spine runs the active loop that profiles, changes, tests, and measures software. Code Spine can then publish the experiment record to Heidrun Data so that successful and unsuccessful attempts both inform future work.
+Heidrun Data connects historical project records and static code analysis results, then keeps the evidence available for later questions. Heidrun Code provides the developer-facing entry point. Codespine runs the active loop that profiles, changes, tests, and measures software. Codespine can then publish the experiment record to Heidrun Data so that successful and unsuccessful attempts both inform future work.

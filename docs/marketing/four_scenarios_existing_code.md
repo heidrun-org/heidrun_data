@@ -218,7 +218,7 @@ The four questions address different needs:
 
 A developer may combine them. Before changing a module, the developer could read its history, ask why a key design was chosen, check which attempts were made to address a known problem, and estimate which other components could be affected.
 
-The first three scenarios mainly use historical project records. The change-impact scenario adds structural findings from static code analysis. All four can be answered without running the software. Code Spine's profiling and optimization loop is a separate active runtime workflow: it runs the software, measures behavior, tests changes, and can later send experiment records to Heidrun Data. Those measurements can enrich later answers, but they are not required for the four original scenarios.
+The first three scenarios mainly use historical project records. The change-impact scenario adds structural findings from static code analysis. All four can be answered without running the software. [Codespine](https://github.com/jeromeetienne/codespine)'s profiling and optimization loop is a separate active runtime workflow: it runs the software, measures behavior, tests changes, and can later send experiment records to Heidrun Data. Those measurements can enrich later answers, but they are not required for the four original scenarios.
 
 ## Shared answer principles
 

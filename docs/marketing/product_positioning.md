@@ -37,7 +37,7 @@ Software knowledge is spread across code, Git history, GitHub collaboration, cod
 2. **Static code analysis** derives a structural view of the code, including dependencies and call relationships, without executing the program.
 3. **Active runtime analysis** profiles the running software, tests proposed changes, and compares performance measurements.
 
-Together, these layers can help a developer understand why the software is the way it is, see how parts relate, and evaluate changes using evidence. Code Spine performs the active optimization loop near the development environment; Heidrun Data keeps the resulting experiment records so the team can use them later.
+Together, these layers can help a developer understand why the software is the way it is, see how parts relate, and evaluate changes using evidence. [Codespine](https://github.com/jeromeetienne/codespine) performs the active optimization loop near the development environment; Heidrun Data keeps the resulting experiment records so the team can use them later.
 
 ## Message boundaries
 
