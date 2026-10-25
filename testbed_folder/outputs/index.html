@@ -11,26 +11,24 @@
     ul { padding-left: 24px; }
     li { margin: 20px 0; }
     a { color: light-dark(#1758b6, #91bfff); text-underline-offset: 3px; }
-    time { display: block; font-size: 0.9rem; opacity: 0.7; }
+    small { display: block; font-size: 0.9rem; opacity: 0.7; }
   </style>
 </head>
 <body>
   <main>
     <h1>Outputs navigation</h1>
-    <p>Browse the HTML reports created in this folder.</p>
+    <p>Browse the Heidrun workspaces. Each Heidrun workspace has one database and one navigation page linking its experiments.</p>
     <p>For automatic refresh when a report changes, use <a href="http://127.0.0.1:8765/index.html">Outputs navigation with automatic refresh</a>. Start the local server with <code>python3 outputs/serve_outputs.py</code> if needed.</p>
-    <!-- Keep this list updated when adding, renaming, or removing HTML files in outputs. -->
-    <nav aria-label="HTML reports">
+    <!-- Keep this list updated when adding, renaming, or removing a workspace folder in outputs. -->
+    <nav aria-label="Heidrun workspaces">
       <ul>
-        <li><a href="heidrun_code_heidrun_notebook_heidrun_data_3d_activity_relationships_2025-10-24_to_2026-10-23.html">Heidrun Code, Heidrun Notebook, and Heidrun Data · 3D daily activity relationships · 24 October 2025–23 October 2026</a></li>
-        <li><a href="heidrun_code_heidrun_notebook_heidrun_data_daily_activity_metrics_2025-10-24_to_2026-10-23.html">Heidrun Code, Heidrun Notebook, and Heidrun Data daily activity metrics · 24 October 2025–23 October 2026</a><time datetime="2026-10-23">Through 23 October 2026</time></li>
         <li>
-          <a href="ai_cost_2026-10-23_every_three_hours.html">AI cost every three hours</a>
-          <time datetime="2026-10-23">23 October 2026</time>
+          <a href="workspace_heidrun_code/index.html">Heidrun workspace heidrun_code</a>
+          <small>Database: databases/heidrun_code.sqlite</small>
         </li>
         <li>
-          <a href="commits_and_pull_requests_2026-10-23_every_three_hours.html">Commits and pull requests every three hours</a>
-          <time datetime="2026-10-23">23 October 2026</time>
+          <a href="workspace_heidrun_data_example_database/index.html">Heidrun workspace heidrun_data_example_database</a>
+          <small>Database: databases/heidrun_data_example_database.sqlite</small>
         </li>
       </ul>
     </nav>

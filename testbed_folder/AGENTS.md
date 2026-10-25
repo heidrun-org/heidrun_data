@@ -13,21 +13,47 @@ The skills are in `.agents/skills/`. Each skill in `.agents/skills/` is a symbol
 - `CLAUDE.md` imports this file.
 - `.claude/skills/` is a symbolic link to `.agents/skills/`.
 
-## Database
+## Workspaces and databases
 
-- The database is `heidrun_data_example_database.sqlite` in the folder `testbed_folder/`. It holds the data of the repository `heidrun-org/heidrun_notebook`.
-- Give `--database heidrun_data_example_database.sqlite` to every `heidrun_data` command.
+- A Heidrun workspace has exactly one database. The database is `databases/<workspace name>.sqlite` in the folder `testbed_folder/`.
+- The workspace name is the name of the database file without `.sqlite`.
+- Give `--database databases/<workspace name>.sqlite` to every `heidrun_data` command.
+- Never put a database in the folder `outputs/`.
+- The existing workspaces are:
+  - `heidrun_data_example_database`: the data of the repository `heidrun-org/heidrun_notebook`.
+  - `heidrun_code`: the data of the repository `heidrun-org/heidrun_code`.
+  - `heidrun_data_commits`: the data of the repository `heidrun-org/heidrun_data`.
 
 ## Outputs
 
-- Put every artifact (image, chart, report, data file) in the folder `outputs/` of the folder `testbed_folder/`.
+- Put every artifact (image, chart, report, data file, script) in the folder `outputs/` of the folder `testbed_folder/`, in the folder of its experiment.
 
-### Experiment folders and navigation
+### Namespace of the folder outputs
 
-- Always propose an `index.html` as a single navigation page linking the pages and artifacts in an experiment folder.
-- Give each experiment a separate folder inside `outputs/`. An experiment may contain multiple HTML pages, scripts, styles, images, and derived data files; a single self-contained file is not required.
-- Keep `outputs/index.html` as the navigation page linking all experiments. Keep each experiment folder's `index.html` linked to the experiment's pages and artifacts, and update the navigation when files are added, renamed, or removed.
-- Include an “Outputs navigation” back link in every generated HTML report. Use the correct relative path to `outputs/index.html`, including for reports inside experiment folders.
+```
+outputs/
+  index.html
+  serve_outputs.py
+  workspace_<workspace name>/
+    index.html
+    experiment_<experiment name>/
+      index.html
+```
+
+- `outputs/workspace_<workspace name>/` is the folder of one Heidrun workspace. Create it when the first experiment of the workspace starts.
+- `outputs/workspace_<workspace name>/experiment_<experiment name>/` is the folder of one visualization experiment. Write the experiment name in `snake_case`, and make the name state the subject and the measure.
+- `outputs/index.html` links the `index.html` of every workspace folder.
+- `outputs/workspace_<workspace name>/index.html` links the `index.html` of every experiment folder of that workspace.
+- `outputs/workspace_<workspace name>/experiment_<experiment name>/index.html` is the entry page of the experiment. When the experiment has more than one page, the entry page links the other pages and artifacts.
+- An experiment may contain multiple HTML pages, scripts, styles, images, and derived data files; a single self-contained file is not required.
+- An experiment that reads the databases of more than one workspace goes in the folder of the workspace of the first database it reads. The entry page names every database it reads.
+
+### Navigation
+
+- Update the `index.html` pages when a workspace folder, an experiment folder, or a file is added, renamed, or removed.
+- Every generated HTML page has a back link to the `index.html` of its parent folder:
+  - The entry page of an experiment links `../index.html` with the text “Workspace navigation”.
+  - The `index.html` of a workspace links `../index.html` with the text “Outputs navigation”.
 
 ### Visualization formats
 
@@ -38,7 +64,7 @@ The skills are in `.agents/skills/`. Each skill in `.agents/skills/` is a symbol
 ### Automatic reload
 
 - When generating an HTML page, explain that automatic reload is available and propose an address with automatic reload so the reader does not need to reload manually after saved changes.
-- The existing local server is started from `testbed_folder/` with `python3 outputs/serve_outputs.py`. Its navigation page is `http://127.0.0.1:8765/index.html`.
+- The existing local server is started from `testbed_folder/` with `python3 outputs/serve_outputs.py`. Its navigation page is `http://127.0.0.1:8765/index.html`. The address of an experiment is `http://127.0.0.1:8765/workspace_<workspace name>/experiment_<experiment name>/index.html`.
 - Pages opened through the local server check for saved HTML changes every two seconds and reload when the HTML changes. Pages opened directly as local files do not have this automatic reload mechanism.
 - Clearly state whether automatic reload is running and provide the address with automatic reload when the server is running. Do not claim that direct-file pages reload automatically.
 
