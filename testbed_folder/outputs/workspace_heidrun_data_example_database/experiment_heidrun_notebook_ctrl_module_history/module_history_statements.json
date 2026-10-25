@@ -1,0 +1,415 @@
+{
+	"summary": [
+		{
+			"status": "fact",
+			"text": "The package is the command line tool of Heidrun Notebook. It talks directly to the application programming interface of the server.",
+			"sources": [
+				{ "kind": "issue", "id": 2, "part": "body", "quote": "The command line tool talks directly to the application programming interface of the server." }
+			]
+		},
+		{
+			"status": "fact",
+			"text": "It was created on 20 October 2026 at 14:06 UTC as an empty Commander program.",
+			"sources": [
+				{ "kind": "commit", "id": "e55a48a6cb", "part": "message", "quote": "Add the command line tool package with an empty Commander program" }
+			]
+		},
+		{
+			"status": "fact",
+			"text": "Within 30 minutes it received the six commands create, list, read, search, update, and delete, in four commits.",
+			"sources": [
+				{ "kind": "commit", "id": "97596212e3", "part": "message", "quote": "Add the commands create and list to the command line tool" },
+				{ "kind": "commit", "id": "f55e6d9214", "part": "message", "quote": "Add the command read to the command line tool" },
+				{ "kind": "commit", "id": "91bd3fa011", "part": "message", "quote": "Add the command search to the command line tool" },
+				{ "kind": "commit", "id": "545f4e42cd", "part": "message", "quote": "Add the commands update and delete to the command line tool" }
+			]
+		},
+		{
+			"status": "fact",
+			"text": "Later records name more commands: login, auth status, and logout (sign in), then patch, apply, and history (comment and author).",
+			"sources": [
+				{ "kind": "commit", "id": "be25a222af", "part": "message", "quote": "new commands `login`, `auth status`, and `logout`" },
+				{ "kind": "issue", "id": 96, "part": "body", "quote": "to the commands `create`, `update`, `patch`, and `delete`" },
+				{ "kind": "issue", "id": 96, "part": "body", "quote": "For the command `apply`" },
+				{ "kind": "issue", "id": 96, "part": "body", "quote": "the command `history` shows both" }
+			]
+		},
+		{
+			"status": "fact",
+			"text": "The package ships a skill that teaches a coding agent to use the command line tool.",
+			"sources": [
+				{ "kind": "pull_request", "id": 13, "part": "body", "quote": "The skill teaches a coding agent to use the command line tool" }
+			]
+		},
+		{
+			"status": "unknown",
+			"text": "Whether these commands exist in the code today is not checked. The command line heidrun_data gives no current source file, and this page may not read the repository with another tool.",
+			"sources": [
+				{ "kind": "commit", "id": "fc961ff8c4", "part": "message", "quote": "Add a container image to host Heidrun Notebook" }
+			]
+		}
+	],
+	"origin": [
+		{
+			"status": "fact",
+			"text": "The package belongs to V0, the first implementation of Heidrun Notebook.",
+			"sources": [
+				{ "kind": "issue", "id": 2, "part": "body", "quote": "V0 is the first implementation of Heidrun Notebook." }
+			]
+		},
+		{
+			"status": "fact",
+			"text": "Issue 2 puts the package at the path packages/heidrun_notebook_ctrl, and makes the command line tool the only way to write in V0.",
+			"sources": [
+				{ "kind": "issue", "id": 2, "part": "body", "quote": "`packages/heidrun_notebook_ctrl` — the command line tool." },
+				{ "kind": "issue", "id": 2, "part": "body", "quote": "The website is read-only in V0. The person writes, updates, and deletes with the command line tool only." }
+			]
+		},
+		{
+			"status": "fact",
+			"text": "The first commit says it is part of issue 3, the setup of the repository, and that each next slice adds its commands.",
+			"sources": [
+				{ "kind": "commit", "id": "e55a48a6cb", "part": "message", "quote": "Part of #3." },
+				{ "kind": "commit", "id": "e55a48a6cb", "part": "message", "quote": "Each next slice adds its commands." }
+			]
+		},
+		{
+			"status": "unknown",
+			"text": "Why the first implementation writes only through a command line tool is not stated. Issue 2 says it follows the conclusions of issue 1, and issue 1 holds no sentence about a command line.",
+			"sources": [
+				{ "kind": "issue", "id": 2, "part": "body", "quote": "This follows the conclusions of issue #1." },
+				{ "kind": "issue", "id": 1, "part": "body" }
+			]
+		}
+	],
+	"decisions": [
+		{
+			"id": "sign_in_by_approval",
+			"title": "Sign in the command line tool by an approval in the website",
+			"question": "Why does the command line tool sign in with a code that a person approves in the website, and not with a password in the file .env?",
+			"parts": [
+				{
+					"label": "Decision",
+					"statements": [
+						{
+							"status": "fact",
+							"text": "The command line tool no longer reads a password from the file .env. The command login shows a short code and an address, a person who is signed in to the website approves the code, and the server gives a token to the tool.",
+							"sources": [
+								{ "kind": "commit", "id": "be25a222af", "part": "message", "quote": "no longer reads a password from the file .env" },
+								{ "kind": "pull_request", "id": 32, "part": "title", "quote": "Sign in the command line tool by an approval in the website" }
+							]
+						}
+					]
+				},
+				{
+					"label": "Reason",
+					"statements": [
+						{
+							"status": "fact",
+							"text": "The issue lists four problems of the old way. Three of them are: the password is in clear text, acting as another person needs a file edit, and each command makes a new session.",
+							"sources": [
+								{ "kind": "issue", "id": 23, "part": "body", "quote": "The password is in clear text in the file `.env`." },
+								{ "kind": "issue", "id": 23, "part": "body", "quote": "To act as another person, the developer edits the file `.env`, or sets the two variables before each command." },
+								{ "kind": "issue", "id": 23, "part": "body", "quote": "Each command sends two more requests to the server (the sign in and the sign out), and makes a new session each time." }
+							]
+						},
+						{
+							"status": "fact",
+							"text": "The new design means the tool never sees a password.",
+							"sources": [
+								{ "kind": "issue", "id": 23, "part": "comment", "at": "2026-10-20T17:24:47Z", "quote": "The tool never sees a password." }
+							]
+						}
+					]
+				},
+				{
+					"label": "Alternatives",
+					"statements": [
+						{
+							"status": "fact",
+							"text": "The issue names three ways to get the credentials: the variables in .env as before, a sign_in command that keeps the session in a file, or one token for each person. It also asks whether the tool should ask for the password in the terminal.",
+							"sources": [
+								{ "kind": "issue", "id": 23, "part": "body", "quote": "How does the tool get its credentials: the variables in `.env` as today, a `sign_in` command that keeps the session in a file, or one token for each person?" },
+								{ "kind": "issue", "id": 23, "part": "body", "quote": "Does the tool ask for the password in the terminal, so that no file holds the password?" }
+							]
+						}
+					]
+				},
+				{
+					"label": "Context",
+					"statements": [
+						{
+							"status": "fact",
+							"text": "The issue was created at 16:29 UTC on 20 October 2026, and the pull request was merged at 17:42 UTC the same day: 1 hour and 13 minutes later.",
+							"sources": [
+								{ "kind": "issue", "id": 23, "part": "fields", "fields": { "createdAt": "2026-10-20T16:29:33Z" } },
+								{ "kind": "pull_request", "id": 32, "part": "fields", "fields": { "state": "MERGED" } }
+							]
+						},
+						{
+							"status": "fact",
+							"text": "The design follows an earlier design of another project, issue 578 of teamwright.",
+							"sources": [
+								{ "kind": "issue", "id": 23, "part": "comment", "at": "2026-10-20T17:24:47Z", "quote": "The design follows [issue #578 of teamwright]" }
+							]
+						}
+					]
+				},
+				{
+					"label": "Evidence",
+					"statements": [
+						{
+							"status": "fact",
+							"text": "Before the change, a live test named the one assumption that could make the design impossible: a process with no password can get its own credential from an approval made in a real browser, and can then read files through the access checks of the real server.",
+							"sources": [
+								{ "kind": "issue", "id": 23, "part": "comment", "at": "2026-10-20T17:24:47Z", "quote": "a Node.js process with no password can get its own credential from an approval made in a real browser, and can then read files through the access checks of the real server." }
+							]
+						},
+						{
+							"status": "fact",
+							"text": "The test ran the real server, the real website, and a real browser. It showed that the tool gets a token with the identity of the person who approved, and that the server still limits the files to the folder of that person.",
+							"sources": [
+								{ "kind": "issue", "id": 23, "part": "comment", "at": "2026-10-20T17:24:47Z", "quote": "the tool gets its own token without a password, the token has the identity of the person who approved, the server access checks still limit the files to the folder of that person, a token cannot approve another token, and a device secret works once." }
+							]
+						},
+						{
+							"status": "fact",
+							"text": "The final change adds a token that is a session of 30 days, and the commands login, auth status, and logout.",
+							"sources": [
+								{ "kind": "commit", "id": "be25a222af", "part": "message", "quote": "A token is a session of 30 days" },
+								{ "kind": "commit", "id": "be25a222af", "part": "message", "quote": "new commands `login`, `auth status`, and `logout`" }
+							]
+						}
+					]
+				},
+				{
+					"label": "Unknowns",
+					"statements": [
+						{
+							"status": "unknown",
+							"text": "No record found says why the two other ways were not chosen. A keyword search of the issue, its comment, the commit message, and the six linked chat sessions found no such sentence. The search is not a full read of the chat sessions.",
+							"sources": [
+								{ "kind": "issue", "id": 23, "part": "body" },
+								{ "kind": "commit", "id": "be25a222af", "part": "message" }
+							]
+						},
+						{
+							"status": "unknown",
+							"text": "The live test listed four cases not tested yet and said the full build covers them. The commit message shows tokens that last 30 days and a logout command. It shows no limit on wrong codes, so that case is not confirmed.",
+							"sources": [
+								{ "kind": "issue", "id": 23, "part": "comment", "at": "2026-10-20T17:24:47Z", "quote": "opening the approval address while signed out, logout, the expiry of the token, and a limit on wrong codes. The full build covers these." },
+								{ "kind": "commit", "id": "be25a222af", "part": "message", "quote": "A token is a session of 30 days" }
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "commander",
+			"title": "Build the command line tool with the library Commander",
+			"question": "Why does the command line tool use the library Commander?",
+			"parts": [
+				{
+					"label": "Decision",
+					"statements": [
+						{
+							"status": "fact",
+							"text": "The first commit creates the package as an empty Commander program, and the dependency list of the package names the library.",
+							"sources": [
+								{ "kind": "commit", "id": "e55a48a6cb", "part": "message", "quote": "Add the command line tool package with an empty Commander program" },
+								{ "kind": "commit", "id": "e55a48a6cb", "part": "diff", "quote": "\"commander\": \"^15.0.0\"" }
+							]
+						}
+					]
+				},
+				{
+					"label": "Reason",
+					"statements": [
+						{
+							"status": "unknown",
+							"text": "The reason was not found. The commit message gives no reason. No issue title or issue body states one. In the chat sessions linked to issues 2 to 7, Commander appears only in a summary of the technology stack.",
+							"sources": [
+								{ "kind": "commit", "id": "e55a48a6cb", "part": "message", "quote": "The program has a name, a description, and a version." },
+								{ "kind": "chat_session", "id": "2e644c38-5759-46ae-b928-7108bb41e156", "part": "chat", "quote": "`packages/heidrun_notebook_ctrl` (Commander, Zod, `yaml`)" },
+								{ "kind": "chat_session", "id": "5ec0f2d3-e40f-4f80-9d26-5720b0e2ffba", "part": "chat", "quote": "`packages/heidrun_notebook_ctrl` (Commander, Zod, `yaml`)" }
+							]
+						}
+					]
+				},
+				{
+					"label": "Alternatives",
+					"statements": [
+						{
+							"status": "unknown",
+							"text": "No record found names another library that was considered.",
+							"sources": [
+								{ "kind": "issue", "id": 35, "part": "body", "quote": "(`commander`, `yaml`, `zod`)" }
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"id": "comment_and_author",
+			"title": "Add an optional comment and an optional author to every write command",
+			"question": "Why does every write command accept a comment and an author?",
+			"parts": [
+				{
+					"label": "Decision",
+					"statements": [
+						{
+							"status": "fact",
+							"text": "Every write command accepts an optional comment and an optional author. The history entry stores both, and the command history shows both.",
+							"sources": [
+								{ "kind": "issue", "id": 96, "part": "body", "quote": "Every write command accepts an optional comment and an optional author. The history entry stores both, and the command `history` shows both." },
+								{ "kind": "pull_request", "id": 104, "part": "title", "quote": "Add an optional comment and an optional author to every write command of heidrun_notebook_ctrl" }
+							]
+						}
+					]
+				},
+				{
+					"label": "Reason",
+					"statements": [
+						{
+							"status": "fact",
+							"text": "A person who reads the history cannot see why a change was made, or who or what made it. This matters most when the document is shared with other people.",
+							"sources": [
+								{ "kind": "issue", "id": 96, "part": "body", "quote": "A person who reads the history cannot see why the change was made, and cannot see who or what made the change. This matters most when the document is shared with other people." }
+							]
+						}
+					]
+				},
+				{
+					"label": "Unknowns",
+					"statements": [
+						{
+							"status": "unknown",
+							"text": "The issue lists two open questions: the maximum length of a comment and of an author, and whether a free-text author that the server does not verify is acceptable. This page did not look up the answers.",
+							"sources": [
+								{ "kind": "issue", "id": 96, "part": "body", "quote": "What is the maximum length of a comment, and of an author?" },
+								{ "kind": "issue", "id": 96, "part": "body", "quote": "The author is free text that the caller chooses, so the server does not verify it. Is this acceptable, because the field `actor` already holds the verified person?" }
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"constraints": [
+		{
+			"status": "fact",
+			"text": "A skill for coding agents ships with the package, and a test fails when a command or an option of the program is missing from the skill.",
+			"sources": [
+				{ "kind": "pull_request", "id": 13, "part": "body", "quote": "A new test fails when a command or an option of the program is missing from the skill." }
+			]
+		},
+		{
+			"status": "fact",
+			"text": "On 21 October 2026 the credential file held one server address and one token, so a login to a second server replaced the credential of the first server.",
+			"sources": [
+				{ "kind": "issue", "id": 87, "part": "body", "quote": "The file holds one `serverAddress` and one token, so a `login` to a second server replaces the credential of the first server." }
+			]
+		},
+		{
+			"status": "fact",
+			"text": "On 20 October 2026 the package was private and its entry file was TypeScript, so the tool ran only inside a checkout of the repository. Issue 35 about publishing it is still open in the data.",
+			"sources": [
+				{ "kind": "issue", "id": 35, "part": "body", "quote": "is private and its entry file is TypeScript, so a person can run the command line tool only inside a checkout of this repository." },
+				{ "kind": "issue", "id": 35, "part": "fields", "fields": { "state": "OPEN" } }
+			]
+		},
+		{
+			"status": "fact",
+			"text": "The tests of the package run with Vitest, together with the tests of the server and the website.",
+			"sources": [
+				{ "kind": "issue", "id": 2, "part": "body", "quote": "The test runner is Vitest, for the server, the Vue website, and the command line tool." }
+			]
+		}
+	],
+	"attempts": [
+		{
+			"status": "fact",
+			"title": "Live test of the sign in by approval",
+			"text": "Outcome: the assumption held. Test A, an approval by Alice in a real browser, gave a token that read only Alice's files. Test D, an approval by Bob, gave a token that read only Bob's files. In test B nobody approved, and the tool stopped after three seconds.",
+			"sources": [
+				{ "kind": "issue", "id": 23, "part": "comment", "at": "2026-10-20T17:24:47Z", "quote": "NOT APPROVED within 3 seconds (10 pending answers)" },
+				{ "kind": "issue", "id": 23, "part": "comment", "at": "2026-10-20T17:24:47Z", "quote": "Only for Alice." },
+				{ "kind": "issue", "id": 23, "part": "comment", "at": "2026-10-20T17:24:47Z", "quote": "Only for Bob." }
+			]
+		},
+		{
+			"status": "fact",
+			"title": "Refactoring of the source folders",
+			"text": "Outcome: kept. The implementation files moved into the folders authentication, commands, configuration, and server. The comment reports that all 585 tests of the repository passed before the commit.",
+			"sources": [
+				{ "kind": "issue", "id": 36, "part": "comment", "at": "2026-10-20T19:18:35Z", "quote": "Grouped implementation files under `authentication/`, `commands/`, `configuration/`, and `server/`." },
+				{ "kind": "issue", "id": 36, "part": "comment", "at": "2026-10-20T19:21:14Z", "quote": "All 585 tests passed." },
+				{ "kind": "commit", "id": "b234d3b49e", "part": "message", "quote": "Refactor command line source folders; fixes #36" }
+			]
+		},
+		{
+			"status": "fact",
+			"title": "Separate the development application from the installed application",
+			"text": "Outcome: not done. Issue 87 was closed as not planned, without a code change, because the work moved to deploying Heidrun Notebook on a server.",
+			"sources": [
+				{ "kind": "issue", "id": 87, "part": "fields", "fields": { "state": "CLOSED", "stateReason": "NOT_PLANNED" } },
+				{ "kind": "issue", "id": 87, "part": "comment", "at": "2026-10-23T10:57:42Z", "quote": "Closed without a code change. The work now is to deploy Heidrun Notebook on the big server:" }
+			]
+		},
+		{
+			"status": "fact",
+			"title": "Run the tool with npx and publish it on npmjs",
+			"text": "Outcome: open. Issue 35 about publishing the package is still open in the data, and no merged pull request in the data closes it.",
+			"sources": [
+				{ "kind": "issue", "id": 35, "part": "fields", "fields": { "state": "OPEN" } },
+				{ "kind": "issue", "id": 34, "part": "fields", "fields": { "state": "OPEN" } }
+			]
+		}
+	],
+	"openQuestions": [
+		{
+			"status": "unknown",
+			"text": "Why Commander? See the decision above: no reason and no alternative was found.",
+			"sources": [
+				{ "kind": "commit", "id": "e55a48a6cb", "part": "message" }
+			]
+		},
+		{
+			"status": "unknown",
+			"text": "Why were the two other ways of getting credentials not chosen? No sentence was found.",
+			"sources": [
+				{ "kind": "issue", "id": 23, "part": "body" }
+			]
+		},
+		{
+			"status": "unknown",
+			"text": "Did a limit on wrong codes ship with the sign in? The live test listed it as not tested yet, and the commit message does not mention it.",
+			"sources": [
+				{ "kind": "issue", "id": 23, "part": "comment", "at": "2026-10-20T17:24:47Z", "quote": "a limit on wrong codes" }
+			]
+		},
+		{
+			"status": "unknown",
+			"text": "What are the answers to the two open questions of issue 96, the maximum length and the unverified author?",
+			"sources": [
+				{ "kind": "issue", "id": 96, "part": "body", "quote": "What is the maximum length of a comment, and of an author?" }
+			]
+		},
+		{
+			"status": "unknown",
+			"text": "What does the package do today? The data ends on 23 October 2026 at 21:35 UTC, and heidrun_data gives no current source file.",
+			"sources": [
+				{ "kind": "commit", "id": "fc961ff8c4", "part": "message", "quote": "Add a container image to host Heidrun Notebook" }
+			]
+		},
+		{
+			"status": "unknown",
+			"text": "Which packages call the command line tool? The data holds no static code analysis, so the page shows only the packages that changed in the same commits.",
+			"sources": [
+				{ "kind": "commit", "id": "be25a222af", "part": "message" }
+			]
+		}
+	]
+}
