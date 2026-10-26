@@ -8,8 +8,6 @@ use rusqlite::types::ValueRef;
 use rusqlite::{Connection, OpenFlags, OptionalExtension};
 use serde_json::{json, Value};
 use std::path::{Path, PathBuf};
-use crate::OPERATION_PACKAGE;
-use data_layer_operation_log::{record, OperationKind, OperationSpec, Summary};
 
 /// The SQLite file of the four data layers, open read only.
 pub struct HeidrunDatabase {
@@ -99,12 +97,6 @@ impl HeidrunDatabase {
     /// # Errors
     /// An error when the statement is wrong. A statement that writes is wrong, because the file is read only.
     pub fn query(&self, sql: &str) -> Result<Vec<QueryRow>, String> {
-        let spec = OperationSpec::new(OPERATION_PACKAGE, "query", OperationKind::Query).sql(sql).database(&self.database_path);
-        record(spec, || self.query_inside(sql), |rows| Summary::count(rows.len()))
-    }
-
-    /// The work of `query`, between the start event and the completion event of its operation.
-    fn query_inside(&self, sql: &str) -> Result<Vec<QueryRow>, String> {
         let mut statement = self.connection.prepare(sql).map_err(|error| error.to_string())?;
         let column_names: Vec<String> = statement.column_names().iter().map(|name| name.to_string()).collect();
         let mut rows = statement.query([]).map_err(|error| error.to_string())?;
@@ -126,18 +118,13 @@ impl HeidrunDatabase {
     /// # Errors
     /// An error when the file exists and cannot be read.
     pub fn summarize_file(database_path: &Path) -> Result<Vec<SourceSummary>, String> {
-        let spec = OperationSpec::new(OPERATION_PACKAGE, "summarize_sources", OperationKind::Query).database(database_path);
-        record(spec, || HeidrunDatabase::summarize_file_inside(database_path), |summaries| Summary::count(summaries.len()))
-    }
-
-    /// The work of `summarize_file`, between the start event and the completion event of its operation.
-    fn summarize_file_inside(database_path: &Path) -> Result<Vec<SourceSummary>, String> {
         if !database_path.exists() {
             return Ok(Source::ALL.into_iter().map(SourceSummary::empty).collect());
         }
         let database = HeidrunDatabase::open_read_only(database_path)?;
         Source::ALL.into_iter().map(|source| database.summarize(source)).collect()
     }
+
 
     /// The summary of one source.
     fn summarize(&self, source: Source) -> Result<SourceSummary, String> {

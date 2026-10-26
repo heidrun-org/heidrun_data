@@ -1,4 +1,0 @@
-# The compiled files of every package go in one Cargo target folder at the root of the repository, so that the
-# packages share their compiled dependencies.
-[build]
-target-dir = "../../target"

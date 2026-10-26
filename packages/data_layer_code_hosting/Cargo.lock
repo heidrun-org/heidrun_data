@@ -112,20 +112,9 @@ name = "data_layer_code_hosting"
 version = "0.3.0"
 dependencies = [
  "chrono",
- "data_layer_operation_log",
  "dirs",
  "jsonschema",
  "rusqlite",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "data_layer_operation_log"
-version = "0.3.0"
-dependencies = [
- "dirs",
- "libc",
  "serde",
  "serde_json",
 ]

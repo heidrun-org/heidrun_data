@@ -9,8 +9,6 @@ use crate::github::graphql_runner::{GhGraphqlRunner, GraphqlRunner};
 use crate::model::types::{CodeHostingProgress, CodeHostingTable, SynchronizationMode, SynchronizationReport};
 use crate::storage::database::CodeHostingDatabase;
 use crate::synchronization::run;
-use crate::OPERATION_PACKAGE;
-use data_layer_operation_log::{record, OperationKind, OperationSpec, Summary};
 use std::path::Path;
 
 /// Copies the issues and the pull requests of `repository` that changed since the last read into the SQLite file at
@@ -52,30 +50,12 @@ pub fn refresh_code_hosting_with_runner(
     refresh_code_hosting_with_runner_and_progress(runner, database_path, repository, &ignore_progress)
 }
 
-/// Like `refresh_code_hosting_with_progress`, with the runner that sends the queries. The tests give a fake runner.
+/// Like `refresh_code_hosting_with_progress`, with the runner that sends the queries. The tests give a fake runner. It chooses
+/// the mode: update, or initialize when a row has no label colors.
 ///
 /// # Errors
 /// The same as `refresh_code_hosting`.
 pub fn refresh_code_hosting_with_runner_and_progress(
-    runner: &dyn GraphqlRunner,
-    database_path: &Path,
-    repository: &str,
-    progress: &dyn Fn(&CodeHostingProgress),
-) -> Result<SynchronizationReport, String> {
-    let spec = OperationSpec::new(OPERATION_PACKAGE, "refresh_code_hosting", OperationKind::Synchronization)
-        .parameter("repository", repository)
-        .database(database_path);
-    record(spec, || refresh_code_hosting_inside(runner, database_path, repository, progress), |report| {
-        Summary::count(report.issue_count + report.pull_request_count)
-            .detail("mode", report.mode.name())
-            .detail("issueCount", report.issue_count)
-            .detail("pullRequestCount", report.pull_request_count)
-    })
-}
-
-/// The work of `refresh_code_hosting_with_runner`, between the start event and the completion event of its operation. It chooses
-/// the mode: update, or initialize when a row has no label colors.
-fn refresh_code_hosting_inside(
     runner: &dyn GraphqlRunner,
     database_path: &Path,
     repository: &str,
@@ -90,6 +70,7 @@ fn refresh_code_hosting_inside(
     let reader = GithubReader::new(runner, &ignore_log).with_progress(progress);
     run(mode, repository, &mut database, &reader, &ignore_log)
 }
+
 
 #[cfg(test)]
 mod tests {
@@ -112,22 +93,6 @@ mod tests {
         assert_eq!((report.mode, report.issue_count, report.pull_request_count), (SynchronizationMode::Update, 2, 1));
     }
 
-    #[test]
-    fn a_refresh_is_one_operation_that_holds_the_synchronization_and_tells_its_mode_when_it_ends() {
-        let database_path = temp_folder("refresh_events").join("data_layer.sqlite");
-        let (_, events) = data_layer_operation_log::testing::capture(|| {
-            refresh_code_hosting_with_runner(&fake_github(), &database_path, REPOSITORY).unwrap()
-        });
-        let tree = data_layer_operation_log::testing::tree(&events);
-        assert_eq!(tree[0], "code_hosting.refresh_code_hosting");
-        assert!(tree.contains(&"  code_hosting.synchronize".to_string()), "{tree:?}");
-        assert!(tree.contains(&"  code_hosting.count_rows_without_label_colors".to_string()), "{tree:?}");
-        let starts = data_layer_operation_log::testing::starts(&events);
-        assert!(starts[0].parameters.get("mode").is_none(), "The mode is chosen while the operation runs");
-        let complete = data_layer_operation_log::testing::completion_of(&events, &starts[0].operation_id).unwrap();
-        assert_eq!(complete.details["mode"], "update");
-        assert_eq!(complete.result_count, Some(3));
-    }
 
     #[test]
     fn sends_the_start_the_pages_and_the_end_of_each_stage_with_a_total_only_for_a_read_from_the_beginning() {
