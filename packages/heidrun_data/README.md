@@ -14,6 +14,7 @@ A Rust library and one command line tool for [Heidrun Code](https://github.com/h
 - `src/database_lock.rs`: the one lock of the SQLite file, which the desktop application takes too.
 - `src/reading/`: the command `read`: a chat session, a commit, an issue, or a pull request.
 - `plugin.json` and `skills/heidrun-data/`: the Agent Plugin manifest and the portable skill for a coding agent. The skill includes its reference documents.
+- `skills/feature-status/`: the skill that writes a deep report on the status of one feature: what the feature is, its purpose, its current behavior, its history, and its open work. It uses the skill `heidrun-data`.
 - `src/query_limit.rs`: the `LIMIT` added to a query that has none.
 - `src/output.rs`: the three output formats, and the errors.
 - `tests/`: the tests of the executable.

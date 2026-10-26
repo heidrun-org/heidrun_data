@@ -7,6 +7,7 @@ The folder `testbed_folder/` is a place to try the skills of the repository `hei
 The skills are in `.agents/skills/`. Each skill in `.agents/skills/` is a symbolic link to a skill in `packages/heidrun_data/skills/`, so a change to a skill in `packages/heidrun_data/skills/` is visible here at once.
 
 - `heidrun-data`: answers a question about the history of a repository with the command line `heidrun_data`.
+- `feature-status`: writes a deep report on the status of one feature: what the feature is, its purpose, its current behavior, its history, and its open work. It needs the skill `heidrun-data`.
 
 ## Layer for Claude Code
 
