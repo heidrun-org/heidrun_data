@@ -4,8 +4,6 @@
 use crate::model::types::Commit;
 use crate::model::utc_time::to_whole_second_text;
 use crate::storage::database::SourceControlDatabase;
-use crate::OPERATION_PACKAGE;
-use data_layer_operation_log::{record, OperationKind, OperationSpec, Summary};
 use std::path::Path;
 
 /// The commits of `repository` made in the time range from `since` (included) to `until` (excluded), read from the SQLite file
@@ -16,25 +14,6 @@ use std::path::Path;
 /// # Errors
 /// An error when a time is not a time with an offset, or when the SQLite file cannot be read.
 pub fn find_commits(
-    database_path: &Path,
-    repository: &str,
-    since: &str,
-    until: &str,
-    include_merges: bool,
-) -> Result<Vec<Commit>, String> {
-    let spec = OperationSpec::new(OPERATION_PACKAGE, "find_commits", OperationKind::Query)
-        .parameter("repository", repository)
-        .parameter("since", since)
-        .parameter("until", until)
-        .choice("includeMerges", include_merges)
-        .database(database_path);
-    record(spec, || find_commits_inside(database_path, repository, since, until, include_merges), |commits| {
-        Summary::count(commits.len())
-    })
-}
-
-/// The work of `find_commits`, between the start event and the completion event of its operation.
-fn find_commits_inside(
     database_path: &Path,
     repository: &str,
     since: &str,
@@ -77,30 +56,6 @@ mod tests {
         assert_eq!(with_merges.len(), 4);
     }
 
-    #[test]
-    fn a_find_is_one_operation_with_the_range_and_the_count_and_a_failure_has_a_category_only() {
-        let (repository, _) = TestRepository::with_four_commits("query_events");
-        let database_path = temp_folder("query_events_database").join("data_layer.sqlite");
-        refresh_source_control(&database_path, &repository.folder, "heidrun-org/heidrun").unwrap();
-        let (found, events) = data_layer_operation_log::testing::capture(|| {
-            find_commits(&database_path, "heidrun-org/heidrun", "2026-10-01T00:00:00Z", "2026-10-30T00:00:00Z", false).unwrap()
-        });
-        assert_eq!(found.len(), 3);
-        let tree = data_layer_operation_log::testing::tree(&events);
-        assert_eq!(tree[0], "source_control.find_commits");
-        assert!(tree.contains(&"  source_control.find_commits_between".to_string()), "{tree:?}");
-        let starts = data_layer_operation_log::testing::starts(&events);
-        assert_eq!(starts[0].parameters["repository"], "heidrun-org/heidrun");
-        assert_eq!(starts[0].parameters["includeMerges"], false);
-        assert_eq!(data_layer_operation_log::testing::completion_of(&events, &starts[0].operation_id).unwrap().result_count, Some(3));
-        let (_, events) = data_layer_operation_log::testing::capture(|| {
-            find_commits(&database_path, "a/b", "yesterday", "2026-10-30T00:00:00Z", false).unwrap_err()
-        });
-        let starts = data_layer_operation_log::testing::starts(&events);
-        let complete = data_layer_operation_log::testing::completion_of(&events, &starts[0].operation_id).unwrap();
-        assert_eq!(complete.outcome, data_layer_operation_log::Outcome::Failure);
-        assert!(complete.error_category.is_some());
-    }
 
     #[test]
     fn gives_an_empty_list_when_the_sqlite_file_does_not_exist_and_still_refuses_a_wrong_time() {

@@ -28,7 +28,7 @@ Reads Claude Code and Codex chat sessions and coding agent configuration into SQ
 - `query` only works on a database that is open read only.
 - `src/model/` imports from no other folder of `src/`. `src/coding_agents/` and `src/pricing/` import from `src/model/` only. `src/storage/` imports from `src/model/` and `src/pricing/`. Only `src/synchronization.rs` uses all of them together.
 - Only `src/repository_finder.rs` runs the command `git`. Only `src/coding_agents/agent_homes.rs` reads the variables `CLAUDE_CONFIG_DIR` and `CODEX_HOME`, and the home folder for `~/.agents`.
-- Calls block. The only repository dependency is `data_layer_operation_log`; Tauri is not used. Every public function records its operation and tests its events ([rule](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_operation_log.md)).
+- Calls block. The package imports no other package of the repository; Tauri is not used.
 - `.cargo/config.toml` selects the target folder of `desktop_tauri`, cloned by `pnpm worktree:create`; Cargo reads this configuration only from inside the package.
 - Desktop callers use only `refresh_*` and `find_*`, as [data_layer_access.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_access.md) requires; `data_layer_boundary_checker` enforces the boundary.
 
@@ -36,4 +36,3 @@ Reads Claude Code and Codex chat sessions and coding agent configuration into SQ
 - Scope: [chat sessions](https://github.com/heidrun-org/heidrun/issues/463), [coding agent configuration](https://github.com/heidrun-org/heidrun/issues/569), and [the data layer](https://github.com/heidrun-org/heidrun/issues/452).
 - The token usage and the prices come from [issue #616](https://github.com/heidrun-org/heidrun/issues/616).
 - The relation "people" is not written, because no text of a chat session names a person ([issue #463](https://github.com/heidrun-org/heidrun/issues/463)).
-- Operation logging follows [data_layer_operation_log](../data_layer_operation_log/CONTEXT.md).

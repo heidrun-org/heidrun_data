@@ -9,8 +9,6 @@ use crate::model::types::{
 };
 use serde::Deserialize;
 use serde_json::Value;
-use crate::OPERATION_PACKAGE;
-use data_layer_operation_log::{record, OperationKind, OperationSpec, Summary};
 use std::cell::Cell;
 use std::collections::BTreeMap;
 
@@ -112,14 +110,6 @@ impl<'a> GithubReader<'a> {
     /// # Errors
     /// An error when the query fails, or when the answer is not what the query asks for.
     pub fn read_issues(&self, repository: &str, since: Option<&str>) -> Result<Vec<Issue>, String> {
-        let spec = OperationSpec::new(OPERATION_PACKAGE, "read_issues", OperationKind::Collection)
-            .parameter("repository", repository)
-            .parameter("since", since);
-        record(spec, || self.read_issues_inside(repository, since), |issues| Summary::count(issues.len()))
-    }
-
-    /// The work of `read_issues`, between the start event and the completion event of its operation.
-    fn read_issues_inside(&self, repository: &str, since: Option<&str>) -> Result<Vec<Issue>, String> {
         let nodes = self.read_nodes(repository, ISSUES_QUERY, "issues", CodeHostingStage::ReadIssues, since)?;
         nodes
             .into_iter()
@@ -139,14 +129,6 @@ impl<'a> GithubReader<'a> {
     /// # Errors
     /// An error when the query fails, or when the answer is not what the query asks for.
     pub fn read_pull_requests(&self, repository: &str, since: Option<&str>) -> Result<Vec<PullRequest>, String> {
-        let spec = OperationSpec::new(OPERATION_PACKAGE, "read_pull_requests", OperationKind::Collection)
-            .parameter("repository", repository)
-            .parameter("since", since);
-        record(spec, || self.read_pull_requests_inside(repository, since), |pull_requests| Summary::count(pull_requests.len()))
-    }
-
-    /// The work of `read_pull_requests`, between the start event and the completion event of its operation.
-    fn read_pull_requests_inside(&self, repository: &str, since: Option<&str>) -> Result<Vec<PullRequest>, String> {
         let nodes =
             self.read_nodes(repository, PULL_REQUESTS_QUERY, "pullRequests", CodeHostingStage::ReadPullRequests, since)?;
         nodes

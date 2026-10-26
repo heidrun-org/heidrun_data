@@ -11,8 +11,6 @@ use data_layer_coding_agents::{
 };
 use serde_json::{json, Value};
 use std::path::PathBuf;
-use crate::OPERATION_PACKAGE;
-use data_layer_operation_log::{record, OperationKind, OperationSpec, Summary};
 
 /// The length of the default time range, in milliseconds: 30 days.
 const DEFAULT_RANGE_MILLISECONDS: i64 = 30 * 24 * 60 * 60 * 1000;
@@ -88,21 +86,6 @@ impl UsageAnswer {
 /// An error when the token usage of the repository was never read, when a date or the time zone is wrong, or when the file
 /// cannot be read.
 pub fn read_usage(request: &UsageRequest) -> Result<UsageAnswer, String> {
-    let spec = OperationSpec::new(OPERATION_PACKAGE, "read_usage", OperationKind::Query)
-        .parameter("repository", request.repository.clone())
-        .parameter("folder", request.folder.clone())
-        .parameter("since", request.since.clone())
-        .parameter("until", request.until.clone())
-        .choice("grouping", request.grouping.clone())
-        .parameter("timeZone", request.time_zone.clone())
-        .choice("isByChat", request.is_by_chat)
-        .parameter("now", request.now)
-        .database(&request.database_path);
-    record(spec, || read_usage_inside(request), |answer| Summary::count(answer.periods.len()))
-}
-
-/// The work of `read_usage`, between the start event and the completion event of its request.
-fn read_usage_inside(request: &UsageRequest) -> Result<UsageAnswer, String> {
     let time_zone = request.time_zone.clone().unwrap_or_else(local_time_zone_name);
     let grouping = UsageGrouping::from_name(&request.grouping, &time_zone)?;
     let until = match &request.until {
