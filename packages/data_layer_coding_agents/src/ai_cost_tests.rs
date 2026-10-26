@@ -110,7 +110,12 @@ impl Drop for Scratch {
 
 /// Makes `folder` a Git repository whose remote `origin` is `owner/name`.
 fn initialize_repository(folder: &Path) {
-    for arguments in [vec!["init", "-q"], vec!["remote", "add", "origin", "git@github.com:owner/name.git"]] {
+    initialize_repository_with_remote(folder, "git@github.com:owner/name.git");
+}
+
+/// Makes `folder` a Git repository whose remote `origin` is `remote`.
+fn initialize_repository_with_remote(folder: &Path, remote: &str) {
+    for arguments in [vec!["init", "-q"], vec!["remote", "add", "origin", remote]] {
         assert!(Command::new("git").arg("-C").arg(folder).args(arguments).status().unwrap().success());
     }
 }
@@ -181,6 +186,24 @@ fn a_chat_that_two_workspaces_list_counts_once() {
     assert_eq!(answer.workspaces.len(), 2);
     assert_eq!(answer.hours.len(), 1);
     assert_eq!(answer.hours[0].tokens, 1_100 + 1_200);
+}
+
+#[test]
+fn the_cost_of_two_repositories_in_the_same_hour_is_the_sum_of_the_two() {
+    let scratch = Scratch::new("two-repositories");
+    scratch.write_prices();
+    let other = scratch.folder.join("other");
+    std::fs::create_dir_all(&other).unwrap();
+    initialize_repository_with_remote(&other, "git@github.com:owner/other.git");
+    scratch.write_claude_chat(&scratch.repository(), "in-first", &[("2026-10-14T10:00:00.000Z", 100), ("2026-10-14T11:00:00.000Z", 100)]);
+    scratch.write_claude_chat(&other, "in-other", &[("2026-10-14T10:00:00.000Z", 200)]);
+    let roots = [scratch.repository().display().to_string(), other.display().to_string()];
+    scratch.refresh_roots(&roots, true);
+    let answer = find_ai_cost(&scratch.database(), &roots, NOON - DAY, NOON + DAY, "UTC").unwrap();
+    let tokens: Vec<u64> = answer.hours.iter().map(|hour| hour.tokens).collect();
+    assert_eq!(tokens, vec![1_100 + 1_200, 1_100]);
+    // 10:00 has 2 000 fresh input tokens × 1 dollar + 300 output tokens × 5 dollars, for one million tokens
+    assert!((answer.hours[0].cost_usd.unwrap() - 0.0035).abs() < 1e-12, "{:?}", answer.hours[0].cost_usd);
 }
 
 #[test]
