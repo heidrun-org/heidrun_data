@@ -86,20 +86,15 @@ pub fn user_activity_file_path(heidrun_dir: Option<&str>, home_folder: &Path) ->
     .join(USER_ACTIVITY_FILE_NAME)
 }
 
-/// `~/.config/heidrun_code`, or the former folder `~/.config/heidrun` when it exists and the new folder does not.
+/// `~/.config/heidrun_code`.
 fn default_data_folder(home_folder: &Path) -> PathBuf {
-    let current = home_folder.join(".config").join("heidrun_code");
-    let former = home_folder.join(".config").join("heidrun");
-    if current.is_dir() == false && former.is_dir() {
-        return former;
-    }
-    current
+    home_folder.join(".config").join("heidrun_code")
 }
 
 /// The path of the file when nobody gives another path: in the folder of the variable `HEIDRUN_CODE_DIR`, or else in
 /// `~/.config/heidrun_code`.
 pub fn default_user_activity_file_path() -> PathBuf {
-    let heidrun_dir = std::env::var("HEIDRUN_CODE_DIR").ok().or_else(|| std::env::var("HEIDRUN_DIR").ok());
+    let heidrun_dir = std::env::var("HEIDRUN_CODE_DIR").ok();
     user_activity_file_path(heidrun_dir.as_deref(), &dirs::home_dir().unwrap_or_default())
 }
 
