@@ -12,6 +12,7 @@ Finds the chat session files of Claude Code and of Codex for one folder, reads w
 - `session_reader.rs`: `read_chat_sessions`, which gives the `ChatSessionRecord` of each file.
 - `configuration_reader.rs`: `read_configuration`, `ConfigurationFolders`, and `read_header`, the fields of the header of a file between its two lines `---`.
 - `agent_homes.rs`: `claude_dir`, `codex_home`, and `agents_home`.
+- `chat_images_reader.rs`: `read_chat_images`, the images of one chat session of Claude Code, each with the number of its text `[Image #N]`.
 - Command to test this folder: `pnpm --filter data_layer_coding_agents test`
 
 ## Rules
@@ -26,4 +27,5 @@ Finds the chat session files of Claude Code and of Codex for one folder, reads w
 - A review chat of Codex has no token usage row, as in the Past chats list. A chat with no token gives an empty list of minutes, so `read_token_usage` can delete its old rows.
 - Two files with the same chat session identifier (Claude Code copies a resumed chat into another project folder) give one token usage: the file that changed last. The rule keeps a read of everything and a read of the changed files equal ([issue 616](https://github.com/heidrun-org/heidrun/issues/616)).
 - A change in what `ChatMeta` or `TokenScan` holds needs a new `CACHE_VERSION` in `scan_cache.rs`, so that the desktop application reads the old files again.
+- The number of an image of a chat of Claude Code comes from the field `imagePasteIds` of its line, never from a count of the image blocks: an image that the developer removed before sending keeps its number ([issue 790](https://github.com/heidrun-org/heidrun_code/issues/790)).
 - The tests give fake folders of the coding agents, so they need no real chat session.
