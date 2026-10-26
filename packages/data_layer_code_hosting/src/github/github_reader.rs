@@ -5,17 +5,19 @@
 
 use crate::github::graphql_runner::GraphqlRunner;
 use crate::model::types::{
-    CodeHostingProgress, CodeHostingStage, Issue, IssueState, IssueStateReason, PullRequest, PullRequestState,
+    CodeHostingProgress, CodeHostingStage, GithubPoints, Issue, IssueState, IssueStateReason, PullRequest, PullRequestState,
 };
 use serde::Deserialize;
 use serde_json::Value;
 use crate::OPERATION_PACKAGE;
 use data_layer_operation_log::{record, OperationKind, OperationSpec, Summary};
+use std::cell::Cell;
 use std::collections::BTreeMap;
 
 /// The GraphQL query for one page of issues.
 pub const ISSUES_QUERY: &str = r#"
 query($owner: String!, $name: String!, $cursor: String) {
+    rateLimit { cost remaining }
     repository(owner: $owner, name: $name) {
         issues(first: 100, after: $cursor, orderBy: { field: UPDATED_AT, direction: DESC }) {
             totalCount
@@ -35,6 +37,7 @@ query($owner: String!, $name: String!, $cursor: String) {
 /// The GraphQL query for one page of pull requests.
 pub const PULL_REQUESTS_QUERY: &str = r#"
 query($owner: String!, $name: String!, $cursor: String) {
+    rateLimit { cost remaining }
     repository(owner: $owner, name: $name) {
         pullRequests(first: 100, after: $cursor, orderBy: { field: UPDATED_AT, direction: DESC }) {
             totalCount
@@ -67,13 +70,20 @@ pub struct GithubReader<'a> {
     log: &'a dyn Fn(&str),
     /// The function that receives the reports of progress of the stages.
     progress: &'a dyn Fn(&CodeHostingProgress),
+    /// The GitHub points of the GraphQL queries since the last call to `take_github_points`.
+    github_points: Cell<GithubPoints>,
 }
 
 impl<'a> GithubReader<'a> {
     /// Creates a reader. `log` receives one line of progress for each page and for each stop. Give `&ignore_log` for no
     /// progress.
     pub fn new(runner: &'a dyn GraphqlRunner, log: &'a dyn Fn(&str)) -> Self {
-        GithubReader { runner, log, progress: &ignore_progress }
+        GithubReader { runner, log, progress: &ignore_progress, github_points: Cell::new(GithubPoints::default()) }
+    }
+
+    /// Gives the GitHub points of the GraphQL queries since the last call, and starts the count again at zero.
+    pub fn take_github_points(&self) -> GithubPoints {
+        self.github_points.replace(GithubPoints::default())
     }
 
     /// Gives the reader the function that receives one report of progress at the start of each stage, after each page, and at
@@ -172,6 +182,7 @@ impl<'a> GithubReader<'a> {
             (self.log)(&format!("{connection_name}: asking for page {page_number} of {repository}"));
             let variables = [("owner", Some(owner)), ("name", Some(name)), ("cursor", cursor.as_deref())];
             let response = self.runner.run(query, &variables)?;
+            self.add_github_points(&response);
             if let Some(errors) = response.get("errors").filter(|errors| !errors.is_null()) {
                 return Err(format!("GitHub answered with errors: {errors}"));
             }
@@ -205,6 +216,18 @@ impl<'a> GithubReader<'a> {
             }
             cursor = connection["pageInfo"]["endCursor"].as_str().map(String::from);
         }
+    }
+
+    /// Adds one GraphQL query to the GitHub points of the reader: the points that the query cost, and the points left, as
+    /// the field `rateLimit` of the answer gives them. An answer without this field counts the query and no point.
+    fn add_github_points(&self, response: &Value) {
+        let mut points = self.github_points.get();
+        points.query_count += 1;
+        points.cost += response.pointer("/data/rateLimit/cost").and_then(Value::as_u64).unwrap_or(0);
+        if let Some(remaining) = response.pointer("/data/rateLimit/remaining").and_then(Value::as_u64) {
+            points.remaining = Some(remaining);
+        }
+        self.github_points.set(points);
     }
 }
 
