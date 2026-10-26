@@ -209,6 +209,19 @@ pub struct SynchronizationReport {
     pub issue_count: usize,
     /// The number of pull requests that the synchronization wrote.
     pub pull_request_count: usize,
+    /// The GitHub points of the GraphQL queries of the synchronization.
+    pub github_points: GithubPoints,
+}
+
+/// The GitHub points of some GraphQL queries, from the field `rateLimit { cost remaining }` of each answer.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct GithubPoints {
+    /// The number of GraphQL queries sent to GitHub.
+    pub query_count: usize,
+    /// The points of the GitHub rate limit that the queries cost, in all.
+    pub cost: u64,
+    /// The points left after the last query, or `None` when no answer gave them.
+    pub remaining: Option<u64>,
 }
 
 /// One row of the answer to a query: the name of each column and its value, in the order of the columns.

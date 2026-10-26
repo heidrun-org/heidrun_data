@@ -37,7 +37,7 @@ pub use github::github_reader::{ignore_log, ignore_progress, GithubReader, ISSUE
 pub use github::graphql_runner::{find_repository, GhGraphqlRunner, GraphqlRunner};
 pub use model::schemas::{validate_issue_value, validate_pull_request_value, ISSUE_SCHEMA, PULL_REQUEST_SCHEMA};
 pub use model::types::{
-    CodeHostingProgress, CodeHostingStage, CodeHostingTable, Issue, IssueState, IssueStateReason, PullRequest, PullRequestState, QueryRow, SynchronizationMode,
+    CodeHostingProgress, CodeHostingStage, CodeHostingTable, GithubPoints, Issue, IssueState, IssueStateReason, PullRequest, PullRequestState, QueryRow, SynchronizationMode,
     SynchronizationReport,
 };
 pub use query::{
