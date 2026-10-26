@@ -42,6 +42,7 @@ fn run_inside(
     reader: &GithubReader,
     log: &dyn Fn(&str),
 ) -> Result<SynchronizationReport, String> {
+    reader.take_github_points();
     let (issues_since, pull_requests_since) = match mode {
         SynchronizationMode::Initialize => (None, None),
         SynchronizationMode::Update => (
@@ -77,6 +78,7 @@ fn run_inside(
         pull_requests_since,
         issue_count: issues.len(),
         pull_request_count: pull_requests.len(),
+        github_points: reader.take_github_points(),
     })
 }
 
@@ -92,7 +94,7 @@ pub fn describe_since(since: Option<&str>) -> String {
 mod tests {
     use super::*;
     use crate::github::github_reader::ignore_log;
-    use crate::model::types::IssueState;
+    use crate::model::types::{GithubPoints, IssueState};
     use crate::test_samples::{date, issue, issue_node, pull_request_node, temp_folder, FakeGithub, FakeRequest};
     use serde_json::{json, Value};
     use std::cell::RefCell;
@@ -128,6 +130,7 @@ mod tests {
                 pull_requests_since: None,
                 issue_count: 3,
                 pull_request_count: 2,
+                github_points: GithubPoints { query_count: 3, cost: 3, remaining: Some(4999) },
             }
         );
         assert_eq!(database.count_rows(CodeHostingTable::Issues, REPOSITORY), Ok(3));
@@ -274,6 +277,17 @@ mod tests {
         assert_eq!(complete.result_count, Some(5));
         assert_eq!(complete.details["issueCount"], 3);
         assert_eq!(complete.details["pullRequestCount"], 2);
+    }
+
+    #[test]
+    fn the_report_gives_the_github_points_of_the_queries_of_this_synchronization_only() {
+        let fake_github = fake_github();
+        let mut database = new_database("github_points");
+        let reader = GithubReader::new(&fake_github, &ignore_log);
+        let report = run(SynchronizationMode::Initialize, REPOSITORY, &mut database, &reader, &ignore_log).unwrap();
+        assert_eq!(report.github_points, GithubPoints { query_count: 3, cost: 3, remaining: Some(4999) });
+        let report = run(SynchronizationMode::Update, REPOSITORY, &mut database, &reader, &ignore_log).unwrap();
+        assert_eq!(report.github_points, GithubPoints { query_count: 2, cost: 2, remaining: Some(4999) });
     }
 
     #[test]

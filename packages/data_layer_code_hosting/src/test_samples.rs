@@ -167,6 +167,7 @@ impl GraphqlRunner for FakeGithub {
         let page: Vec<Value> = sorted_nodes.iter().skip(start).take(self.page_size).cloned().collect();
         Ok(json!({
             "data": {
+                "rateLimit": { "cost": 1, "remaining": 4999 },
                 "repository": {
                     connection_name: {
                         "totalCount": sorted_nodes.len(),
