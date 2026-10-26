@@ -15,6 +15,7 @@ Use `claude` for Claude Code. Any other coding agent that reads `AGENTS.md` and 
 
 - `AGENTS.md`: the instructions for any coding agent.
 - `.agents/skills/heidrun-data`: a symbolic link to `packages/heidrun_data/skills/heidrun-data`.
+- `.agents/skills/feature-status`: a symbolic link to `packages/heidrun_data/skills/feature-status`, the skill that writes a deep report on the status of one feature.
 - `CLAUDE.md` and `.claude/skills`: the layer for Claude Code on top of `AGENTS.md` and `.agents/skills/`.
 - `databases/`: the databases, one for each Heidrun workspace, named `<workspace name>.sqlite`. The databases are not in Git.
 - `outputs/`: the images, the reports, and the web pages that the coding agent makes, in the namespace below.
