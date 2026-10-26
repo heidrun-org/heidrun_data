@@ -140,6 +140,15 @@ fn find_ai_cost_inside(
         };
         rows.extend(database.find_usage(&query)?);
     }
+    // `summarize_periods` adds only the rows that are next to each other, so the rows of the repositories are sorted together.
+    rows.sort_by(|first, second| {
+        (&first.period_start, &first.chat_session_id, first.coding_agent, &first.model).cmp(&(
+            &second.period_start,
+            &second.chat_session_id,
+            second.coding_agent,
+            &second.model,
+        ))
+    });
     answer.hours = hours_of(&rows);
     if let Some(version) = ModelPriceDatabase::open_read_only(database_path).and_then(|prices| prices.find_latest_version())? {
         answer.price_version = Some(version.version);
