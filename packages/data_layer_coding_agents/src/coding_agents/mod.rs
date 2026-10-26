@@ -2,6 +2,7 @@
 //! configuration of the coding agent: the memory files, the subagents, and the skills.
 
 pub mod agent_homes;
+pub mod chat_images_reader;
 pub mod configuration_reader;
 pub mod scan;
 pub mod scan_cache;
