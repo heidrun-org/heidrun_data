@@ -8,7 +8,7 @@ A Rust library and one command line tool, `heidrun_data`, that give a coding age
 - `src/main.rs`: the command line, and the executable `heidrun_data`. The module `src/command_line.rs` reads its arguments and holds the texts of the help.
 - `src/usage.rs`: the command `usage`, which reads the tokens and the cost from the SQLite file only.
 - `src/reading/`: the command `read`, the content that the tables do not store — see its own CONTEXT.md.
-- `plugin.json` and `skills/heidrun-data/`: the Agent Plugin manifest and the standalone skill. The repository copy `.agents/skills/heidrun-data/` stays identical to the package skill. A test compares `SKILL.md` with the help and with the output of `schema`.
+- `plugin.json` and `skills/heidrun-data/`: the Agent Plugin manifest and the standalone skill. `skills/feature-status/` is a second skill, which uses the skill `heidrun-data` to write a deep report on the status of one feature. The repository copy `.agents/skills/heidrun-data/` stays identical to the package skill. A test compares `SKILL.md` with the help and with the output of `schema`.
 - `tests/`: the tests of the executable. The tests of the library sit at the end of each source file.
 - Command to run this folder: `pnpm --silent data_layer:heidrun_data --help`
 - Command to test this folder: `pnpm --filter heidrun_data test`
