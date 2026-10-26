@@ -53,9 +53,6 @@ pub use synchronization::{describe_since, run as synchronize};
 
 use std::path::PathBuf;
 
-/// The name of this package in the log of the operations of the data layer, without the prefix `data_layer_`.
-pub(crate) const OPERATION_PACKAGE: &str = "code_hosting";
-
 /// The path of the SQLite file in `HEIDRUN_CODE_DIR`, or, when the variable is unset or empty, `~/.config/heidrun_code/data_layer.sqlite`.
 pub fn default_database_path() -> PathBuf {
     std::env::var("HEIDRUN_CODE_DIR")
