@@ -2,7 +2,7 @@
 //! repository, and the configuration of the coding agent (the memory files, the subagents, and the skills), and writes the
 //! facts of each one in a SQLite file.
 //!
-//! The library has six parts:
+//! The library has seven parts:
 //! - `scan`, `tokens`, and `ScanCache` read one chat session file without a model: the title, the dates, the messages, the
 //!   folders, the issues, the pull requests, the files that the coding agent wrote, and the tokens of each model.
 //! - `find_claude_session_files`, `find_codex_session_files`, and `read_codex_titles` find the chat session files of one
@@ -17,9 +17,12 @@
 //! - `refresh_chat_sessions`, `refresh_ai_cost`, and `refresh_public_model_prices_when_due` copy the sources into the SQLite
 //!   file. `find_chat_list` and `find_ai_cost` read the SQLite file only and give typed rows. These five functions are
 //!   what the desktop application calls: it never reads a chat session file or runs SQL itself.
+//! - `find_chat_images` reads the images of one chat session of Claude Code from its file at each call, because the images
+//!   are not copied into the SQLite file.
 //!
 //! The calls are blocking. A caller in an async program runs them in a blocking task.
 
+mod chat_images;
 mod coding_agents;
 mod model;
 mod pricing;
@@ -43,6 +46,7 @@ mod ai_cost_tests;
 #[cfg(test)]
 mod test_samples;
 
+pub use chat_images::find_chat_images;
 pub use coding_agents::agent_homes::{agents_home, claude_dir, codex_home};
 pub use coding_agents::configuration_reader::{read_configuration, read_header, ConfigurationFolders};
 pub use coding_agents::scan::{feed_claude_line, feed_codex_line, read_lines_from, shorten, ChatMeta, Scan};
@@ -55,6 +59,7 @@ pub use coding_agents::session_reader::{format_date, parse_date, read_chat_sessi
 pub use coding_agents::token_usage_reader::{minutes_of, read_token_usage, TokenUsageFiles};
 pub use coding_agents::tokens::{model_tokens_of, TokenCounts, TokenScan, TokensByMinute, TokensByModel, UNKNOWN_MODEL};
 pub use model::ai_cost_types::{AiCostAnswer, AiCostHour, AiCostSynchronization, AiCostWorkspace};
+pub use model::chat_image_types::{ChatImage, ChatImageList};
 pub use model::chat_list_types::{AgentChats, Chat, ChatList, ChatUsage, SortKey, SortOrder, Sorting, MAX_LIMIT};
 pub use model::configuration_types::{
     ConfigurationItem, ConfigurationKind, ConfigurationRead, ConfigurationScope, ConfigurationWriteCount,

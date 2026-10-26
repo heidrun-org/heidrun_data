@@ -1,7 +1,7 @@
 # Directory Context: `/packages/data_layer_coding_agents`
 
 ## Purpose
-Reads Claude Code and Codex chat sessions and coding agent configuration into SQLite. Stores minute token usage and model prices, and calculates estimated costs. Desktop callers use `refresh_*` and `find_*`.
+Reads Claude Code and Codex chat sessions and coding agent configuration into SQLite. Stores minute token usage and model prices, and calculates estimated costs. Desktop callers use `refresh_*` and `find_*`. `find_chat_images` gives the images of one chat of Claude Code, read from its chat session file at each call.
 
 ## Key Exports & Entry Points
 - `src/lib.rs`: the only public interface; its `pub use` lines list the readers, databases, synchronization and query functions, schemas, and data types.
@@ -11,6 +11,7 @@ Reads Claude Code and Codex chat sessions and coding agent configuration into SQ
 - `src/storage/`: the SQLite file, and the text form of the rows of a query — see its own CONTEXT.md.
 - `src/pricing/`: the price list of the models, and the calculation of a cost — see its own CONTEXT.md.
 - `src/model/`: the data types, and the JSON schema check — see its own CONTEXT.md.
+- `src/chat_images.rs`: `find_chat_images`, the images behind each text `[Image #N]` of a chat of Claude Code.
 - `src/repository_finder.rs`: repository root and `owner/name`.
 - `src/synchronization.rs`: `initialize` and `update` for configuration and tokens.
 - `schemas/`: validates each table with a `data` column.
@@ -23,7 +24,7 @@ Reads Claude Code and Codex chat sessions and coding agent configuration into SQ
 - `chat_sessions` has exactly the columns `repository`, `id`, `updatedAt`, and `data`, with four link tables. A relation is never copied into `data`. The tables `memory_files`, `subagents`, and `skills` have the same four columns, and a row whose file is gone stays, with the date in `removedAt`.
 - Every row with a column `data` is checked against its JSON schema before it is written. The program holds the schema files inside with `include_str!`.
 - `initialize` reads every file. `update` reads the files that changed at the date of the last read or later. Each mode can run again and again, and never writes a row two times. For `memory_files`, `subagents`, and `skills`, both modes read every file, `initialize` writes every row, and `update` writes only the rows that are new, whose `data` changed, or that are newly marked as removed ([issue #593](https://github.com/heidrun-org/heidrun/issues/593)).
-- The package stores facts only: no message text, and no body of a memory file, a subagent, or a skill. It never writes in the folders of the coding agents.
+- The package stores facts only: no message text, no image, and no body of a memory file, a subagent, or a skill. It never writes in the folders of the coding agents. `find_chat_images` is the one function that gives message content: it reads the chat session file at each call and stores nothing ([issue 790](https://github.com/heidrun-org/heidrun_code/issues/790)).
 - `token_usage_minutes` has one row for each chat session, model, and minute in UTC. The cost is never stored: the view `token_usage_with_cost` calculates it, and an unknown price gives a null cost, never zero. The rules are in `docs/statistics/token_usage_and_cost.md`.
 - `query` only works on a database that is open read only.
 - `src/model/` imports from no other folder of `src/`. `src/coding_agents/` and `src/pricing/` import from `src/model/` only. `src/storage/` imports from `src/model/` and `src/pricing/`. Only `src/synchronization.rs` uses all of them together.
