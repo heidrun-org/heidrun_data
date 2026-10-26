@@ -28,16 +28,9 @@ fn every_data_layer_uses_the_selected_application_folder() {
     }
     let folder = std::env::var("HEIDRUN_CODE_DIR")
         .ok()
-        .or_else(|| std::env::var("HEIDRUN_DIR").ok())
         .filter(|value| value.is_empty() == false)
         .map(PathBuf::from)
-        .unwrap_or_else(|| {
-            let config = dirs::home_dir().unwrap().join(".config");
-            if config.join("heidrun_code").is_dir() == false && config.join("heidrun").is_dir() {
-                return config.join("heidrun");
-            }
-            config.join("heidrun_code")
-        });
+        .unwrap_or_else(|| dirs::home_dir().unwrap().join(".config/heidrun_code"));
     let database = folder.join("data_layer.sqlite");
     assert_eq!(data_layer_code_hosting::default_database_path(), database);
     assert_eq!(data_layer_coding_agents::default_database_path(), database);
