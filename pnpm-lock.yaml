@@ -12,8 +12,6 @@ importers:
 
   packages/data_layer_coding_agents: {}
 
-  packages/data_layer_operation_log: {}
-
   packages/data_layer_source_control: {}
 
   packages/data_layer_user_activity: {}

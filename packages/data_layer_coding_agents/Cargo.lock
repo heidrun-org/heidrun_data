@@ -154,7 +154,6 @@ version = "0.3.0"
 dependencies = [
  "chrono",
  "chrono-tz",
- "data_layer_operation_log",
  "dirs",
  "iana-time-zone",
  "jsonschema",
@@ -163,16 +162,6 @@ dependencies = [
  "serde_json",
  "ureq",
  "zstd",
-]
-
-[[package]]
-name = "data_layer_operation_log"
-version = "0.3.0"
-dependencies = [
- "dirs",
- "libc",
- "serde",
- "serde_json",
 ]
 
 [[package]]

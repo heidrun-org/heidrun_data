@@ -7,8 +7,6 @@ use data_layer_coding_agents::{
 };
 use serde_json::{json, Value};
 use std::path::Path;
-use crate::OPERATION_PACKAGE;
-use data_layer_operation_log::{record, OperationKind, OperationSpec, Summary};
 
 /// The number of characters of a tool call or of a tool result when the option `--full` is not given.
 pub const SHORT_TOOL_LENGTH: usize = 200;
@@ -74,23 +72,6 @@ enum CodingAgent {
 /// # Errors
 /// An error when no chat session file of Claude Code or of Codex has this id.
 pub fn read_chat_session(
-    id: &str,
-    root: &Path,
-    claude_projects_folder: &Path,
-    codex_home: &Path,
-    is_full: bool,
-) -> Result<Vec<ChatRecord>, String> {
-    let spec = OperationSpec::new(OPERATION_PACKAGE, "read_chat_session", OperationKind::Collection)
-        .parameter("id", id)
-        .parameter("root", root.display().to_string())
-        .choice("isFull", is_full);
-    record(spec, || read_chat_session_inside(id, root, claude_projects_folder, codex_home, is_full), |records| {
-        Summary::count(records.len())
-    })
-}
-
-/// The work of `read_chat_session`, between the start event and the completion event of its operation.
-fn read_chat_session_inside(
     id: &str,
     root: &Path,
     claude_projects_folder: &Path,

@@ -3,8 +3,6 @@
 use crate::database_lock::lock_database_and_report_wait;
 use crate::output::QueryRow;
 use crate::sources::Source;
-use crate::OPERATION_PACKAGE;
-use data_layer_operation_log::{Operation, OperationKind, OperationSpec, Summary};
 use serde_json::{json, Value};
 use std::path::PathBuf;
 
@@ -110,37 +108,6 @@ impl SourceReport {
 /// the SQLite file while it writes, so it waits for the desktop application. A source that fails does not stop the others.
 /// `log` receives the lines of progress of every source.
 pub fn synchronize(
-    mode: SynchronizationMode,
-    sources: &[Source],
-    options: &SynchronizationOptions,
-    log: &dyn Fn(&str),
-) -> Vec<(Source, Result<SourceReport, String>)> {
-    let source_names: Vec<&str> = Source::in_fixed_order(sources).into_iter().map(Source::name).collect();
-    let spec = OperationSpec::new(OPERATION_PACKAGE, "synchronize", OperationKind::Synchronization)
-        .choice("mode", mode.name())
-        .parameter("sources", source_names)
-        .parameter("folder", options.folder.display().to_string())
-        .parameter("repository", options.repository.clone())
-        .parameter("userActivityFile", options.user_activity_file.display().to_string())
-        .parameter("claudeDir", options.claude_dir.display().to_string())
-        .parameter("codexHome", options.codex_home.display().to_string())
-        .parameter("agentsHome", options.agents_home.display().to_string())
-        .parameter("priceList", options.price_list.clone())
-        .choice("isPriceRefreshForced", options.is_price_refresh_forced)
-        .database(&options.database_path);
-    let operation = Operation::start(spec);
-    let results = synchronize_inside(mode, sources, options, log);
-    let failed: Vec<&String> = results.iter().filter_map(|(_, result)| result.as_ref().err()).collect();
-    let summary = Summary::count(results.len() - failed.len()).detail("failedSourceCount", failed.len());
-    match failed.first() {
-        Some(message) => operation.fail_with(message, summary),
-        None => operation.succeed(summary),
-    }
-    results
-}
-
-/// The work of `synchronize`, between the start event and the completion event of its operation.
-fn synchronize_inside(
     mode: SynchronizationMode,
     sources: &[Source],
     options: &SynchronizationOptions,
