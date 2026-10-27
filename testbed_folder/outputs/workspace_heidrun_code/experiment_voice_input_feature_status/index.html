@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voice input feature status</title>
+  <style>
+    :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
+    body { max-width: 920px; margin: 48px auto; padding: 0 24px; line-height: 1.6; background: light-dark(#ffffff, #16181d); color: light-dark(#1d1f24, #e4e6eb); }
+    h1, h2 { line-height: 1.25; }
+    h2 { margin-top: 44px; border-bottom: 1px solid light-dark(#d8dbe0, #353943); padding-bottom: 6px; }
+    a { color: light-dark(#1758b6, #91bfff); text-underline-offset: 3px; }
+    code { font-size: 0.92em; background: light-dark(#f1f3f5, #23262d); padding: 1px 4px; border-radius: 4px; overflow-wrap: anywhere; }
+    table { border-collapse: collapse; width: 100%; font-size: 0.94rem; }
+    th, td { text-align: left; vertical-align: top; padding: 6px 8px; border-bottom: 1px solid light-dark(#e3e5e8, #2c3038); }
+    th { font-weight: 600; }
+    td:first-child { white-space: nowrap; }
+    .status { font-size: 1.15rem; padding: 12px 16px; border-left: 4px solid light-dark(#1f8a4c, #4cc27e); background: light-dark(#eef8f1, #1a2a20); }
+    .kind { font-size: 0.75rem; font-weight: 600; padding: 1px 6px; border-radius: 10px; white-space: nowrap; }
+    .fact { background: light-dark(#e3eefc, #1e2c44); color: light-dark(#1758b6, #a9c8ff); }
+    .interpretation { background: light-dark(#fdf0dc, #3a2c16); color: light-dark(#8a5300, #f0c27a); }
+    .unknown { background: light-dark(#eeeeee, #2f2f2f); color: light-dark(#555555, #bbbbbb); }
+    .meta { font-size: 0.9rem; opacity: 0.75; }
+    .table-scroll { overflow-x: auto; }
+  </style>
+</head>
+<body>
+  <main>
+    <a href="../index.html">← Workspace navigation</a>
+    <h1>Voice input feature status · heidrun-org/heidrun_code · 11 October 2026–26 October 2026</h1>
+    <p class="meta">Report written on 26 October 2026 with the skill <code>feature-status</code>. Database: <code>databases/heidrun_code.sqlite</code>, updated with <code>heidrun_data update</code> on 26 October 2026 before the report. Source files read in the checkout <code>/Users/jetienne/webwork/heidrun</code>, branch <code>dev_jerome</code>, commit <a href="https://github.com/heidrun-org/heidrun_code/commit/5f27a256913c0b9cb8f88957456117e78eff8488">5f27a25</a>. Each statement has a label: <span class="kind fact">fact</span> from a source, <span class="kind interpretation">interpretation</span> of the coding agent, or <span class="kind unknown">unknown</span>.</p>
+
+    <h2>1. Status in one line</h2>
+    <p class="status"><strong>Fully implemented</strong> for the scope of <a href="https://github.com/heidrun-org/heidrun_code/issues/662">issue 662</a> (macOS only). All 12 issues of the feature are closed, all 9 pull requests are merged, and no open issue or open pull request is about voice input. <span class="kind interpretation">interpretation</span></p>
+
+    <h2>2. What the feature is</h2>
+    <p>Voice input changes the speech of the developer into text on the computer, with a Whisper model. The developer holds the push-to-talk button of a composition bar (or clicks it to start and clicks it again to stop), and the text goes at the end of the text of that composition bar. Heidrun Code never sends the text by itself. <span class="kind fact">fact</span> (<code>docs/agents_rules/glossary/voice_input.md</code>)</p>
+    <ul>
+      <li><code>packages/auxiliary/voice_input/</code>: the Rust library that records the microphone with <code>cpal</code>, downloads a Whisper model, transcribes with <code>whisper-rs</code>, and replaces the words of the word replacement list (<code>replace_words</code>). It knows nothing about Tauri.</li>
+      <li><code>packages/apps/desktop_tauri/src/voice_commands.rs</code>: the seven Tauri commands <code>voice_options</code>, <code>voice_download_model</code>, <code>voice_start_recording</code>, <code>voice_cancel_recording</code>, <code>voice_stop_recording</code>, <code>voice_transcribe_recording</code>, <code>voice_discard_recording</code>. <code>voice_words.rs</code> holds the four commands of the word replacement list.</li>
+      <li><code>packages/apps/web_frontend/src/</code>: <code>lib/voice_input.ts</code>, <code>stores/voice_input.ts</code>, <code>lib/voice_words.ts</code>, <code>stores/voice_words.ts</code>, <code>components/PushToTalkButton.vue</code>, <code>components/VoiceLevel.vue</code>, <code>components/VoiceRecordingIcon.vue</code>, <code>components/settings/SettingsVoiceInputSection.vue</code>, <code>components/settings/SettingsVoiceWordsEditor.vue</code>.</li>
+      <li><code>packages/auxiliary/heidrun_code_ctrl/</code>: the file <code>voice_words.json</code> and the command line <code>heidrun_code_ctrl voice_words</code>.</li>
+      <li>Rules: <code>docs/agents_rules/user_interface/window/settings_voice_input.md</code>, <code>settings_voice_words.md</code>, and <code>docs/agents_rules/user_interface/workspaces_tabs_and_panes/voice_input_across_panes.md</code>.</li>
+    </ul>
+    <p>The feature is larger than "rather simple": about 2762 lines in the main source files, 37 commits, and 3 rule files. <span class="kind fact">fact</span> (line count of the files above; commit search below)</p>
+
+    <h2>3. Purpose</h2>
+    <p>The developer rarely types a prompt. The usual workflow is: take a screenshot, attach it, push to talk, press Enter. <span class="kind fact">fact</span> (chat session <code>68548d91-1a57-4b3b-b3b2-3e6b64663ad5</code>, first message, 18 October 2026)</p>
+    <p><a href="https://github.com/heidrun-org/heidrun_code/issues/662">Issue 662</a> asks: "The developer holds a button, speaks, and releases the button. Heidrun changes the speech into text on the computer of the developer, with a Whisper model. The text goes into the composition bar. The feature is optional, and it is off at first." The speech never leaves the computer; only the model download uses the network. <span class="kind fact">fact</span></p>
+
+    <h2>4. Current behavior</h2>
+    <p>From the source files and the rule files of commit <a href="https://github.com/heidrun-org/heidrun_code/commit/5f27a256913c0b9cb8f88957456117e78eff8488">5f27a25</a>: <span class="kind fact">fact</span></p>
+    <ul>
+      <li>The switch "Enable voice input" in the Voice input section of the Settings window is off at first (<code>voiceInput: false</code> in <code>stores/settings.ts</code>). When the switch is off, there is no push-to-talk button, no download, and no microphone.</li>
+      <li>The section offers 20 languages plus "Detect the language", and 12 Whisper models. The first model is <code>base</code> (<code>DEFAULT_MODEL_ID</code> in <code>models.rs</code>), because <code>tiny</code> heard one short sentence wrong. The model downloads into the folder <code>models</code> as <code>&lt;file&gt;.part</code>, then gets its final name.</li>
+      <li>A press of 0.3 second or more is push to talk; a shorter press is a click that keeps the recording until the next press (<code>LONG_PRESS_MILLISECONDS = 300</code> in <code>lib/voice_input.ts</code>). A recording is never longer than 300 seconds (<code>MAXIMUM_SECONDS</code> in <code>recording.rs</code>).</li>
+      <li>The level bars show the last 2 seconds of the voice (40 bars, one each 50 milliseconds) and the recording time. A small X button cancels recording, the wait, or transcription.</li>
+      <li>One microphone for all panes. A press in another composition bar while one records starts nothing and shows a notification with the tab and the workspace. The recordings wait in one queue for Whisper: orange level bars while waiting, green during transcription. A red microphone icon shows on the tab button and on the workspace buttons while the microphone records. A switch of tab or workspace never stops a recording.</li>
+      <li>"Send" and the key Enter stop a recording, wait for its text, then send.</li>
+      <li>The word replacement list (<code>voice_words.json</code>) replaces whole words, ignores the case, lets the longest entry win, and repeats the passes until nothing changes (at most 10 passes).</li>
+      <li>The logs of whisper.cpp go to <code>logs/whisper.log</code>; the application log records the recording, the transcription, and the model download, without the spoken text.</li>
+    </ul>
+    <p><strong>Test results on 26 October 2026:</strong></p>
+    <ul>
+      <li><code>pnpm --filter voice_input test:fast</code>: 60 passed, 0 failed, 1 ignored (the live microphone test, which runs only by hand by design). <span class="kind fact">fact</span></li>
+      <li>The Vitest tests of the web page did not load in the main checkout: "Cannot find dependency 'happy-dom'". The main checkout needs <code>pnpm install</code>. I did not run it, because the report changes no file. <span class="kind fact">fact</span></li>
+      <li>The newest chat session reports 4187 web page tests and 9 Rust voice command tests passed in the worktree of pull request 917. <span class="kind fact">fact</span> (chat session <code>3f0ead7b-2cdd-48dd-97b6-2261955e50b5</code>, 26 October 2026 10:06 UTC)</li>
+    </ul>
+
+    <h2>5. History</h2>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>Date (UTC)</th><th>Record</th><th>What happened</th></tr></thead>
+      <tbody>
+        <tr><td>2026-10-11 16:35</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/238">Issue 238</a></td><td>Voice input with the external application voice_to_keyboard. Closed as not planned on 13 October: "Voice input is another product, so it does not belong in Heidrun."</td></tr>
+        <tr><td>2026-10-18 00:08</td><td>Chat session <code>68548d91</code></td><td>The developer redesigns the input around screenshots and push to talk; the composition bar is born (issue 637). Push to talk is first out of scope. Reason for the change of mind from issue 238: reason unknown. <span class="kind unknown">unknown</span></td></tr>
+        <tr><td>2026-10-18 00:28</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/662">Issue 662</a></td><td>Push-to-talk voice input with a local Whisper model, recording in Rust. Decision: macOS only; Windows and Linux later, after live tests.</td></tr>
+        <tr><td>2026-10-18 00:33</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/663">Issue 663</a></td><td>A second issue (Codex chat session <code>01a14c68</code>) asking for macOS, Windows, and Linux. Closed as a duplicate of issue 662.</td></tr>
+        <tr><td>2026-10-18 02:57</td><td><a href="https://github.com/heidrun-org/heidrun_code/pull/668">Pull request 668</a>, <a href="https://github.com/heidrun-org/heidrun_code/commit/2d9acbb566264629aef46b12aa67bd9e1908cdfa">2d9acbb</a></td><td>First implementation, with 11 added requests: long press and click, level bars, Whisper logs in a file, toggle button in the header. Measures: <code>tiny</code> 0.22 second, <code>base</code> 0.39 second, <code>small</code> 1.2 seconds for 4.9 seconds of speech.</td></tr>
+        <tr><td>2026-10-18 03:37</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/670">Issue 670</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/671">pull request 671</a></td><td>The release build failed: whisper.cpp needs macOS 10.15. Minimum macOS version set to 11.0.</td></tr>
+        <tr><td>2026-10-18 03:46</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/669">Issue 669</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/672">pull request 672</a>, <a href="https://github.com/heidrun-org/heidrun_code/commit/e9e23ddc5ab6f3151c7e28768b4224909e8aa759">e9e23dd</a></td><td>The composition bar stays open after Send; the push-to-talk button is the last control at the right.</td></tr>
+        <tr><td>2026-10-19 02:31</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/712">Issue 712</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/718">pull request 718</a>, <a href="https://github.com/heidrun-org/heidrun_code/commit/64dff8fc1f30cdf33cd8fd0657be7d2ee4b433f3">64dff8f</a></td><td>Each pane keeps its own composition bar and draft; voice input keeps one shared recorder and writes to the composition bar that started the recording.</td></tr>
+        <tr><td>2026-10-19 16:24</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/736">Issue 736</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/740">pull request 740</a>, <a href="https://github.com/heidrun-org/heidrun_code/commit/f7bd4133028e9916b7456ceb0b8685e8e9d2230f">f7bd413</a></td><td>The small X button cancels recording or transcription.</td></tr>
+        <tr><td>2026-10-21 08:45</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/753">Issue 753</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/766">pull request 766</a>, <a href="https://github.com/heidrun-org/heidrun_code/commit/695d932d9b20283e4d1faf7c4ac66ecce9d9ae61">695d932</a></td><td>A notification when voice input is in use in another pane.</td></tr>
+        <tr><td>2026-10-23 11:04</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/820">Issue 820</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/823">pull request 823</a>, <a href="https://github.com/heidrun-org/heidrun_code/commit/33fa517f4c1d378a0bb6f1e4a0702b9b0d929aea">33fa517</a></td><td>A green sine wave across flat level bars during transcription. Voice input is in the release 0.3.0 (<a href="https://github.com/heidrun-org/heidrun_code/commit/2d538bd88cd0a1d652f16ae4f2061b3b859cfec6">2d538bd</a>, <code>docs/release_notes/v0.3.0.md</code>).</td></tr>
+        <tr><td>2026-10-23 15:59</td><td><a href="https://github.com/heidrun-org/heidrun_code/commit/1c5a10aa05213d80069b166342db6daef1e93a34">1c5a10a</a> (issue 826)</td><td>The tests with the real model <code>tiny</code> become slow tests (<code>test:slow</code>).</td></tr>
+        <tr><td>2026-10-23 17:19</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/836">Issue 836</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/840">pull request 840</a>, <a href="https://github.com/heidrun-org/heidrun_code/commit/cda53761d1f09efe4e8576ae163c070e54532051">cda5376</a></td><td>The word replacement list. Decision changed during the work: a replacement is matched again ("Could you apply it until nobody match?"), with a limit of 10 passes so it cannot loop.</td></tr>
+        <tr><td>2026-10-23 18:51</td><td><a href="https://github.com/heidrun-org/heidrun_code/commit/80713dc1f56687073759726b6c3fcb43d67f3b79">80713dc</a> (issue 843)</td><td>Rename of Heidrun into Heidrun Code in the texts and packages, voice input files included.</td></tr>
+        <tr><td>2026-10-25 15:56</td><td><a href="https://github.com/heidrun-org/heidrun_code/pull/884">Pull request 884</a>, <a href="https://github.com/heidrun-org/heidrun_code/commit/e20e589a98afe83f369f871d261abd345188f5e9">e20e589</a></td><td>The application log records the five events of voice input, without the spoken text.</td></tr>
+        <tr><td>2026-10-26 06:06</td><td><a href="https://github.com/heidrun-org/heidrun_code/pull/909">Pull request 909</a>, <a href="https://github.com/heidrun-org/heidrun_code/commit/d09f868173ee6338fd163a30daaa552d486c786d">d09f868</a></td><td>The application log records the Whisper model download.</td></tr>
+        <tr><td>2026-10-26 10:26</td><td><a href="https://github.com/heidrun-org/heidrun_code/issues/762">Issue 762</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/868">issue 868</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/917">pull request 917</a>, <a href="https://github.com/heidrun-org/heidrun_code/commit/d237c0806863a83699393d4e79a43c2df716de30">d237c08</a>, merge <a href="https://github.com/heidrun-org/heidrun_code/commit/f5dc5afec2ede3ddc9a4a40c0ea154f36989f2de">f5dc5af</a></td><td>Voice input across tabs and workspaces: the queue of transcriptions, the "waiting" state in orange, the notification with tab and workspace, the recording icon. Decision: a press in tab B while tab A records only shows a notification, because stopping tab A was "too much like black magic" (chat session <code>3f0ead7b</code>).</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h2>6. Open work</h2>
+    <ul>
+      <li>No open issue and no open pull request about voice input. <span class="kind fact">fact</span> (keyword search of the tables <code>issues</code> and <code>pull_requests</code>)</li>
+      <li>No <code>TODO</code>, no <code>FIXME</code>, and no skipped test in the files of the feature. The only ignored test is the live microphone test of <code>recording.rs</code>, ignored by design. <span class="kind fact">fact</span></li>
+      <li>Out of scope by decision, with no issue: a keyboard shortcut instead of the button, typing the text into another application, and an operating system other than macOS (<code>settings_voice_input.md</code>, section "Not in this feature"). <span class="kind fact">fact</span></li>
+      <li>A possible second step named in issue 836, with no issue: give the words of the word replacement list to Whisper as a hint before the transcription. <span class="kind fact">fact</span></li>
+      <li>The real macOS microphone permission prompt in the Heidrun Code window was not tested by the coding agent in chat session <code>68548d91</code>: "It needs your click." The developer used voice input after that (issues 762 and 820 show recordings), so the permission most likely works in development. <span class="kind interpretation">interpretation</span> Whether the permission works in a signed release build: <span class="kind unknown">unknown</span>.</li>
+      <li>Related, not part of this feature: <a href="https://github.com/heidrun-org/heidrun_code/issues/922">issue 922</a> (open) names the microphone button of Heidrun Code Mobile as a weak point of security. That button uses the speech recognition of the browser of the phone, not Whisper.</li>
+    </ul>
+
+    <h2>7. Where to start again</h2>
+    <p>The last work is pull request 917, merged into <code>dev_jerome</code> on 26 October 2026 at 10:26 UTC, which closed issues 762 and 868. The developer tested it in the running application ("Okay it works"). <span class="kind fact">fact</span> (chat session <code>3f0ead7b-2cdd-48dd-97b6-2261955e50b5</code>)</p>
+    <p>No record names a next step for voice input. <span class="kind fact">fact</span></p>
+
+    <h2>8. Not checked</h2>
+    <ul>
+      <li>The Vitest tests of the web page: they do not load in the main checkout (missing <code>happy-dom</code>).</li>
+      <li>The slow tests (<code>pnpm --filter voice_input test:slow</code>), which use the real model <code>tiny</code>.</li>
+      <li>Branches and worktrees: the rules of <code>testbed_folder/AGENTS.md</code> allow only <code>heidrun_data</code> as a data source, so I did not run <code>git branch</code> or <code>git worktree list</code>. The merged worktree of pull request 917 was deleted (chat session <code>3f0ead7b</code>).</li>
+      <li>The search of issues and pull requests was by keyword only: "voice", "whisper", "microphone", "push-to-talk", "speech", "level bars", then the linked numbers.</li>
+      <li>Commits: only the commits since 17 October 2026 (312 commits) were read, with their files; 37 change a file of voice input.</li>
+      <li>Chat sessions: 29 found through the link tables and the file table. I read 3f0ead7b, 68548d91, c7e08108, and 08844f10; the others only by title. A chat session that started in a worktree is not in the table <code>chat_sessions</code>.</li>
+    </ul>
+
+    <h2>9. Sources</h2>
+    <ul>
+      <li>Issues: <a href="https://github.com/heidrun-org/heidrun_code/issues/238">238</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/662">662</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/663">663</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/669">669</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/670">670</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/712">712</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/736">736</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/753">753</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/762">762</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/820">820</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/836">836</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/868">868</a>, <a href="https://github.com/heidrun-org/heidrun_code/issues/922">922</a> (related).</li>
+      <li>Pull requests: <a href="https://github.com/heidrun-org/heidrun_code/pull/668">668</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/671">671</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/672">672</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/718">718</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/740">740</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/766">766</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/823">823</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/840">840</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/884">884</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/909">909</a>, <a href="https://github.com/heidrun-org/heidrun_code/pull/917">917</a>.</li>
+      <li>Chat sessions: <code>68548d91-1a57-4b3b-b3b2-3e6b64663ad5</code>, <code>01a14c68-a21e-7752-955c-2bc775ffbd01</code>, <code>08844f10-8c3c-4ae6-8944-10a0c3d13622</code>, <code>c7e08108-bb60-4a3d-804f-fb90e26d21a6</code>, <code>3f0ead7b-2cdd-48dd-97b6-2261955e50b5</code>.</li>
+      <li>Source files: the files named in section 2, in commit <a href="https://github.com/heidrun-org/heidrun_code/commit/5f27a256913c0b9cb8f88957456117e78eff8488">5f27a25</a> of <code>dev_jerome</code>.</li>
+      <li>Calculation: the records come from <code>heidrun_data query</code>, <code>read issue</code>, <code>read pull_request --no-diff</code>, <code>read commit --no-diff</code>, and <code>read chat_session</code> on <code>databases/heidrun_code.sqlite</code>. The commit list keeps each commit whose files match <code>voice</code>, <code>whisper</code>, <code>PushToTalk</code>, <code>VoiceLevel</code>, or <code>VoiceRecording</code>.</li>
+    </ul>
+  </main>
+</body>
+</html>
