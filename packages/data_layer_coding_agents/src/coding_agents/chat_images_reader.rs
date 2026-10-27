@@ -14,14 +14,12 @@ use std::path::{Path, PathBuf};
 use std::time::SystemTime;
 
 /// The images of the chat session `session_id` of Claude Code, from its file `<projects>/<folder name>/<session id>.jsonl`.
-/// `images` holds only the images whose number is above `after_number`, and `numbers` holds every number. When two files
-/// have the same chat session identifier (Claude Code copies a resumed chat into another project folder), the file that
-/// changed last is read. An identifier that is not a chat session identifier, or a chat session with no file, gives an
-/// empty list.
-pub fn read_chat_images(projects: &Path, session_id: &str, after_number: u32) -> ChatImageList {
-    let Some(path) = find_session_file(projects, session_id) else {
-        return ChatImageList::default();
-    };
+/// The key of an image is its number. `images` holds only the images whose key is above `after_key`, and `keys` holds every
+/// key. When two files have the same chat session identifier (Claude Code copies a resumed chat into another project folder),
+/// the file that changed last is read. An identifier that is not a chat session identifier, or a chat session with no file,
+/// gives `None`.
+pub fn read_chat_images(projects: &Path, session_id: &str, after_key: u32) -> Option<ChatImageList> {
+    let path = find_session_file(projects, session_id)?;
     let mut found: BTreeMap<u32, (String, String)> = BTreeMap::new();
     read_lines_from(&path, 0, |line| {
         if line.contains("\"imagePasteIds\"") == false {
@@ -32,17 +30,17 @@ pub fn read_chat_images(projects: &Path, session_id: &str, after_number: u32) ->
             found.insert(number, (media_type, data));
         }
     });
-    let numbers = found.keys().copied().collect();
+    let keys = found.keys().copied().collect();
     let images = found
         .into_iter()
-        .filter(|(number, _)| *number > after_number)
-        .map(|(number, (media_type, data))| ChatImage { number, media_type, data })
+        .filter(|(number, _)| *number > after_key)
+        .map(|(number, (media_type, data))| ChatImage { key: number, number, message: None, media_type, data })
         .collect();
-    ChatImageList { numbers, images }
+    Some(ChatImageList { keys, images })
 }
 
 /// True when `session_id` has only the characters of a chat session identifier, so it cannot name another file.
-fn is_session_id(session_id: &str) -> bool {
+pub fn is_session_id(session_id: &str) -> bool {
     session_id.is_empty() == false && session_id.chars().all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_')
 }
 
@@ -130,8 +128,9 @@ mod tests {
         ]
         .join("\n");
         write_file(&projects.join("-work-app").join("chat-1.jsonl"), &format!("{text}\n"), 10);
-        let list = read_chat_images(&projects, "chat-1", 0);
-        assert_eq!(list.numbers, vec![1, 2, 6, 7]);
+        let list = read_chat_images(&projects, "chat-1", 0).unwrap();
+        assert_eq!(list.keys, vec![1, 2, 6, 7]);
+        assert!(list.images.iter().all(|image| image.key == image.number && image.message.is_none()));
         assert_eq!(data_of(&list), vec![(1, "AAA"), (2, "BBB"), (6, "FFF"), (7, "GGG")]);
         assert_eq!(list.images[0].media_type, "image/png");
     }
@@ -141,8 +140,8 @@ mod tests {
         let projects = temp_folder("chat_images_after").join("projects");
         let text = [image_line(&[(1, "AAA")]), image_line(&[(2, "BBB")]), image_line(&[(3, "CCC")])].join("\n");
         write_file(&projects.join("-work-app").join("chat-1.jsonl"), &format!("{text}\n"), 10);
-        let list = read_chat_images(&projects, "chat-1", 2);
-        assert_eq!(list.numbers, vec![1, 2, 3]);
+        let list = read_chat_images(&projects, "chat-1", 2).unwrap();
+        assert_eq!(list.keys, vec![1, 2, 3]);
         assert_eq!(data_of(&list), vec![(3, "CCC")]);
     }
 
@@ -154,7 +153,7 @@ mod tests {
         let subagent = image_line(&[(8, "HHH")]).replacen("{\"type\":\"user\",", "{\"type\":\"user\",\"isSidechain\":true,", 1);
         let text = [without_numbers.to_string(), wrong_length, subagent, image_line(&[(1, "AAA")])].join("\n");
         write_file(&projects.join("-work-app").join("chat-1.jsonl"), &format!("{text}\n"), 10);
-        let list = read_chat_images(&projects, "chat-1", 0);
+        let list = read_chat_images(&projects, "chat-1", 0).unwrap();
         assert_eq!(data_of(&list), vec![(1, "AAA")]);
     }
 
@@ -163,16 +162,16 @@ mod tests {
         let projects = temp_folder("chat_images_two_files").join("projects");
         write_file(&projects.join("-work-app").join("chat-1.jsonl"), &format!("{}\n", image_line(&[(1, "OLD")])), 100);
         write_file(&projects.join("-work-other").join("chat-1.jsonl"), &format!("{}\n", image_line(&[(1, "NEW")])), 10);
-        assert_eq!(data_of(&read_chat_images(&projects, "chat-1", 0)), vec![(1, "NEW")]);
+        assert_eq!(data_of(&read_chat_images(&projects, "chat-1", 0).unwrap()), vec![(1, "NEW")]);
     }
 
     #[test]
-    fn gives_an_empty_list_for_an_unknown_chat_session_and_for_an_identifier_that_names_another_file() {
+    fn gives_nothing_for_an_unknown_chat_session_and_for_an_identifier_that_names_another_file() {
         let projects = temp_folder("chat_images_unknown").join("projects");
         write_file(&projects.join("-work-app").join("chat-1.jsonl"), &format!("{}\n", image_line(&[(1, "AAA")])), 10);
-        assert_eq!(read_chat_images(&projects, "chat-2", 0), ChatImageList::default());
-        assert_eq!(read_chat_images(&projects, "../-work-app/chat-1", 0), ChatImageList::default());
-        assert_eq!(read_chat_images(&projects, "", 0), ChatImageList::default());
-        assert_eq!(read_chat_images(&projects.join("nothing"), "chat-1", 0), ChatImageList::default());
+        assert_eq!(read_chat_images(&projects, "chat-2", 0), None);
+        assert_eq!(read_chat_images(&projects, "../-work-app/chat-1", 0), None);
+        assert_eq!(read_chat_images(&projects, "", 0), None);
+        assert_eq!(read_chat_images(&projects.join("nothing"), "chat-1", 0), None);
     }
 }
