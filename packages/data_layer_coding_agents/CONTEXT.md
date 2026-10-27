@@ -1,7 +1,7 @@
 # Directory Context: `/packages/data_layer_coding_agents`
 
 ## Purpose
-Reads Claude Code and Codex chat sessions and coding agent configuration into SQLite. Stores minute token usage and model prices, and calculates estimated costs. Desktop callers use `refresh_*` and `find_*`. `find_chat_images` gives the images of one chat of Claude Code, read from its chat session file at each call.
+Reads Claude Code and Codex chat sessions and coding agent configuration into SQLite. Stores minute token usage and model prices, and calculates estimated costs. Desktop callers use `refresh_*` and `find_*`. `find_chat_images` gives the images of one chat of Claude Code or of Codex, read from its chat session file at each call.
 
 ## Key Exports & Entry Points
 - `src/lib.rs`: the only public interface; its `pub use` lines list the readers, databases, synchronization and query functions, schemas, and data types.
@@ -11,7 +11,7 @@ Reads Claude Code and Codex chat sessions and coding agent configuration into SQ
 - `src/storage/`: the SQLite file, and the text form of the rows of a query — see its own CONTEXT.md.
 - `src/pricing/`: the price list of the models, and the calculation of a cost — see its own CONTEXT.md.
 - `src/model/`: the data types, and the JSON schema check — see its own CONTEXT.md.
-- `src/chat_images.rs`: `find_chat_images`, the images behind each text `[Image #N]` of a chat of Claude Code.
+- `src/chat_images.rs`: `find_chat_images`, the images behind each text `[Image #N]` of a chat of Claude Code or of Codex, and `find_codex_chat_id`, the Codex chat that a terminal shows.
 - `src/repository_finder.rs`: repository root and `owner/name`.
 - `src/synchronization.rs`: `initialize` and `update` for configuration and tokens.
 - `schemas/`: validates each table with a `data` column.
