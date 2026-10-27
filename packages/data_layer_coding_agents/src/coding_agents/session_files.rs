@@ -149,6 +149,16 @@ pub fn find_codex_session_files(cache: &mut ScanCache, home: &Path, folder: &str
     files
 }
 
+/// The chat session file of Codex whose identifier is `id`, in `home`. The file that is not compressed wins over the
+/// compressed one. `None` when no file has this identifier.
+pub fn find_codex_session_file(home: &Path, id: &str) -> Option<PathBuf> {
+    let mut rollouts = Vec::new();
+    collect_rollouts(&home.join("sessions"), 0, &mut rollouts);
+    rollouts.retain(|path| codex_id(path).as_deref() == Some(id));
+    rollouts.sort_by_key(|path| is_compressed(path));
+    rollouts.into_iter().next()
+}
+
 /// The titles of the index of Codex in `home`, by identifier. When an identifier is there twice, the last line wins.
 pub fn read_codex_titles(home: &Path) -> HashMap<String, String> {
     let mut titles = HashMap::new();
@@ -383,6 +393,21 @@ mod tests {
         assert_eq!(exactly.iter().map(|file| file.id.as_str()).collect::<Vec<_>>(), vec![old]);
         assert_eq!(files[1].path.extension().and_then(|extension| extension.to_str()), Some("jsonl"));
         assert_eq!(cache.codex_folder_count(), 4);
+    }
+
+    #[test]
+    fn finds_the_file_of_codex_of_one_identifier_and_prefers_the_file_that_is_not_compressed() {
+        let directory = temp_folder("find_codex_one");
+        let both = "01a12c31-175b-7513-b12c-bba764f46420";
+        let old = "01a12c31-175b-7513-b12c-bba764f46421";
+        codex_compressed_file(&directory, "2026/10/08", both, "/work/app", &[], 50);
+        codex_file(&directory, "2026/10/09", both, "/work/app", &[], 40);
+        codex_compressed_file(&directory, "2026/09/25", old, "/work/app", &[], 100);
+        let found = find_codex_session_file(&directory, both).unwrap();
+        assert_eq!(found.extension().and_then(|extension| extension.to_str()), Some("jsonl"));
+        assert_eq!(codex_id(&find_codex_session_file(&directory, old).unwrap()).as_deref(), Some(old));
+        assert_eq!(find_codex_session_file(&directory, "01a12c31-175b-7513-b12c-bba764f46499"), None);
+        assert_eq!(find_codex_session_file(&directory.join("missing"), both), None);
     }
 
     #[test]
