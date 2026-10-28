@@ -15,9 +15,9 @@ The skill names no detail of this repository: it reads the values of this reposi
 ### Issue Fix Workflow values
 
 - Target branch: `main`
-- Worktree creation command: `git fetch && git worktree add ../heidrun_data_<branch name> -b <branch name> origin/main`
-- Worktree folder: `../heidrun_data_<branch name>`, next to the main checkout
-- Launch command: `cd <worktree folder> && pnpm install && pnpm build && ./target/debug/heidrun_data --help` (the build of the worktree is in its own folder `target`, so it does not change the build of the main checkout)
+- Worktree creation command: `git fetch && git worktree add .agents/worktrees/<branch name> -b <branch name> origin/main`, run at the root of the main checkout.
+- Worktree folder: `.agents/worktrees/<branch name>`, inside the main checkout. Git ignores the folder `.agents/worktrees`.
+- Launch command: `cd .agents/worktrees/<branch name> && pnpm install && pnpm build && ./target/debug/heidrun_data --help` (the build of the worktree is in its own folder `target`, so it does not change the build of the main checkout)
 - Issue tracker commands: this repository is on GitHub, so use the `gh` command. The matching `glab` commands for GitLab are in [github_and_gitlab_support.md](docs/agents_rules/github_and_gitlab_support.md).
   - Read an issue: `gh issue view <number> --comments`
   - Comment on an issue: `gh issue comment <number> --body-file <file>`

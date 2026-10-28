@@ -9,3 +9,5 @@ target
 
 # Log files
 *.log
+
+.agents/worktrees/
