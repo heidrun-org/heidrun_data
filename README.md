@@ -4,6 +4,10 @@ This repository holds the data layer packages of Heidrun Organization.
 
 The packages come from the folder `packages/data_layers` of the repository [heidrun_code](https://github.com/heidrun-org/heidrun_code). The packages move here in a separate issue.
 
+## Requirement: no AI in the code
+
+The code of this repository never calls an AI model. It reads, stores, and queries data with ordinary code only. The only network read about AI is the download of the price list of AI models from [LiteLLM](https://github.com/BerriAI/litellm), to estimate the cost of the chat sessions.
+
 ## pnpm workspace
 
 This repository is a pnpm workspace. Each package is a subfolder of the folder `packages`.
