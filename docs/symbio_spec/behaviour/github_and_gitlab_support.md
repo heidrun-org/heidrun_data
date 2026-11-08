@@ -1,10 +1,10 @@
 # Rule: every support for GitHub is also a support for GitLab
 
 - Created: 25 October 2026
-- Last updated: 25 October 2026
+- Last updated: 8 November 2026
 - Status: Maintained rules for agents and tools
-- Related framing: [Project instructions](../../AGENTS.md)
-- Related rules: [Glossary of heidrun_data](glossary/index.md)
+- Related framing: [Project instructions](../../../AGENTS.md)
+- Related rules: [Glossary of heidrun_data](../glossary/index.md)
 - Related issue: [issue 10](https://github.com/heidrun-org/heidrun_data/issues/10)
 
 This file gives the rule for every coding agent that writes a `gh` command or adds support for GitHub. A Git repository is on one of two Git hosting services: GitHub or GitLab. `gh` is the command line tool of GitHub. `glab` is the command line tool of GitLab. The repository heidrun_data is on GitHub, but its skills are copied to repositories on GitLab.

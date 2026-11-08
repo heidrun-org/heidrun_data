@@ -7,7 +7,7 @@ description: Create an issue on GitHub with the gh command, or on GitLab with th
 
 ## GitHub and GitLab Issue Creation
 
-Every command for GitHub in this section has a matching command for GitLab, as [docs/agents_rules/github_and_gitlab_support.md](docs/agents_rules/github_and_gitlab_support.md) requires. This repository is on GitHub, so use the `gh` command here. Use the `glab` command only for a repository on GitLab.
+Every command for GitHub in this section has a matching command for GitLab, as [docs/symbio_spec/behaviour/github_and_gitlab_support.md](docs/symbio_spec/behaviour/github_and_gitlab_support.md) requires. This repository is on GitHub, so use the `gh` command here. Use the `glab` command only for a repository on GitLab.
 
 ### Creating an issue
 

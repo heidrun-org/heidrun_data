@@ -5,7 +5,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * A file of the agent rules that is larger than the maximum size.
+ * A Symbiospec file that is larger than the maximum size.
  */
 export type TooLargeFile = {
 	/** The absolute path of the file. */

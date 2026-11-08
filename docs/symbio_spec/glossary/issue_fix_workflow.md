@@ -1,7 +1,7 @@
 # Glossary of heidrun_data: the Issue Fix Workflow
 
 - Created: 25 October 2026
-- Last updated: 25 October 2026
+- Last updated: 8 November 2026
 - Status: Maintained glossary for agents and tools
 - Related framing: [Project instructions](../../../AGENTS.md)
 - Related rules: [Glossary of heidrun_data](index.md), [Skill: the Issue Fix Workflow](../../../.agents/skills/issue_fix_workflow/SKILL.md)

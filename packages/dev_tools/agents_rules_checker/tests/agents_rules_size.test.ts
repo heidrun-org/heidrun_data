@@ -8,14 +8,14 @@ const __dirname = import.meta.dirname;
 
 const repositoryPath = Path.resolve(__dirname, '..', '..', '..', '..');
 const agentsFilePath = Path.join(repositoryPath, 'AGENTS.md');
-const agentsRulesPath = Path.join(repositoryPath, 'docs', 'agents_rules');
+const agentsRulesPath = Path.join(repositoryPath, 'docs', 'symbio_spec');
 
 describe('AgentsRulesSize', () => {
 	afterEach(() => {
 		TemporaryFolder.removeAll();
 	});
 
-	describe('the real agent rules', () => {
+	describe('the real Symbiospec documents', () => {
 		it('has no file larger than the maximum size that AGENTS.md gives', () => {
 			const maximumSizeInBytes = AgentsRulesSize.readMaximumSizeInBytes(agentsFilePath);
 			expect(AgentsRulesSize.findTooLargeFiles(agentsRulesPath, maximumSizeInBytes)).toEqual([]);
@@ -33,7 +33,7 @@ describe('AgentsRulesSize', () => {
 			const temporaryAgentsFilePath = Path.join(TemporaryFolder.create(), 'AGENTS.md');
 			Fs.writeFileSync(
 				temporaryAgentsFilePath,
-				'### Docs folder agents rules system values\n\n- Maximum size of a file: 1234 bytes.\n',
+				'### Specifications and glossary\n\n- Maximum size of a file: 1234 bytes.\n',
 			);
 			expect(AgentsRulesSize.readMaximumSizeInBytes(temporaryAgentsFilePath)).toBe(1234);
 		});

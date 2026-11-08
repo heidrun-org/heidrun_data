@@ -6,5 +6,5 @@
 | [docs_folder_system](../skills/docs_folder_system/SKILL.md) | Add, change, rename, move, or delete documentation in docs | Static rule | [config.md](docs_folder_system/config.md) |
 | [jerome-typescript-javascript-style](../skills/jerome-typescript-javascript-style/SKILL.md) | Create or edit TypeScript or JavaScript files | Static rule | none |
 | [jerome-rust-style](../skills/jerome-rust-style/SKILL.md) | Create or edit Rust source files | Static rule | none |
-
-Symbiospec and Repo Folders Constraints are installed but not configured or active. Configure each through The Rules of the Repo with the developer in a later task, before adding its row. Do not infer approved product requirements or folder constraints from installation.
+| [repo_folders_constraints](../skills/repo_folders_constraints/SKILL.md) | Add files; create, move, rename or delete folders or packages; change package dependencies, required technologies or folder workflows | Living rule with human approval | [config.md](repo_folders_constraints/config.md) |
+| [symbio_spec](../skills/symbio_spec/SKILL.md) | Product changes, initialization, specification updates and comparisons with implementation and tests | Living rule with human approval | none |
