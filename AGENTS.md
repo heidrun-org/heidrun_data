@@ -50,7 +50,3 @@ Before changing code, read the [glossary index](docs/symbio_spec/glossary/index.
 Update affected rules and glossary entries in the same change. Keep each Symbiospec file within the maximum size below; split larger files by topic and update the index. Run `pnpm --filter agents_rules_checker test` after specification changes. Follow `docs_folder_system` for documentation changes.
 
 - Maximum size of a file: 10000 bytes.
-
-## Git Cleanup Adviser
-
-The Git Cleanup Adviser reviews the Git branches and the worktrees, and reports which ones appear safe to remove, with evidence. It gives advice only, and removes no branch and no worktree. The destination branch is `main`. Read the skill [git_cleanup_adviser](.agents/skills/git_cleanup_adviser/SKILL.md) when the developer asks which branches or worktrees can be removed.
