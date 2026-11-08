@@ -26,16 +26,12 @@ The Docs folder system gives each file and each folder the same form, so that a 
 
 ## Configuration
 
-The skill `docs_folder_system` names no detail of one repository. The receiving project writes its values in the section "Docs folder system values" of its file `AGENTS.md`:
+The skill `docs_folder_system` names no detail of one repository. The receiving project supplies its values through The Rules of the Repo configuration, or through the section "Docs folder system values" of its file `AGENTS.md`:
 
 - Documentation folder
 - Files with no metadata header
 
 The section "The template" of [SKILL.md](SKILL.md) gives the text to copy. When a value is missing, the coding agent does not change the documentation folder: the coding agent warns the developer, shows the template, and offers to propose the values.
-
-## Related skill
-
-The skill [docs_folder_agents_rules_system](../docs_folder_agents_rules_system/README.md) needs the skill `docs_folder_system`. The skill `docs_folder_system` gives the form of the files. The skill `docs_folder_agents_rules_system` gives what to do with the agent rules and the glossary.
 
 ## Install
 

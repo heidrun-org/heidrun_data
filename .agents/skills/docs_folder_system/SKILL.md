@@ -9,14 +9,14 @@ The documentation folder of a repository belongs to the coding agents: a coding 
 
 ## The values of the repository
 
-Read the section "Docs folder system values" of the file `AGENTS.md` before you change the documentation folder. The section gives these values:
+Before you change the documentation folder, read the configuration file supplied by the caller, for example The Rules of the Repo. When the caller supplies no configuration file, read the section "Docs folder system values" of the file `AGENTS.md`. The configuration gives these values:
 
 - Documentation folder: the folder that holds the documentation, for example `docs`.
 - Files with no metadata header: each file of the documentation folder that has no metadata header, with the reason. The value is "none" when every file has the header.
 
 ### When the values are missing
 
-When the section is missing, or when one value is missing, do these steps, in this order:
+When the supplied configuration file is missing, or when no configuration file is supplied and the section is missing, or when one value is missing, do these steps, in this order:
 
 1. Do not change the documentation folder.
 2. Warn the developer in one short message: "The docs folder system is not configured in this repository." Then list the missing values, one value on each line.
