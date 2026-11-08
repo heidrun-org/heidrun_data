@@ -1,0 +1,5 @@
+{
+  "source": "jeromeetienne/coding_agent_plugin",
+  "skill_id": "symbio_spec_to_docs",
+  "folder_url": "https://github.com/jeromeetienne/coding_agent_plugin/tree/main/skills/symbio_spec_to_docs"
+}
