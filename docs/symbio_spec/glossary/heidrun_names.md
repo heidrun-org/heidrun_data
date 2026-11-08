@@ -29,7 +29,7 @@ The application for project management and note taking. Its identifier is `heidr
 
 ## 5. The command line tool heidrun_data
 
-The one command line tool of the package `packages/heidrun_data`. It gives a coding agent the data of the four data layer packages in one SQLite file.
+The one command line tool of the package `packages/apps/heidrun_data`. It gives a coding agent the data of the four data layer packages in one SQLite file.
 
 ## 6. Official name and identifier
 

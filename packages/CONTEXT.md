@@ -1,21 +1,16 @@
 # Directory Context: `/packages`
 
 ## Purpose
-The data layer packages of Heidrun Code. Each package reads the facts of one source into tables of a SQLite file, in the mode initialize or update, and runs read-only SQL queries on them.
+Holds the product packages and developer tools of Heidrun Data, grouped by responsibility.
 
 ## Key Exports & Entry Points
-- `data_layer_code_hosting/`: a Rust library and a command line tool that read the issues and the pull requests of a GitHub repository into two tables of a SQLite file, in the mode initialize or update, and run read-only SQL queries on them. See its own CONTEXT.md.
-- `data_layer_source_control/`: a Rust library and a command line tool that read the commits and the merges of a Git repository into a table of the same SQLite file, in the mode initialize or update, and run read-only SQL queries on it. See its own CONTEXT.md.
-- `data_layer_user_activity/`: a Rust library and a command line tool that read the user activity records of the developer from the file `user_activity.jsonl` into a table of the same SQLite file, in the mode initialize or update, and run read-only SQL queries on it. See its own CONTEXT.md.
-- `data_layer_coding_agents/`: a Rust library and a command line tool that read the chat sessions of Claude Code and of Codex for a repository, and the configuration of the coding agent (the memory files, the subagents, and the skills), into a SQLite file, in the mode initialize or update, and run read-only SQL queries on them. The desktop application uses the library to find and read the chat session files. See its own CONTEXT.md.
-- `heidrun_data/`: not a data layer package. A Rust library and one command line tool, for a coding agent, that call the libraries of the four data layer packages: `update`, `initialize`, `sources`, `schema`, `query`, `usage`, and `read`. See its own CONTEXT.md.
-- `dev_tools/`: the packages that are only tools for the developers of this repository, such as the test of the agent rules. See its own CONTEXT.md.
+- `data_layers/`: independent packages that read source data into SQLite; see its CONTEXT.md.
+- `apps/`: the combined command line and library; see its CONTEXT.md.
+- `dev_tools/`: developer-only checks; see its CONTEXT.md.
 
 ## Rules
-- Every data layer package goes in this folder, and the name of its folder starts with `data_layer_`.
-- `heidrun_data` is the only package here that is not a data layer package. Every other package that is not a data layer package goes in `packages/dev_tools` when it is only a tool for the developers, never directly in this folder.
-- The Past chats sidebar section and the Statistics window get all their data from these packages, through the functions `refresh_*` (they write the SQLite file) and `find_*` (they read the SQLite file only). The rule is in [data_layer_access.md](https://github.com/heidrun-org/heidrun_code/blob/main/docs/agents_rules/data_layer_access.md), and the test of the package `data_layer_boundary_checker` checks it.
-- No data layer package imports another data layer package: the packages share only the SQLite file. `heidrun_data` is the only package that imports more than one of them, and no data layer package imports `heidrun_data`.
+- Every package belongs in data_layers, apps, or dev_tools; no package sits directly here.
+- Product packages never depend on dev_tools.
 
 ## Background
-- The three data layer packages moved here from `packages/auxiliary` in [issue #470](https://github.com/heidrun-org/heidrun/issues/470). The data layer as a whole is [issue #452](https://github.com/heidrun-org/heidrun/issues/452). The package `heidrun_data` is the plan of [issue #564](https://github.com/heidrun-org/heidrun/issues/564). The access boundary is [issue #617](https://github.com/heidrun-org/heidrun/issues/617).
+- https://github.com/heidrun-org/heidrun_data/issues/30

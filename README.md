@@ -55,7 +55,7 @@ $HEIDRUN_DATA usage --database $DATABASE --by day --format table
 $HEIDRUN_DATA --help
 ```
 
-The full description of each command is in the [README of the package heidrun_data](packages/heidrun_data/README.md).
+The full description of each command is in the [README of the package heidrun_data](packages/apps/heidrun_data/README.md).
 
 ## Testbed folder
 

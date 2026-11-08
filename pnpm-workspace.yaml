@@ -1,3 +1,4 @@
 packages:
-  - packages/*
+  - packages/apps/*
+  - packages/data_layers/*
   - packages/dev_tools/*
