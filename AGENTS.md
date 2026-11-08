@@ -31,35 +31,21 @@ The skill names no detail of this repository: it reads the values of this reposi
 
 Every issue, every comment of an issue, and every description of a pull request follows the skill [issue_creation](.agents/skills/issue_creation/SKILL.md). The repository is on GitHub, so use the command `gh`. The skill links to the rule [github_and_gitlab_support.md](docs/agents_rules/github_and_gitlab_support.md).
 
-## Folder context files
+## The Rules of the Repo
 
-Every source folder has a file `CONTEXT.md`. Follow the skill [context_md_system](.agents/skills/context_md_system/SKILL.md) before you edit or add a file in a folder.
+Before every change of this repository, follow the skill [rules_of_the_repo](.agents/skills/rules_of_the_repo/SKILL.md): read the rules list, and obey each rule skill that applies to the change, with its configuration.
 
-## Docs folder
+- Rules list: [.agents/rules_of_the_repo/rules_list.md](.agents/rules_of_the_repo/rules_list.md)
 
-Every file and every folder in the folder `docs` follows the skill [docs_folder_system](.agents/skills/docs_folder_system/SKILL.md). Read the skill before you add, change, rename, move, or delete a file or a folder in the folder `docs`.
-The skill names no detail of this repository: it reads the values of this repository in the section "Docs folder system values" below.
+The rules list preserves the folder context, documentation, and coding style rules. Symbiospec and Repo Folders Constraints are installed for later configuration through The Rules of the Repo; neither defines approved requirements or constraints yet.
 
-### Docs folder system values
+### Existing agent rules and glossary
 
-- Documentation folder: `docs`
-- Files with no metadata header: none
+The folder [docs/agents_rules](docs/agents_rules/index.md) continues to hold applicable rules. Before changing code, read the [glossary index](docs/agents_rules/glossary/index.md), the glossary files that match the change, and the [agent rules index](docs/agents_rules/index.md). Follow indexes to the rule files that match the change. Use the names defined by the glossary in code, documents, and conversations.
 
-## Agent rules
+When a change makes an existing rule or glossary entry inaccurate, update the corresponding document in the same change. Keep each agent rule file within the maximum size below; split larger files by topic and update the index. Run `pnpm --filter agents_rules_checker test` after changing agent rules. Follow `docs_folder_system` for documentation changes, with the configuration linked from the rules list.
 
-The folder `docs/agents_rules` holds all the rules that every coding agent obeys. Before you change the code, read the glossary and the rule files that match the part that you change, as the skill [docs_folder_agents_rules_system](.agents/skills/docs_folder_agents_rules_system/SKILL.md) says. This skill needs the skill [docs_folder_system](.agents/skills/docs_folder_system/SKILL.md).
-The skill names no detail of this repository: it reads the values of this repository in the section "Docs folder agents rules system values" below.
-
-### Docs folder agents rules system values
-
-- Agent rules folder: `docs/agents_rules`
-- Glossary folder: `docs/agents_rules/glossary`
 - Maximum size of a file: 10000 bytes.
-- Size test command: `pnpm --filter agents_rules_checker test`
-
-## Bug Triage Workflow
-
-The Bug Triage Workflow reviews the open bug issues and recommends the next bug to fix. It is read-only: it changes no issue. A triage starts only when the developer asks for it in the chat. Read the skill [bug_triage_workflow](.agents/skills/bug_triage_workflow/SKILL.md) before you start a triage.
 
 ## Git Cleanup Adviser
 
