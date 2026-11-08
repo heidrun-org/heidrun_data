@@ -1,26 +1,24 @@
 # git_cleanup_review
 
-The skill `git_cleanup_review` examines the Git branches and the worktrees of a repository, and advises which branches and worktrees appear safe to remove. This skill is the Git Cleanup Review. A worktree is a separate working folder connected to the same Git repository.
+The skill `git_cleanup_review` identifies worktrees and Git branches whose work is already preserved in the destination branch, usually `main`, and proposes the order for removing those redundant copies. A worktree is a separate working folder connected to the same Git repository.
 
 ## Purpose
 
-After many fixes and experiments, a repository has many branches and worktrees. Some branches hold work that is already in the destination branch. Other branches hold commits that exist nowhere else. Some worktrees hold files that are not committed. When the developer removes the wrong branch or the wrong worktree, the work is lost.
-
-The Git Cleanup Review gives the developer the facts before the developer removes anything. For each branch and each worktree, the Git Cleanup Review says whether the work is safe, with the evidence, and says what is not sure. The Git Cleanup Review gives advice only: the Git Cleanup Review never removes a branch or a worktree.
+Find every redundant copy that can be removed while preserving unique work and protected items. The Git Cleanup Review gives advice only. Removing named items needs a later, separate request from the developer.
 
 ## What the coding agent does
 
-1. Chooses the destination branch, the branch where completed work lands. The coding agent uses the branch that the developer names, or the repository instructions, or asks the developer.
-2. Collects the evidence with read-only Git commands.
-3. For each worktree, looks for staged changes, unstaged changes, untracked files, and submodule changes.
-4. For each branch, checks whether its commits are in the destination branch, also when the work arrived through a squash (several commits combined into one) or another equivalent commit.
-5. For each remote branch, separates the branch on the remote server from the local reference, which can be out of date, and checks open pull requests and protected branches when possible.
-6. Gives one recommendation for each local branch, each remote branch, and each worktree, in separate rows:
-   - Deleteable
-   - Keep
-   - Needs inspection
+1. Establishes the destination branch and protects the main checkout, the destination branch, local and remote branches named `main`, `master`, or `dev`, and additional branches protected by repository instructions.
+2. Reviews worktrees first. Checks committed work, staged and unstaged changes, new files that are not ignored, and submodules. Treats Git-ignored files as disposable; ignored `.env` files and `content/` directories do not block cleanup. Tracked files remain subject to review even if their names match ignore patterns.
+3. Reviews local branches using the worktree decisions. A redundant branch checked out in a redundant worktree is a removal candidate after that worktree is removed.
+4. Reviews remote branches using their live state when accessible. Checks inclusion, protection, and pull request context. Missing remote evidence is reported without automatically blocking local recommendations.
+5. Reports each worktree and branch with evidence, a last modification date, and a recommendation: **Deleteable**, **Keep**, or **Needs inspection**. The report gives the required order for removing all **Deleteable** items.
 
-The coding agent does not fetch, prune, delete a branch, or remove a worktree during the audit. A removal needs a later, separate request from the developer.
+A branch being checked out determines removal order; that condition alone does not justify **Keep**. For example, a clean worktree whose work is in `main` and its unprotected branch can both be **Deleteable**, with the worktree listed before the branch.
+
+Branch dates measure the latest commit’s committer date. Worktree dates measure the latest observed file or directory modification time, including ignored files and excluding Git metadata. The report explains missing or incomplete evidence. Dates alone do not prove that removal is safe.
+
+The coding agent does not fetch, prune, switch branches, delete branches, or remove worktrees during the review.
 
 ## When the coding agent uses the skill
 
