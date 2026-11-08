@@ -8,13 +8,13 @@ importers:
 
   .: {}
 
-  packages/data_layer_code_hosting: {}
+  packages/data_layers/data_layer_code_hosting: {}
 
-  packages/data_layer_coding_agents: {}
+  packages/data_layers/data_layer_coding_agents: {}
 
-  packages/data_layer_source_control: {}
+  packages/data_layers/data_layer_source_control: {}
 
-  packages/data_layer_user_activity: {}
+  packages/data_layers/data_layer_user_activity: {}
 
   packages/dev_tools/agents_rules_checker:
     devDependencies:
@@ -25,7 +25,7 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(@types/node@26.6.5)
 
-  packages/heidrun_data: {}
+  packages/apps/heidrun_data: {}
 
 packages:
 

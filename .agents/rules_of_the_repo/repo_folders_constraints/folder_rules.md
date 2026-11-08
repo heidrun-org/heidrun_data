@@ -8,11 +8,11 @@ The tables list internal package imports; external dependencies remain subject t
 
 | Folder | Does | Never does | May import | Language and technologies | Workflow |
 |---|---|---|---|---|---|
-| packages/data_layer_code_hosting | Reads GitHub issues and pull requests into SQLite | Call AI models; depend on desktop application | no other package | Rust, SQLite, JSON schemas | Existing package instructions; package build and tests |
-| packages/data_layer_source_control | Reads Git commits into SQLite | Call AI models; depend on desktop application | no other package | Rust, SQLite, JSON schemas | Existing package instructions; package build and tests |
-| packages/data_layer_coding_agents | Reads coding agent history and configuration; records usage and model prices | Call AI models; write coding agent configuration | no other package | Rust, SQLite, JSON schemas | Existing package instructions; package build and tests |
-| packages/data_layer_user_activity | Reads developer activity records into SQLite | Call AI models; depend on desktop application | no other package | Rust, SQLite, JSON schemas | Existing package instructions; package build and tests |
-| packages/heidrun_data | Provides one command line and library over the four data layer packages | Call AI models; own extra data layer tables | data_layer_code_hosting, data_layer_source_control, data_layer_coding_agents, data_layer_user_activity | Rust, SQLite | Existing package instructions; package build and tests |
+| packages/data_layers/data_layer_code_hosting | Reads GitHub issues and pull requests into SQLite | Call AI models; depend on desktop application | no other package | Rust, SQLite, JSON schemas | Existing package instructions; package build and tests |
+| packages/data_layers/data_layer_source_control | Reads Git commits into SQLite | Call AI models; depend on desktop application | no other package | Rust, SQLite, JSON schemas | Existing package instructions; package build and tests |
+| packages/data_layers/data_layer_coding_agents | Reads coding agent history and configuration; records usage and model prices | Call AI models; write coding agent configuration | no other package | Rust, SQLite, JSON schemas | Existing package instructions; package build and tests |
+| packages/data_layers/data_layer_user_activity | Reads developer activity records into SQLite | Call AI models; depend on desktop application | no other package | Rust, SQLite, JSON schemas | Existing package instructions; package build and tests |
+| packages/apps/heidrun_data | Provides one command line and library over the four data layer packages | Call AI models; own extra data layer tables | data_layer_code_hosting, data_layer_source_control, data_layer_coding_agents, data_layer_user_activity | Rust, SQLite | Existing package instructions; package build and tests |
 | packages/dev_tools/agents_rules_checker | Checks Symbiospec file sizes | Become a runtime dependency of a data layer package | no other package | TypeScript, Vitest | Existing package instructions; pnpm --filter agents_rules_checker test |
 
 
@@ -23,7 +23,9 @@ These rows cover descendants unless a more specific row applies. A new package r
 | Folder | Does | Never does | Language and technologies | Workflow |
 |---|---|---|---|---|
 | . | Workspace configuration and repository entry documents | Hold package implementation outside packages | pnpm workspace, Markdown | AGENTS.md and The Rules of the Repo |
-| packages | Holds data layer packages, heidrun_data and dev_tools | Hold other developer tools directly | Rust packages with pnpm commands | New packages require approved rules |
+| packages | Holds data_layers, apps and dev_tools groups | Hold packages directly | Rust packages with pnpm commands | New packages require approved rules |
+| packages/data_layers | Holds independent data layer packages | Import another data layer package or heidrun_data | Rust, SQLite | Per-package rules |
+| packages/apps | Holds combined product interfaces | Own extra data layer tables | Rust, SQLite | Per-package rules |
 | packages/dev_tools | Holds developer-only packages | Supply runtime dependencies to product packages | Per-package rules | New packages require approved rules |
 | docs | Holds project documentation | Present observations as human-approved requirements | Markdown | docs_folder_system |
 | docs/symbio_spec | Holds product specification, decisions and coverage | Treat installation or tests as product approval | Markdown | symbio_spec and docs_folder_system |
