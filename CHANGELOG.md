@@ -6,6 +6,19 @@ Versions are retrospective. Dates follow the historical tagged milestones in Par
 
 ## [Unreleased]
 
+### Release notes
+
+New coding agent skills support changelog maintenance, documentation generation from approved Symbiospec, and reviews of redundant Git worktrees and branches.
+
+### Added
+
+- Keep a Changelog Workflow and the repository changelog, with release notes and evidence links. [commit 41cce57a].
+- The `symbio_spec_to_docs` skill for documentation based on approved specifications and implementation evidence, with separate audience and destination configuration. [commit bde236d5].
+
+### Changed
+
+- Replace Git Cleanup Adviser with Git Cleanup Review: review worktrees before branches, preserve unique work and protected items, and recommend an ordered removal plan. The review itself removes nothing. [commit 6608725a].
+
 ## [v0.3.0] - 2026-11-08
 
 ### Release notes
@@ -91,7 +104,7 @@ Read and query four sources of development history through one `heidrun_data` co
 
 - Apply the query row limit when only a subquery has LIMIT, and read every page of pull request reviews and review comments. [heidrun_code #580].
 
-[Unreleased]: https://github.com/heidrun-org/heidrun_data/compare/v0.3.0...main
+[Unreleased]: https://github.com/heidrun-org/heidrun_data/compare/v0.3.0...41cce57a65295f09f195cdc64acd0701e6670dcb
 [v0.1.0]: https://github.com/heidrun-org/heidrun_data/releases/tag/v0.1.0
 [v0.2.0]: https://github.com/heidrun-org/heidrun_data/compare/v0.1.0...v0.2.0
 [v0.3.0]: https://github.com/heidrun-org/heidrun_data/compare/v0.2.0...v0.3.0
@@ -121,3 +134,6 @@ Read and query four sources of development history through one `heidrun_data` co
 [heidrun_code #580]: https://github.com/heidrun-org/heidrun_code/pull/580
 [heidrun_code #696]: https://github.com/heidrun-org/heidrun_code/pull/696
 [heidrun_code #632]: https://github.com/heidrun-org/heidrun_code/pull/632
+[commit 41cce57a]: https://github.com/heidrun-org/heidrun_data/commit/41cce57a65295f09f195cdc64acd0701e6670dcb
+[commit bde236d5]: https://github.com/heidrun-org/heidrun_data/commit/bde236d5194cb9f0e99b06050cd3abc7c7f133ba
+[commit 6608725a]: https://github.com/heidrun-org/heidrun_data/commit/6608725a70f481213f3706df4156ea6d8cca9877
