@@ -1,56 +1,79 @@
 # issue_fix_workflow
 
-The skill `issue_fix_workflow` gives a coding agent one fixed way to fix an issue of a repository, from the first read of the issue to the merge of the pull request and the close of the issue. This fixed way is the Issue Fix Workflow.
-
 ## Purpose
 
-When a developer asks a coding agent to fix an issue, the coding agent can do the steps in many orders. The coding agent can change the main checkout, commit before the developer reads the change, merge before the developer runs the application, or add work that the issue does not describe. Each of these actions makes the change hard to review and hard to trust.
+The Issue Fix Workflow takes one existing issue through Issue Fix Setup, Issue Fix Implementation, Issue Fix Review and Issue Fix Completion. A temporary worktree keeps the change separate from the main checkout, and uncommitted changes remain visible for developer review.
 
-The Issue Fix Workflow makes every issue fix follow the same steps, so that:
+## When to use
 
-- The main checkout never changes during a fix, because all the work is in a temporary worktree.
-- The developer reads the uncommitted difference and runs the application before the coding agent commits.
-- The coding agent commits, merges, and closes the issue only after the developer says that the result is good.
-- The issue, the pull request, and the real change agree, also when the developer asks for more work during the fix.
+Use for a request such as “Fix issue 35,” or further changes during that issue fix. An issue number is required; creating the initial issue is a separate task. Use [issue_batch_workflow](../issue_batch_workflow/README.md) for a parent issue with two or more sub-issues.
 
-## The four parts
+## Requirements
 
-1. Issue Fix Setup: the coding agent reads the issue and its comments, renames the chat, and creates a temporary worktree with a temporary branch named after the fix and the issue number.
-2. Issue Fix Implementation: the coding agent makes the change in the temporary worktree, updates the documents and the tests, and does not commit.
-3. Issue Fix Review: the coding agent gives the command that launches the application in the temporary worktree, and says what to look at. After the developer runs the application, the coding agent asks whether the result is good. Each change that the developer asks for goes back to the Issue Fix Implementation.
-4. Issue Fix Completion: the coding agent commits with `fixes #<issue number>`, creates and merges the pull request, deletes the temporary branch, removes the temporary worktree, and closes the issue.
-
-## The added requests
-
-An added request is more work that the developer asks for during the fix, and that the issue does not describe. The coding agent says which kind of added request it is:
-
-- A related added request is done in the same temporary worktree. The coding agent adds one comment to the issue for the related added request, and lists the related added request in the description of the pull request.
-- An unrelated added request is not done in the temporary worktree. The coding agent asks whether to create a new issue, and the new issue gets its own Issue Fix Workflow.
-
-## When the coding agent uses the skill
-
-- The developer asks to fix an issue, for example "fix the issue 35".
-- The developer asks for a change, or for more work, during an issue fix.
-
-## Configuration
-
-The skill `issue_fix_workflow` names no branch, no tool, and no command of one repository. The receiving project writes its values in the section "Issue Fix Workflow values" of its file `AGENTS.md`:
-
-- Target branch
-- Worktree creation command
-- Worktree folder
-- Launch command
-- Issue tracker commands
-- Chat rename
-
-The section "The template" of [SKILL.md](SKILL.md) gives the text to copy. When a value is missing, the coding agent does not start the fix: the coding agent warns the developer, shows the template, and offers to propose the values.
+The receiving project needs Git worktrees, access to the issue and comments, configured issue tracker commands, and the capabilities needed to check and launch the project. The skill uses [issue_creation](../issue_creation/README.md) when writing issue comments; install that skill for those operations. Project rules and specifications still apply.
 
 ## Install
 
 ```bash
-npx skills add jeromeetienne/coding_agent_plugin --skill issue_fix_workflow
+npx skills add jeromeetienne/coding_agent_plugin --skill issue_fix_workflow --skill issue_creation
 ```
 
-## Files
+See [shared installation options](../../README.md#install-the-skills). Installation does not supply receiving-project commands or authorize completion before review.
 
-- [SKILL.md](SKILL.md): the instructions for the coding agent.
+## Configuration
+
+Add the pointer and complete “Issue Fix Workflow values” section from [the instruction template](SKILL.md#the-template) to the receiving project's `AGENTS.md`. Missing values stop the workflow before reading the issue, creating a worktree or changing files. The coding agent reports the missing values and offers to propose values; approved values are never guessed.
+
+The following complete values example assumes an illustrative GitHub project `example/project`, a `main` target branch, `pnpm dev` for launch and no chat rename capability. Replace the example with approved commands for the receiving project.
+
+```markdown
+### Issue Fix Workflow values
+
+- Target branch: `main`.
+- Worktree creation command: from the main checkout, run `git fetch origin main`, then `git worktree add -b <branch-name> .agents/worktrees/<branch-name> origin/main`.
+- Worktree folder: `.agents/worktrees/<branch-name>` in the main checkout.
+- Launch command: from the temporary worktree, run `pnpm dev`.
+- Issue tracker commands: use `--repo example/project` for each command below. Write multiline bodies to temporary files.
+  - Read an issue: `gh issue view <number> --json title,body,comments,state,url`.
+  - Comment on an issue: `gh issue comment <number> --body-file <file>`.
+  - Create an issue: `gh issue create --title <title> --body-file <file>`.
+  - Create a pull request: push with `git push -u origin <branch-name>`, then `gh pr create --base main --head <branch-name> --title <title> --body-file <file>`.
+  - Merge a pull request: `gh pr merge <number> --squash`.
+  - Close an issue: `gh issue close <number>`.
+- Chat rename: not available.
+```
+
+Keep these values in the receiving project, outside the reusable skill folder.
+
+## Concrete example
+
+Illustrative issue 35 says that opening an empty project shows an error and requires the empty project to open normally. Request:
+
+> Fix issue 35 using the Issue Fix Workflow.
+
+1. **Issue Fix Setup:** read issue 35 and its comments, attempt the configured chat rename, and create `.agents/worktrees/open-empty-project-35` using the configured command.
+2. **Issue Fix Implementation:** correct the empty-project behaviour and update relevant documents and tests in that worktree. Leave the change uncommitted.
+3. **Issue Fix Review:** give the worktree path, launch command and the check “Open an empty project and confirm that no error appears.” Stop for the developer to run the application. Only after the developer reports reviewing the result, ask whether the result is good in a separate message. Requested corrections return to Issue Fix Implementation and restart Issue Fix Review.
+4. **Issue Fix Completion:** after the developer accepts the result, commit with `fixes #35`, create and merge the pull request, delete the temporary local and remote branch, remove the temporary worktree and close the issue.
+
+A representative review handoff names the changed files, verification already performed and the exact worktree launch command. That handoff represents implemented work awaiting review; completion follows acceptance.
+
+## Results and added requests
+
+The result progresses from an uncommitted, reviewable fix to a merged pull request and closed issue after acceptance. The target branch is retained.
+
+Related added requests stay in the same worktree, with one issue comment per request recording the developer's words, the change and linked files. The pull request repeats that record. An unrelated request needs permission to create a new issue and receives its own workflow and worktree; cross-link the issues. Uncertain requests are treated as unrelated.
+
+## Approval boundaries
+
+Do not commit during Issue Fix Implementation. Developer acceptance of Issue Fix Review precedes Issue Fix Completion. A request for further changes restarts implementation and review. This acceptance requirement differs from the initial-decision approval followed by automatic group completion in Issue Batch Workflow.
+
+## Related skills and guides
+
+- [issue_creation](../issue_creation/README.md): required when writing issue comments or new issues.
+- [issue_batch_workflow](../issue_batch_workflow/README.md): related alternative for a parent issue with multiple sub-issues.
+- [rules_of_the_repo](../rules_of_the_repo/README.md): applies when the receiving project uses that rule system.
+
+## Instructions and references
+
+- [SKILL.md](SKILL.md): exact configuration template, four parts, review messages and added-request rules.

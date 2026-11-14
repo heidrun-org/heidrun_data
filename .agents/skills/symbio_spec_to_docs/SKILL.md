@@ -5,7 +5,9 @@ description: Generate and update documentation inside a repository from its appr
 
 # Symbiospec to documentation
 
-Use the project's approved Symbiospec and implementation evidence to generate documentation inside the repository. This skill requires the installed skill `symbio_spec` and the project's Symbiospec data. Read `symbio_spec` and the relevant project data before generating documentation. If either dependency is unavailable, identify the missing dependency and stop generation. Initializing or correcting Symbiospec is a separate task through `symbio_spec`.
+Use the project's approved Symbiospec and implementation evidence to generate documentation inside the repository. This skill requires the installed skill `symbio_spec` and the project's Symbiospec data. Read `symbio_spec`, perform the version check below, and then read the relevant project data before generating documentation. If either dependency is unavailable, identify the missing dependency and stop generation. Initializing or correcting Symbiospec is a separate task through `symbio_spec`.
+
+**Expected Symbiospec format: `1.0.0`. Supported formats: `1.0.0` and its unversioned equivalent.** Before consuming project specifications or generating output, follow the shared [version detection and migration procedure](../symbio_spec/references/versioning.md) from the installed `symbio_spec` skill. If that procedure or the required definition is unavailable, or a version is malformed or unsupported, or migration is incomplete, stop generation before changing output. Compatible format numbers do not automatically require migration. Adoption and migration are separate authorized work through `symbio_spec`; generation does not authorize changing the source specification.
 
 Keep reusable instructions independent of a particular application, documentation renderer or hosting service. Product information belongs to the project's Symbiospec; audience and editorial choices belong to the documentation configuration.
 

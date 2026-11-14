@@ -64,6 +64,17 @@ For a living rule with human approval, do these steps, in this order:
 
 ## Set up The Rules of the Repo
 
+### Suggested configuration locations
+
+During setup, suggest these paths relative to the receiving repository root:
+
+- Rules list: `.agents/rules_of_the_repo/rules_list.md`.
+- Configuration of each rule skill that needs configuration: `.agents/rules_of_the_repo/config/<skill-name>/config.md`.
+
+Replace `<skill-name>` with the selected rule skill's name. Keep repository configuration outside installed skill folders. An explicit repository choice overrides these suggestions; preserve existing configured locations. Propose these values for human approval before writing the configuration.
+
+The Rules of the Repo selects rule skills and supplies their configuration. Docs Agent Rules, provided by the obsolete `docs_folder_agents_rules_system`, is a separate system. Configuring The Rules of the Repo does not require adopting Docs Agent Rules or copying its original repository files. Do not request `docs_folder_agents_rules_system` as a setup requirement. Select only the rule skills needed by the receiving repository and chosen by the human.
+
 ### In a new repository
 
 1. Ask the developer which rule skills the repository uses.
@@ -89,7 +100,7 @@ Write this text in the file `AGENTS.md` of the repository. The first sentence is
 
 Before every change of this repository, follow the skill [rules_of_the_repo](.agents/skills/rules_of_the_repo/SKILL.md): read the rules list, and obey each rule skill that applies to the change, with its configuration.
 
-- Rules list: <the path of the rules list>
+- Rules list: .agents/rules_of_the_repo/rules_list.md
 ```
 
 Write the rules list from this template:

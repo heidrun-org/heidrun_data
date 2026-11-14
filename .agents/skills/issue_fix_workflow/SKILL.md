@@ -18,6 +18,17 @@ Read the section "Issue Fix Workflow values" of the file `AGENTS.md` before step
 - Issue tracker commands: the commands that read an issue, comment on an issue, create an issue, create a pull request, merge a pull request, and close an issue.
 - Chat rename: whether the chat can be renamed, and how.
 
+### Suggested worktree location during setup
+
+During setup, suggest `.agents/worktree/<branch>` as the worktree folder, relative to the receiving repository root, with this creation command run from that root:
+
+```bash
+git fetch origin <target-branch>
+git worktree add -b <branch> .agents/worktree/<branch> origin/<target-branch>
+```
+
+Replace `<target-branch>` with the repository's target branch and `<branch>` with the temporary branch name. Propose the folder and command for human approval before writing the configuration. An explicit repository choice overrides this suggestion; preserve an existing configured location. This suggestion does not supply missing values automatically or allow the Issue Fix Setup to start without configuration. The Issue Batch Workflow reuses these same configured values.
+
 ### When the values are missing
 
 A skill cannot warn the developer when its folder is copied, because a copied folder runs nothing. The warning comes the first time that the skill is used. When the section is missing, or when one value is missing, do these steps, in this order:
@@ -28,7 +39,7 @@ A skill cannot warn the developer when its folder is copied, because a copied fo
 4. Offer to propose a value for each missing value from the files of the repository. Write the section only after the developer agrees to the proposed values.
 5. Stop, and wait for the developer.
 
-Never guess a value, never use a default value, and never use the value of another repository.
+Never guess or silently apply a value, and never use the value of another repository. During configuration, propose the suggested worktree location above for approval; during an issue fix, use only the configured values.
 
 ### The template
 
