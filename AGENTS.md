@@ -33,7 +33,15 @@ A batch of related issues (one parent issue with two or more sub-issues) follows
 
 ## Text of an issue
 
-Every issue, every comment of an issue, and every description of a pull request follows the skill [issue_creation](.agents/skills/issue_creation/SKILL.md). The repository is on GitHub, so use the command `gh`. The skill links to the rule [github_and_gitlab_support.md](docs/symbio_spec/behaviour/github_and_gitlab_support.md).
+Every issue and every comment of an issue follows the skill [issue_creation](.agents/skills/issue_creation/SKILL.md). The repository is on GitHub, so use the command `gh`. The skill links to the rule [github_and_gitlab_support.md](docs/symbio_spec/behaviour/github_and_gitlab_support.md).
+
+## Pull request writing
+
+Before preparing or revising a pull request title or description, read [pull_request_creation](.agents/skills/pull_request_creation/SKILL.md). Follow the configured Issue Fix Workflow or Issue Batch Workflow for publication and completion.
+
+## Symbiospec to documentation
+
+The skill `symbio_spec_to_docs` is installed but no documentation set is configured. Do not generate documentation until a request supplies a complete configuration with an audience, scope, destination and review procedure.
 
 ## The Rules of the Repo
 
@@ -50,7 +58,3 @@ Before changing code, read the [glossary index](docs/symbio_spec/glossary/index.
 Update affected rules and glossary entries in the same change. Keep each Symbiospec file within the maximum size below; split larger files by topic and update the index. Run `pnpm --filter agents_rules_checker test` after specification changes. Follow `docs_folder_system` for documentation changes.
 
 - Maximum size of a file: 10000 bytes.
-
-## Git Cleanup Adviser
-
-The Git Cleanup Adviser reviews the Git branches and the worktrees, and reports which ones appear safe to remove, with evidence. It gives advice only, and removes no branch and no worktree. The destination branch is `main`. Read the skill [git_cleanup_adviser](.agents/skills/git_cleanup_adviser/SKILL.md) when the developer asks which branches or worktrees can be removed.

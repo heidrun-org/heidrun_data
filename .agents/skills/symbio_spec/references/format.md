@@ -1,154 +1,83 @@
-# Symbiospec format
+# Symbiospec format definitions
+
+Use [version detection and migration](versioning.md) before normal Symbiospec work. The required format for normal work is the latest published entry below, currently `3.0.0`. Retained older definitions support migration sources, not ordinary work on older data. Follow the shared procedure to migrate automatically before normal work. Migration completion follows the shared removal rule: obsolete project paths are removed after preservation and known-reference checks, without redirects or compatibility pages; uneditable external references are reported limitations. This rule governs conversion completion, not a new project-data layout. Skill release versions are independent of project format versions.
+
+Keep one complete definition per published version, named `format-<MAJOR.MINOR.PATCH>.md`. Add each future version to the ordered list below, linking its definition and instructions for the transition from the preceding published version. Keep older definitions available; do not rewrite an old definition to describe a newer format. Publish corrections as patch versions.
+
+- [1.0.0](format-v1.0.0.md): existing specification structure and conventions. Unversioned adoption is defined in [versioning](versioning.md#3-unversioned-adoption); no product-data conversion is needed.
+
+- [2.0.0](format-v2.0.0.md): dated original decision records and maintained topic summaries; [forward and reverse conversion from 1.0.0](migration-1-to-2.md).
+
+- [3.0.0](format-v3.0.0.md): original coverage examinations and maintained topic summaries; [forward and reverse conversion from 2.0.0](migration-2-to-3.md).
+
+The headings below preserve existing links to the former unversioned reference.
 
 ## 0. Introduction
 
 ### 0.1. Structure
 
-Defines where project data belongs and how people and coding agents find the current specification.
+See [3.0.0 structure](format-v3.0.0.md#01-structure).
 
 ### 0.2. Responsibilities
 
-Defines the six product documentation areas and the boundaries between their responsibilities.
+See [3.0.0 responsibilities](format-v3.0.0.md#02-responsibilities).
 
 ### 0.3. Documents and approval
 
-Defines readable document conventions, evidence, proposals, decisions, and coverage records.
+See [3.0.0 documents and approval](format-v3.0.0.md#03-documents-and-approval).
 
 ## 1. Repository structure
 
-Use this initial structure under the target repository root:
-
-```text
-docs/symbio_spec/
-  README.md
-  index.md
-  decisions.md
-  coverage.md
-  glossary/
-    README.md
-    index.md
-  behaviour/
-    README.md
-    index.md
-  user_interface/
-    README.md
-    index.md
-  styling/
-    README.md
-    index.md
-  platform_support/
-    README.md
-    index.md
-  system_overview/
-    README.md
-    index.md
-```
-
-Create topic documents only when there is useful content to record. Create `proposals/` and `reports/` only when needed; give each created folder its own `README.md` and `index.md`. Keep all Symbiospec project data within `docs/symbio_spec/`.
-
-For an existing installation, inspect before creating anything. Preserve existing files and approvals; add missing structure without replacing existing content with empty templates. When another location already holds product definitions, link to the existing evidence and propose a migration rather than creating a competing approved definition.
-
-`README.md` explains the folder's purpose to humans. Each area's `README.md` states what the area contains, excludes, and references elsewhere, with a boundary example. `index.md` lists direct child files and folders using working relative links and a short description of each entry. Update the parent index whenever content is added, renamed, moved, or deleted. Register `symbio_spec/index.md` in the documentation root's index without replacing existing entries.
-
-During authorized initialization, add a concise pointer in the repository's coding-agent instructions to this skill and `docs/symbio_spec/index.md`: read relevant approved specifications before implementation and update affected specifications within the same authorized development task. Merge the pointer with existing instructions, use actual skill paths, and do not replace other rules or silently relocate existing agent rules.
+See [3.0.0 repository structure](format-v3.0.0.md#1-repository-structure).
 
 ## 2. Responsibilities of the six areas
 
+See [3.0.0 area responsibilities](format-v3.0.0.md#2-responsibilities-of-the-six-areas).
+
 ### 2.1. Glossary
 
-**Owns:** canonical names, identities, definitions, purpose, relationships, and established aliases of product concepts.
-
-**Excludes:** control placement, full interaction scenarios, visual styles, and implementation internals.
-
-Define concepts once and link to their definitions. Use one stable document or heading reference for each concept. Preserve identity when a display name changes; update references and retain useful aliases. Similar spelling is not evidence that two concepts are equivalent.
-
-Example: define what a Macro is and how a Macro relates to a Pane. The result of executing a Macro belongs to Behaviour.
+See [3.0.0 Glossary](format-v3.0.0.md#21-glossary).
 
 ### 2.2. Behaviour
 
-**Owns:** expected observable outcomes, triggers, conditions, state changes, failures, and invariants.
-
-**Excludes:** where controls appear, visual presentation, duplicate concept definitions, and internal algorithms.
-
-Use glossary references to describe the trigger, conditions, expected result, important failure cases, and relevant constraints. Link to verification evidence where available, without implying that a link proves coverage.
-
-Example: define what executing a Macro should write into a Pane and what happens on failure. The location of the execution control belongs to User Interface.
+See [3.0.0 Behaviour](format-v3.0.0.md#22-behaviour).
 
 ### 2.3. User Interface
 
-**Owns:** screens, navigation, control placement, and how users invoke documented behaviours.
-
-**Excludes:** repeated descriptions of the complete behaviour and reusable styling rules.
-
-Reference Behaviour for outcomes and Glossary for concepts. Record interface structure at the level needed to review product choices.
-
-Example: describe where the Macro execution control appears and reference its behaviour. Button colours belong to Styling.
+See [3.0.0 User Interface](format-v3.0.0.md#23-user-interface).
 
 ### 2.4. Styling
 
-**Owns:** reusable visual conventions, typography, colours, spacing, component states, and rules for choosing control types.
-
-**Excludes:** feature-specific outcomes and navigation placement.
-
-Describe the established design system rather than inventing a new visual direction. Reference the relevant User Interface documents for applications of shared rules.
-
-Example: define the presentation of disabled controls. The condition that disables a particular action belongs to Behaviour.
+See [3.0.0 Styling](format-v3.0.0.md#24-styling).
 
 ### 2.5. Platform Support
 
-**Owns:** supported environments, input capabilities, platform limitations, and shared platform constraints.
-
-**Excludes:** unverified promises of support and copies of feature-specific behaviour.
-
-Record the difference between required, observed, and verified support. Behaviour and User Interface reference shared constraints and own the feature-specific consequences.
-
-Example: define supported keyboard or touch environments. A particular touch interaction belongs to User Interface and references Behaviour for its result.
+See [3.0.0 Platform Support](format-v3.0.0.md#25-platform-support).
 
 ### 2.6. System Overview
 
-**Owns:** a concise map of the major parts, their responsibilities and relationships, important data flows, and reasons for consequential structural choices.
-
-**Excludes:** repeated glossary definitions, detailed behavioural specifications, functions, classes, and exhaustive implementation inventories.
-
-Include an architectural fact when the fact helps a human understand a significant decision or its consequences. Link to detailed technical documentation outside Symbiospec where appropriate.
-
-Example: explain which major part owns stored information and which major part presents that information. The meaning of the information belongs to Glossary and the expected user action belongs to Behaviour.
+See [3.0.0 System Overview](format-v3.0.0.md#26-system-overview).
 
 ## 3. Document conventions
 
-Follow the repository's documentation rules. Unless those rules specify another form, put this header immediately after each Markdown document's title:
-
-```markdown
-# Document title
-
-- Created: day month year
-- Last updated: day month year
-- Status: Proposal
-- Related framing: [Symbiospec overview](relative-path-to-README.md)
-```
-
-Replace the example values with actual dates, a precise status, and a working relative link. Include related rules and source issues when applicable. Keep the creation date and update the modification date. Folder overviews use `Maintained overview for people`; indexes use `Maintained index for agents and tools`. These administrative statuses do not approve the product content they reference.
-
-Use a short `0. Introduction` with numbered subsections summarizing the top-level sections in substantive documents. Continue with hierarchical numbering such as `1`, `1.1`, and `1.1.1`; place short paragraphs below headings. Indexes and short folder overviews may remain concise without repeating every section as an introduction.
-
-Use descriptive topic filenames and relative links. Stable identifiers are useful when the repository already uses them; do not introduce a second identifier system unnecessarily. Keep evidence and approval references close to claims, using links to source files, tests, relevant issue discussions, or observed execution. Link commit references to the remote commit and preserve what the referenced version actually established.
+See [3.0.0 document conventions](format-v3.0.0.md#3-document-conventions).
 
 ## 4. Proposals, decisions, and coverage
 
+See [3.0.0 proposals, decisions, and coverage](format-v3.0.0.md#4-proposals-decisions-and-coverage).
+
 ### 4.1. Proposals
 
-Use `proposals/<topic>.md` for a review batch when a persistent draft is useful. Record scope, proposed changes, examples, evidence, confidence, dependencies, and decisions needed. Clearly label proposed product meaning. Link to current definitions instead of copying the entire existing specification.
+See [3.0.0 proposals](format-v3.0.0.md#41-proposals).
 
 ### 4.2. Decisions
 
-Use `decisions.md` to record actual human decisions with their scope, source, date, affected references, and unresolved conditions. A direct user instruction can authorize a product change; record that authorization without requesting approval again. Existing code, passing tests, strong confidence, or silence does not establish approval.
-
-Each authoritative topic document identifies its approval evidence. If approval is unknown, retain a proposal or observed status. When only part is approved, separate the proposed material or identify approval at the relevant section. During initialization, an empty decisions file states that no product decisions have been recorded yet; never fabricate approvals to complete a template.
+See [3.0.0 decisions](format-v3.0.0.md#42-decisions).
 
 ### 4.3. Coverage
 
-Use `coverage.md` to record examined areas, approved scope, partial coverage, unresolved questions, known software differences, and the next proposed increment. Keep the record concise and link to specifications and reports. An empty structure is an unpopulated starting point, not complete coverage.
+See [3.0.0 coverage](format-v3.0.0.md#43-coverage).
 
-### 4.4. Realignment reports
+### 4.4. Audit and Realignment reports
 
-Use `reports/<topic>.md` for an authorized comparison report. Each finding records its affected specification, expected and observed results, evidence, severity, confidence, recommendation, and resolution or deferral. Record which checks actually ran and the limits of the examined scope. Approval of the specification and execution of tests remain separate facts.
+See [3.0.0 audit and Realignment reports](format-v3.0.0.md#44-audit-and-realignment-reports).
