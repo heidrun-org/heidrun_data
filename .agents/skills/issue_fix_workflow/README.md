@@ -53,8 +53,8 @@ Illustrative issue 35 says that opening an empty project shows an error and requ
 
 1. **Issue Fix Setup:** read issue 35 and its comments, attempt the configured chat rename, and create `.agents/worktrees/open-empty-project-35` using the configured command.
 2. **Issue Fix Implementation:** correct the empty-project behaviour and update relevant documents and tests in that worktree. Leave the change uncommitted.
-3. **Issue Fix Review:** give the worktree path, launch command and the check “Open an empty project and confirm that no error appears.” Stop for the developer to run the application. Only after the developer reports reviewing the result, ask whether the result is good in a separate message. Requested corrections return to Issue Fix Implementation and restart Issue Fix Review.
-4. **Issue Fix Completion:** after the developer accepts the result, commit with `fixes #35`, create and merge the pull request, delete the temporary local and remote branch, remove the temporary worktree and close the issue.
+3. **Issue Fix Review:** give the worktree path, launch command and the check “Open an empty project and confirm that no error appears.” Stop for the developer to run the application. Only after the developer reports reviewing the result, explain the completion actions in a separate message and ask “Do you approve the reviewed issue fix for completion?” Requested corrections return to Issue Fix Implementation and restart Issue Fix Review.
+4. **Issue Fix Completion:** after the developer approves the reviewed issue fix for completion, commit with `fixes #35`, create and merge the pull request, delete the temporary local and remote branch, remove the temporary worktree and close the issue.
 
 A representative review handoff names the changed files, verification already performed and the exact worktree launch command. That handoff represents implemented work awaiting review; completion follows acceptance.
 

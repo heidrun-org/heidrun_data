@@ -94,14 +94,14 @@ The first message asks the developer to review. Always do these steps, in this o
 3. Say in one or two short lines what to look at, so that the developer can validate the change.
 4. Stop. The first message has no question and no button, and it says nothing about the pull request (on GitLab, the merge request) or about the merge. Write the launch command in the closing text of the message, never before a question box, so that the developer always sees it.
 
-The developer runs the application, then says that the result is reviewed. The second message comes only after that. It asks one question: whether the result is good. It does not ask about the pull request or about the merge.
+The developer runs the application, then says that the result is reviewed. The second message comes only after that. Explain that Issue Fix Completion includes committing the reviewed changes, creating and merging the pull request, and closing the issue. Then ask exactly: "Do you approve the reviewed issue fix for completion?"
 
 - Each time that the developer asks for a change, go back to the Issue Fix Implementation. Then give the launch command again, and start again with the first message.
-- Never start the Issue Fix Completion (the commit, the pull request, the merge, and the closing of the issue) before the developer says that the result is good.
+- Never start the Issue Fix Completion (the commit, the pull request, the merge, and the closing of the issue) before the developer approves the reviewed issue fix for completion.
 
 ### Issue Fix Completion
 
-The Issue Fix Completion starts when the developer says that the result of the Issue Fix Review is good.
+The Issue Fix Completion starts when the developer approves the reviewed issue fix for completion.
 
 1. Make the commit. Its message mentions the issue number and uses `fixes #<issue number>`.
 2. Create a pull request (on GitLab, a merge request) from the temporary branch. Its description lists each added request, as the section "The pull request" below says.

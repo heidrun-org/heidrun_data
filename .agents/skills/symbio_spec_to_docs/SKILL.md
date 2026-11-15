@@ -7,7 +7,9 @@ description: Generate and update documentation inside a repository from its appr
 
 Use the project's approved Symbiospec and implementation evidence to generate documentation inside the repository. This skill requires the installed skill `symbio_spec` and the project's Symbiospec data. Read `symbio_spec`, perform the version check below, and then read the relevant project data before generating documentation. If either dependency is unavailable, identify the missing dependency and stop generation. Initializing or correcting Symbiospec is a separate task through `symbio_spec`.
 
-**Expected Symbiospec format: `1.0.0`. Supported formats: `1.0.0` and its unversioned equivalent.** Before consuming project specifications or generating output, follow the shared [version detection and migration procedure](../symbio_spec/references/versioning.md) from the installed `symbio_spec` skill. If that procedure or the required definition is unavailable, or a version is malformed or unsupported, or migration is incomplete, stop generation before changing output. Compatible format numbers do not automatically require migration. Adoption and migration are separate authorized work through `symbio_spec`; generation does not authorize changing the source specification.
+**Required for normal work: the latest published Symbiospec format in the installed registry (currently `3.0.0`). Migration sources: `2.0.0`, `1.0.0` and its unversioned equivalent.** Before normal work, follow the shared [version detection and automatic migration procedure](../symbio_spec/references/versioning.md). Invoking this skill authorizes documented adoption and forward migration, including for an audit, documentation generation or interface proposal. Automatically migrate older project data before continuing; older-format compatibility does not permit skipping migration. Do not request separate migration approval. Preserve data and approvals, update references, verify each step, and report source and target versions. Explicit instructions forbidding changes override this default: report the conflict and stop dependent work if migration is needed. Malformed, unknown or newer versions, missing reliable conversion paths, and failed or interrupted migrations block normal work. Installation that only copies skill files defers migration until first project use.
+
+For `3.0.0`, use the shared [decision reading procedure](../symbio_spec/references/format-v3.0.0.md#423-reading-procedure) to select relevant topic summaries and original decision evidence, checking later replacements and unresolved conditions. Do not read the complete history by default or treat a summary as approval. Use the retained `1.0.0` definition only while converting source data, not for normal work.
 
 Keep reusable instructions independent of a particular application, documentation renderer or hosting service. Product information belongs to the project's Symbiospec; audience and editorial choices belong to the documentation configuration.
 
@@ -37,11 +39,11 @@ An explicit `none` is valid where appropriate, for example no excluded topics or
 
 ## Establish the scope
 
-Use the supplied configuration to select the audience, sources and output. Follow the repository rules for changes. Read decision and coverage records before topic specifications: folder location or a general overview is not proof of approval or implementation.
+Use the supplied configuration to select the audience, sources and output. Follow the repository rules for changes. Locate the affected topic, then read relevant original decision evidence and coverage before treating topic specifications as approved: folder location or a general overview is not proof of approval or implementation.
 
 Distinguish approved behaviour, unapproved proposals, implemented behaviour and behaviour observed in the running application. Check approval for the relevant decision, including later amendments. Existing guides and skills help locate evidence but do not override approved decisions or establish live behaviour.
 
-Document a feature only when both approved Symbiospec and current implementation evidence support the feature. Leave approved but unimplemented features out and report the gaps. Leave implemented features missing from Symbiospec out and report the missing product information; document those features only after Symbiospec has been updated and approved. Do not repair Symbiospec silently during documentation generation.
+Document a feature only when both approved Symbiospec and current implementation evidence support the feature. Leave approved but unimplemented features out and report the gaps. Leave implemented features missing from Symbiospec out and report the missing product information; document those features only after Symbiospec has been updated and approved. Do not repair product meaning in Symbiospec silently during documentation generation. Required format migration is announced and completed before generation under the shared procedure.
 
 ## Write useful guidance
 
@@ -94,3 +96,5 @@ Follow the skill [symbio_spec_to_docs](.agents/skills/symbio_spec_to_docs/SKILL.
 ```
 
 A direct request can also supply the configuration path. No repository-specific path is a default. When no caller supplies a path, report “symbio_spec_to_docs has no configuration path”, show the section above, and stop generation. Configuration setup can be requested separately; never generate pages from an incomplete configuration.
+
+For coverage retrieval and updates, follow the [original examination and topic summary procedure](../symbio_spec/references/format-v3.0.0.md#43-coverage). Verify summary freshness, then consult original evidence for the claimed scope, revision and environment. Summary freshness does not establish current software compliance.

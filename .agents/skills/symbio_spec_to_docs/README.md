@@ -10,7 +10,7 @@ Use `symbio_spec_to_docs` to create a documentation set, review coverage, or upd
 
 The installed skill [symbio_spec](../symbio_spec/README.md), the project's Symbiospec data, relevant approval decisions, coverage records and implementation evidence are required. Missing either dependency stops generation; initialization and correction of Symbiospec are separate tasks.
 
-The expected Symbiospec format is `1.0.0`, including its unversioned equivalent. Before generation, the skill follows the shared [version check](../symbio_spec/references/versioning.md). Unsupported or malformed versions and incomplete migrations stop generation; generation does not authorize source migration.
+Normal work requires the latest published Symbiospec format in the installed registry, currently `3.0.0`. The shared [version check and automatic migration procedure](../symbio_spec/references/versioning.md) runs first. Invoking this skill includes authorization to adopt unversioned data and migrate older formats with verified preservation, without a separate migration request. Explicit instructions forbidding changes block required migration and dependent work. Malformed, unknown or newer versions and failed or interrupted migrations stop normal work. Product approval and implementation permissions remain separate from storage conversion.
 
 The caller must supply complete configuration for each requested set. The coding agent needs access to the configured sources and write access to the destination. Application access supports live checks; unavailable access must be reported. Renderer and publication tools are needed only when the configured task includes those checks or publication. The Rules of the Repo is optional.
 
@@ -48,7 +48,7 @@ The skill produces audience-facing pages and a separate review record mapping pa
 
 ## Approval and publication boundaries
 
-Use only approved specification content supported by implementation evidence. Do not silently repair Symbiospec during generation. Omit unsupported instructions or explain a supported current limitation; record conflicts that prevent accurate guidance. Configuration changes follow the authority specified by the configuration or its rules-list row. An ordinary source update does not authorize an audience change.
+Use only approved specification content supported by implementation evidence. Do not silently repair product meaning in Symbiospec during generation; required format migration is announced and completed first. Omit unsupported instructions or explain a supported current limitation; record conflicts that prevent accurate guidance. Configuration changes follow the authority specified by the configuration or its rules-list row. An ordinary source update does not authorize an audience change.
 
 Writing and publication are separate actions. A publication destination in configuration does not itself authorize deployment. Use the configured workflow within the requested scope and report publication separately from content review. When publication is authorized, the instructions require a representative test of an unproven hosting assumption and checks in a real browser.
 
