@@ -24,7 +24,7 @@ Use this outcome matrix for every entry point:
 | Missing definition or forward conversion | Stop without mutation, including adoption, rather than partially preparing an unavailable path. |
 | Failed or interrupted conversion | Keep the interruption marker and recovery evidence; do not begin normal work on either partially written output or the older source. |
 
-Reject a missing component, a leading zero, a release suffix, duplicate version fields, and an empty field. Reject unknown `1.1.0` and `4.0.0` without mutation. An absent folder requires authorized initialization; a request to inspect an absent folder must not create a specification. Installation that only copies skill files makes no project-data changes and defers the check to first use. Select future targets from the registry's ordered published list; do not assume the current `3.0.0` is permanently latest.
+Reject a missing component, a leading zero, a release suffix, duplicate version fields, and an empty field. Reject unknown `1.1.0` and `4.0.0` without mutation. An absent folder requires authorized initialization; a request to inspect an absent folder must not create a specification. Installation that only copies skill files makes no project-data changes and defers the check to first use. Select future targets from the registry's ordered published list; do not assume the current `3.1.0` is permanently latest.
 
 ## 3. Consecutive migration and preservation
 

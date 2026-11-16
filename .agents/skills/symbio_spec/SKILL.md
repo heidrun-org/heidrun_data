@@ -1,6 +1,6 @@
 ---
 name: symbio_spec
-description: Create and maintain Symbiospec, the shared product specification in docs/symbio_spec/. Use to initialize Symbiospec for new or existing software, update the specification alongside authorized software changes, request Symbiospec Audit for self-consistency or Symbiospec Audit for software compliance, or resolve drift between the specification, software, and tests.
+description: Create and maintain Symbiospec, the shared product specification in docs/symbio_spec/. Use to initialize Symbiospec for new or existing software, update the specification alongside authorized software changes, request Symbiospec Audit for self-consistency or Symbiospec Audit for software compliance, create or review human-approved user scenarios, or resolve drift between the specification, software, and tests.
 ---
 
 # Symbiospec
@@ -15,7 +15,7 @@ Read the target repository's instructions and applicable context files first. Fo
 
 ## 2. Select the workflow
 
-**Required for normal work: the latest published Symbiospec format in the installed registry (currently `3.0.0`). Migration sources: `2.0.0`, `1.0.0` and its unversioned equivalent.** Before normal work, follow the shared [version detection and automatic migration procedure](references/versioning.md). Invoking this skill authorizes documented adoption and forward migration, including for an audit, documentation generation or interface proposal. Automatically migrate older project data before continuing; older-format compatibility does not permit skipping migration. Do not request separate migration approval. Preserve data and approvals, update known repository references, verify replacements, and remove obsolete paths completely; do not leave redirects, compatibility pages or duplicate navigation. Report uneditable external links as limitations. Verify each step and report source and target versions. Explicit instructions forbidding changes override this default: report the conflict and stop dependent work if migration is needed. Malformed, unknown or newer versions, missing reliable conversion paths, and failed or interrupted migrations block normal work. Installation that only copies skill files defers migration until first project use.
+**Required for normal work: the latest published Symbiospec format in the installed registry (currently `3.1.0`). Migration sources: `3.0.0`, `2.0.0`, `1.0.0` and its unversioned equivalent.** Before normal work, follow the shared [version detection and automatic migration procedure](references/versioning.md). Invoking this skill authorizes documented adoption and forward migration, including for an audit, documentation generation or interface proposal. Automatically migrate older project data before continuing; older-format compatibility does not permit skipping migration. Do not request separate migration approval. Preserve data and approvals, update known repository references, verify replacements, and remove obsolete paths completely; do not leave redirects, compatibility pages or duplicate navigation. Report uneditable external links as limitations. Verify each step and report source and target versions. Explicit instructions forbidding changes override this default: report the conflict and stop dependent work if migration is needed. Malformed, unknown or newer versions, missing reliable conversion paths, and failed or interrupted migrations block normal work. Installation that only copies skill files defers migration until first project use.
 
 Read [format.md](references/format.md) and the detected version's complete definition before creating or restructuring Symbiospec. Use the [workflow overview](references/workflows.md) to select the relevant workflow below.
 
@@ -25,11 +25,12 @@ Read [format.md](references/format.md) and the detected version's complete defin
 | Introduce Symbiospec into existing software | [Initialize Symbiospec](references/workflow_initialize.md) through slow growth: establish a small validated foundation and expand iteratively. |
 | Adopt existing specifications | [Initialize Symbiospec](references/workflow_initialize.md): inspect and preserve useful content and approvals; propose incremental content adoption from other systems. Published Symbiospec format conversion runs automatically first. |
 | Develop an authorized software change with an established Symbiospec | [Update Symbiospec as the software changes](references/workflow_update.md): update the affected specifications in the same task. |
+| Design from a human-provided batch, generate proposed user scenarios from Symbiospec or software, or review, revise or retire user scenarios | [User scenarios](references/workflow_user_scenarios.md): record source, approval, journey, proposed changes, specification findings and software verification separately. |
 | Check whether approved Symbiospec descriptions agree internally | [Symbiospec Audit for self-consistency](references/workflow_audit_self_consistency.md): review the requested specification scope without testing software. |
 | Compare approved Symbiospec with software in both directions | [Symbiospec Audit for software compliance](references/workflow_audit_software_compliance.md): report conflicting, missing, and unverified behaviour. |
 | Investigate and resolve differences between Symbiospec, software, and tests | [Realign Symbiospec when drift is detected](references/workflow_realign.md): compare without modifying, report differences, then apply authorized corrections. |
 
-For `3.0.0`, follow the [decision reading and maintenance rules](references/format-v3.0.0.md#42-decisions) before relying on summaries or recording decisions. Use the retained `1.0.0` definition only to interpret migration sources; ordinary work begins after migration. Read only the workflow references relevant to the request. Both audits require an explicit request; the human chooses either audit or both audits, the scope, and the timing, including deferral until later. Do not automatically launch either audit or check affected approved user scenarios after every rule change. During discussion, mention apparent conflicts already noticed; a warning does not launch an investigation or make an audit a prerequisite for approving a rule. Never silently change approved user scenarios to remove a warning.
+For `3.1.0`, follow the [decision reading and maintenance rules](references/format-v3.1.0.md#42-decisions) before relying on summaries or recording decisions. Use the retained `1.0.0` definition only to interpret migration sources; ordinary work begins after migration. Read only the workflow references relevant to the request. Both audits require an explicit request; the human chooses either audit or both audits, the scope, and the timing, including deferral until later. Do not automatically launch either audit or check affected approved user scenarios after every rule change. During discussion, mention apparent conflicts already noticed; a warning does not launch an investigation or make an audit a prerequisite for approving a rule. Never silently change approved user scenarios to remove a warning.
 
 Keep checks scoped to the request. A request to inspect or review permits investigation and a report, not unrequested product corrections. Required format adoption and forward migration still run first under the shared procedure unless changes are explicitly forbidden. Realignment is a repeatable operation, not permission to create a scheduled automation.
 
@@ -66,11 +67,15 @@ When the approved Symbiospec changes need several implementation changes, write 
 
 For user interface structure derived from approved Symbiospec, use the separate [symbio_spec_to_ux draft](../symbio_spec_to_ux/SKILL.md). The draft proposes objects, relationships, calls to action, attributes, screens, and navigation for human review. The draft remains untested on a real project and does not authorize implementation.
 
-## 8. Design references
+## 8. User scenarios
+
+Use the [user scenario workflow and template](references/workflow_user_scenarios.md) for creation, generation, review and maintenance. The [format definition](references/format-v3.1.0.md#5-user-scenarios) owns approval and lifecycle requirements. The [fictional example](references/user_scenario_examples.md) includes completed records and a noticed conflict without an automatic audit.
+
+## 9. Design references
 
 The supporting references make this skill usable without network access. These issues provide design context rather than project-specific approval:
 
 - [Symbiospec definition and structure](https://github.com/jeromeetienne/coding_agent_plugin/issues/10).
 - [Symbiospec workflow guide](https://github.com/jeromeetienne/coding_agent_plugin/issues/11).
 
-For coverage retrieval and updates, follow the [original examination and topic summary procedure](references/format-v3.0.0.md#43-coverage). Verify summary freshness, then consult original evidence for the claimed scope, revision and environment. Summary freshness does not establish current software compliance.
+For coverage retrieval and updates, follow the [original examination and topic summary procedure](references/format-v3.1.0.md#43-coverage). Verify summary freshness, then consult original evidence for the claimed scope, revision and environment. Summary freshness does not establish current software compliance.

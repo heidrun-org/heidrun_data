@@ -25,3 +25,7 @@ When explicitly requested, compare approved expectations with software and softw
 ## 6. [Propose user interface structure](workflow_user_interface.md)
 
 Propose screens and navigation derived from approved concepts and behaviour for human review.
+
+## 7. [Create, review and maintain user scenarios](workflow_user_scenarios.md)
+
+Start product design from human goals or generate proposals from existing Symbiospec. Record human approval separately from specification gaps and software verification, and preserve approved journeys during revision and retirement.

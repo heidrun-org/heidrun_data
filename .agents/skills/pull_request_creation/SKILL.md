@@ -25,6 +25,8 @@ Lead with the problem and resulting behavior, then explain what changed and why.
 
 Match the length to the complexity. A small correction usually needs one or two sentences plus relevant validation. A change across several areas may need separate paragraphs or a short list covering each material part, interactions, and risks. Use headings when helpful or required by a template; do not expand a small change into a long report merely to fill sections.
 
+Use Markdown formatting to make the description easier to read. Use headings to separate topics, lists for related items or steps, emphasis for important points, links for references, and inline code or fenced code blocks for commands and code, as appropriate. Keep formatting proportional to the content and follow the receiving repository's templates and file-link and issue-reference rules. Leave a blank line before lists and between headings and their content.
+
 Report validation actually performed: the relevant checks or commands, their results, and the behavior or environment exercised. Distinguish source inspection, automated checks, manual use, and live verification where the distinction affects confidence. State relevant failures, skipped checks, unavailable environments, limitations, and unfinished work. Do not describe a planned check as passed, or imply that a successful local check proves deployment or live behavior.
 
 Link relevant issues in a form supported by the receiving repository. Use a closing reference only when the change resolves the issue and the repository intends closure on merge; use a related reference for partial work. Describe material work beyond the original issue so the description agrees with the whole change.

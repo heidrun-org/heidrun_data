@@ -29,7 +29,9 @@ Never commit an image to the repository, and never push an image to a branch, on
 
 ### Writing the text of an issue
 
-These two rules apply to the body of an issue, and to every comment that you write in an issue.
+Use Markdown formatting to make issue bodies and issue comments easier to read. Use headings to separate topics, lists for related items or steps, emphasis for important points, links for references, and inline code or fenced code blocks for commands and code, as appropriate. Keep formatting proportional to the content: a short paragraph does not need extra sections. Follow the receiving repository's templates and formatting requirements. Leave a blank line before lists and between headings and their content.
+
+The following file-link and issue-reference rules also apply to the body of an issue, and to every comment that you write in an issue.
 
 - Every file name of the repository that you write in the text of an issue is a link to the file. Write the file name as the label of the link, and the address of the file on GitHub as the target, for example `[HOW_TO_RELEASE.md](https://github.com/heidrun-org/heidrun/blob/main/HOW_TO_RELEASE.md)`. Link to the branch `main`, or to the branch that holds the file when `main` does not have the file yet. On GitLab, the address of a file has the form `https://<host>/<group>/<project>/-/blob/main/<path>`.
 - Every issue that you write in the text of an issue is its own bullet that starts with a dash, and the bullet holds only the plain address of the issue, for example `- https://github.com/heidrun-org/heidrun/issues/506`. GitHub changes such a bullet into the title, the state, and the number of the issue. A numbered list, a link with a label, or an issue number inside a sentence shows only the number. Write the words that explain the issues above the list, not inside the bullet. On GitLab, write each issue as its own bullet in the same way, with a plus sign after the reference, for example `- #506+`, so that GitLab shows the title.

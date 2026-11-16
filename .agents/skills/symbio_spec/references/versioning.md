@@ -23,7 +23,7 @@ Store the version at `docs/symbio_spec/format-version.md`:
 ```markdown
 # Symbiospec format version
 
-- Format version: 3.0.0
+- Format version: 3.1.0
 ```
 
 Apply the receiving repository's document header conventions when required. The title must be `Symbiospec format version`. Require exactly one field line of the form `- Format version: MAJOR.MINOR.PATCH`, outside code blocks. Each component is a non-negative decimal integer with no leading zeros except `0`. Accept published versions only; release suffixes and build metadata are not used. Missing, duplicate, conflicting, or invalid fields in an existing record are malformed, not an unversioned folder. An unreadable record is an error, not an absent record. Dates and other document metadata do not approve product content.
@@ -42,7 +42,7 @@ A new requirement that invalidates an existing valid folder requires a major ver
 
 ## 2. Check before normal work
 
-Every Symbiospec skill follows this procedure before normal work, including workflows that otherwise only read specifications. `symbio_spec`, `symbio_spec_to_docs`, and `symbio_spec_to_ux` use the latest published format in the installed [registry](format.md): the last entry in its ordered transition list, currently `3.0.0`. Older retained definitions, including `2.0.0`, `1.0.0` and its unversioned equivalent, are supported as migration sources, not as formats for normal work. Select the target from the registry each time; do not hard-code `3.0.0` as the permanent target. A newer installed release updates the registry, definitions, transitions and entry-point declarations together. Missing definitions, transitions or inconsistent declarations block work; never invent a path or infer compatibility from a version number.
+Every Symbiospec skill follows this procedure before normal work, including workflows that otherwise only read specifications. `symbio_spec`, `symbio_spec_to_docs`, and `symbio_spec_to_ux` use the latest published format in the installed [registry](format.md): the last entry in its ordered transition list, currently `3.1.0`. Older retained definitions, including `3.0.0`, `2.0.0`, `1.0.0` and its unversioned equivalent, are supported as migration sources, not as formats for normal work. Select the target from the registry each time; do not hard-code `3.1.0` as the permanent target. A newer installed release updates the registry, definitions, transitions and entry-point declarations together. Missing definitions, transitions or inconsistent declarations block work; never invent a path or infer compatibility from a version number.
 
 Invoking any of these skills authorizes the documented format adoption and forward migrations needed to reach that target, without separate migration approval. Announce the source, target and conversion steps, then complete the shared preservation procedure before the requested workflow. This authorization covers storage conversion and necessary reference updates, not changes to approved product meaning, application implementation, documentation audience, or publication. An audit, documentation request or interface proposal does not exempt older data from migration. An explicit instruction such as "do not change files" or "do not migrate" overrides this default: if conversion is needed, report the conflict and stop dependent normal work without modifying data or silently using the older format.
 
