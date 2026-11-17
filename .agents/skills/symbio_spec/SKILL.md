@@ -79,3 +79,5 @@ The supporting references make this skill usable without network access. These i
 - [Symbiospec workflow guide](https://github.com/jeromeetienne/coding_agent_plugin/issues/11).
 
 For coverage retrieval and updates, follow the [original examination and topic summary procedure](references/format-v3.1.0.md#43-coverage). Verify summary freshness, then consult original evidence for the claimed scope, revision and environment. Summary freshness does not establish current software compliance.
+
+Each user scenario describes one person pursuing one specific goal, from a clear starting condition to one observable outcome. Include only the actions necessary to reach that outcome. Put alternative goals, starting conditions and recovery journeys in separate scenarios. Check this scope during generation and requested review; use separate documents and preserve source mapping and human approval. Never silently split or rewrite existing approved scenarios.

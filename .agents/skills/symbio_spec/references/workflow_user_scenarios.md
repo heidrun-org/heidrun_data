@@ -10,6 +10,12 @@ Start with a human-provided batch of user scenarios, or generate proposed user s
 
 Identify the source and the requested product scope before generating or organizing user scenarios. If the project has no Symbiospec folder, use [Initialize Symbiospec](workflow_initialize.md) within the authorized task; an empty structure supplies no approved product meaning. If Symbiospec already exists, preserve the existing descriptions and approvals. Store project documents using [the user scenario format](format-v3.1.0.md#5-user-scenarios) and the template in section 6, maintaining folder overviews and indexes.
 
+Before generating proposals from any source, apply this scope check: each user scenario describes one person pursuing one specific goal, from a clear starting condition to one observable outcome. Include only the actions necessary to reach that outcome. Put alternative goals, starting conditions and recovery journeys in separate scenario documents. Several necessary actions are allowed; there is no arbitrary click or step limit. Another person's completed work normally belongs in the starting condition or a linked scenario.
+
+Multiple “or”, “if” or “alternatively” branches are a review warning to consider splitting. These words are not banned: a necessary condition or a failure that prevents the same outcome can be recorded without adding another goal. Link a distinct recovery journey instead of expanding the original scenario into several journeys. Preserve unresolved failures rather than inventing recovery.
+
+When splitting supplied material into proposals, map every source goal, condition, action and outcome to a proposed document or an explicit unresolved item. Source approval does not automatically approve a proposed split. For existing approved scenarios, report the scope concern and propose a split under Proposed changes; preserve the approved text until the human authorizes the exact replacement and lifecycle changes in section 4.
+
 ### 1.1. Generate from existing Symbiospec
 
 Read the approved concepts, Behaviour and User Interface descriptions in the selected scope, including their approval evidence. Propose goal-oriented journeys with links to the descriptions used; distinguish an inferred journey from an explicit source statement. State examined and unexamined scope, gaps and uncertainty. Ask the human which goals or journeys are missing, then record acceptance, rejection or requested revision using section 3. Source approval never automatically approves a generated user scenario; generation can repeat source omissions and cannot establish complete coverage.
@@ -44,7 +50,7 @@ A human-provided batch may be supplemented by proposals generated from Symbiospe
 
 ## 2. Walk through Symbiospec
 
-When creating or explicitly reviewing a user scenario, walk through the complete journey using Symbiospec alone. For each step, follow the concept, action, navigation and expected outcome references, including failures and recovery. Record supporting descriptions, missing actions, disconnected navigation, unclear outcomes, contradictions and unresolved product decisions. Link the relevant sections and original approvals; identify the examined specification revision and unreviewed scope.
+When creating or explicitly reviewing a user scenario, first check that the document has one person, one specific goal, a clear starting condition and one observable outcome. Check that every action is necessary for that outcome; identify alternative goals, starting conditions or distinct recovery journeys that need separate documents. Record the scope check and any suggested split without silently rewriting an approved journey. Treat multiple “or”, “if” or “alternatively” branches as warnings to examine, not automatic violations. Then walk through the complete journey using Symbiospec alone. For each step, follow the concept, action, navigation and expected outcome references, including failures and recovery. Record supporting descriptions, missing actions, disconnected navigation, unclear outcomes, contradictions and unresolved product decisions. Link the relevant sections and original approvals; identify the examined specification revision and unreviewed scope.
 
 Do not infer a missing screen or rule from implementation, or invent product choices to make the journey appear supported. A supported journey means only that the examined Symbiospec describes the journey. Record software verification separately, including Software not exercised when appropriate. If a saved coverage examination is needed, follow the existing original examination and summary maintenance procedure and link the examination instead of duplicating the record.
 
@@ -80,7 +86,7 @@ Adapt the following template; replace every instruction in angle brackets with a
 
 ### 0.1. Purpose
 
-<The person and the goal, with the scope of this document.>
+<One person pursuing one specific goal, with one observable outcome.>
 
 ## 1. Source
 
@@ -99,16 +105,19 @@ Adapt the following template; replace every instruction in angle brackets with a
 
 ### 3.1. Goal and starting conditions
 
-<Person, goal and conditions, with links to existing concepts.>
+<One person, one specific goal and a clear starting condition, with links to
+ existing concepts. Link separate scenarios for alternative starting conditions.>
 
 ### 3.2. Actions and expected outcome
 
-<Ordered actions, entry points and expected outcome, linking supporting
+<Only the ordered actions necessary for one observable outcome, with entry
+ points and no arbitrary click or step limit, linking supporting
  Behaviour and User Interface descriptions or recording missing descriptions.>
 
 ### 3.3. Failure and recovery
 
-<Relevant paths and supporting references, or unresolved decisions.>
+<Failures preventing this outcome, supporting references and unresolved
+ decisions. Link distinct recovery journeys in separate scenario documents.>
 
 ## 4. Proposed changes
 
@@ -116,7 +125,9 @@ Adapt the following template; replace every instruction in angle brackets with a
 
 ## 5. Specification review
 
-<Review date; specification revision and paths; steps reviewed; supporting
+<One-person and one-goal scope check, starting condition, observable outcome,
+ necessary actions and branch warnings, with proposed splits when needed;
+ review date; specification revision and paths; steps reviewed; supporting
  descriptions; missing actions or descriptions; disconnected navigation;
  unclear outcomes; conflicts with links to both descriptions; unresolved
  questions and unreviewed scope. State Not reviewed if no review occurred.>
@@ -128,3 +139,5 @@ Adapt the following template; replace every instruction in angle brackets with a
 ```
 
 See the [fictional design and conflict example](user_scenario_examples.md) for a complete sequence. The example is guidance, not a project decision or execution evidence.
+
+These generation and review instructions do not change stored-document validity or reinterpret existing approvals. Format `3.1.0` remains unchanged; no format publication or project migration is needed under the [versioning rules](versioning.md#1-version-record-and-definitions).

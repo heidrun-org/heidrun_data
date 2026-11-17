@@ -8,17 +8,17 @@ This example describes an imaginary document-sharing product. Every human statem
 
 ## 1. Start product design from a human goal
 
-1. The human says: “I want to send a Document to a recipient without an account, so the recipient can read the Document.” The coding agent records the source as human-supplied and the journey as a proposal under `docs/symbio_spec/user_scenarios/recipient-reads-document.md`.
+1. The human says: “I want to send a Document to a recipient without an account, so the recipient can read the Document.” The coding agent records the source as human-supplied and proposes two focused documents under `docs/symbio_spec/user_scenarios/`: `owner-creates-reading-link.md` and `recipient-reads-document.md`, with the source mapping explained in section 2.
 2. The coding agent walks through the journey using Symbiospec alone. The [Document concept](#51-document-concept) exists, but no described action lets the owner produce a link. The coding agent records a missing action and missing User Interface description, rather than inventing an approved Share control.
-3. The coding agent presents the journey and gap separately. The human says: “Approve the journey. We still need to decide how sharing starts.” The coding agent records an Accepted original decision under `decisions/YYYY/MM/`, using the actual date and next permanent number, and links the journey to the decision. The user scenario is Approved; the missing action remains unresolved. Software verification says Software not exercised.
+3. The coding agent presents the journey and gap separately. The human says: “Approve the two separate journeys. We still need to decide how sharing starts.” The coding agent records an Accepted original decision under `decisions/YYYY/MM/`, using the actual date and next permanent number, and links both journeys to the decision. Both user scenarios are Approved; the missing action remains unresolved. Software verification says Software not exercised.
 4. The coding agent proposes: “Put a Share control in the Document screen. Activating Share creates a read-only link and displays the link for copying. A recipient can open the link without signing in. If link creation fails, show failure and allow retry.” The proposal identifies the missing action, expected outcome, reason and affected Behaviour and User Interface descriptions.
 5. The human changes the proposal: “Use Create reading link as the control name; approve the rest.” The coding agent records the exact authorization, updates the [sharing Behaviour](#52-sharing-behaviour) and [Document screen](#53-document-screen), and links the user scenario steps to those descriptions. The earlier journey approval did not authorize the control until this later decision.
 
 ## 2. Review the supported journey
 
-The approved journey is: an owner with an existing Document opens the Document screen, activates Create reading link, copies the resulting link and sends the link to a recipient. The recipient opens the link and reads the Document without signing in. If link creation fails, the owner sees failure and can retry. Sending through an external communication service is a starting assumption for the recipient's steps, not a promise that this product sends a message.
+The original request combines two people and two goals. Before approval, propose separate documents: `owner-creates-reading-link.md` ends when the owner has a link to copy; `recipient-reads-document.md` starts when the recipient has received a reading link and ends when the recipient reads the Document without signing in. Delivery through an external communication service is a starting assumption for recipient reading, not a promise that this product sends a message. Map the owner actions to the first document and the recipient action to the second document, retaining the original request as the source of both proposals. Obtain approval of the separate journeys; the fictional authorization in section 7 explicitly covers both journeys. Never apply this example as permission to split an existing approved project scenario.
 
-The review follows the [Document concept](#51-document-concept), [Document screen](#53-document-screen) and [sharing Behaviour](#52-sharing-behaviour) in order. The success path and link-creation failure and retry path have supporting descriptions within this fictional scope. Recovery when a recipient cannot open a link remains a specification gap. The review covers this journey and the link-creation failure and retry path only. Expired links, revocation and other journeys remain unreviewed and their intended handling is unresolved. Software was not exercised. This review does not establish exhaustive specification consistency or working software.
+The review follows the [Document concept](#51-document-concept), [Document screen](#53-document-screen) and [sharing Behaviour](#52-sharing-behaviour) in order. For recipient reading, the scope check finds one person, one goal, a received link as the starting condition and readable content as the observable outcome. The owner link-creation actions belong to the separate owner scenario. The sharing descriptions support both focused success paths; creation failure is a blocked outcome for the owner. A distinct retry journey receives its own proposal if requested. Recovery when a recipient cannot open a link remains a specification gap. The recipient review covers reading from a received link only; the owner scenario needs its own review record. Expired links, revocation and other journeys remain unreviewed and their intended handling is unresolved. Software was not exercised. This review does not establish exhaustive specification consistency or working software.
 
 ## 3. Generate proposals for an existing project
 
@@ -68,7 +68,7 @@ This snapshot follows the design approval in section 1. The pending sign-in chan
 
 ### 0.1. Purpose
 
-An owner makes a Document available for a recipient to read without an account.
+A recipient reads a Document from a received reading link without an account.
 
 ## 1. Source
 
@@ -77,7 +77,9 @@ Human-supplied journey and subsequent design decision:
 
 ## 2. Human approval
 
-Approved: the journey and sharing action described in section 3.
+Approved: the recipient-reading journey described in section 3.
+The same decision also covers the separate owner link-creation journey;
+that broader decision does not add owner actions to this scenario.
 [Decision 000001](#72-completed-fictional-decision).
 Approval leaves recipient link-opening failure recovery unresolved.
 
@@ -85,30 +87,27 @@ Approval leaves recipient link-opening failure recovery unresolved.
 
 ### 3.1. Goal and starting conditions
 
-An owner has an existing [Document](#51-document-concept).
-The recipient has no account. The goal is to let the recipient read the Document.
+A recipient without an account has received a reading link to an existing
+[Document](#51-document-concept). The goal is to read the Document.
+The owner creating the link belongs in `owner-creates-reading-link.md`.
 
 ### 3.2. Actions and expected outcome
 
-1. The owner opens the Document screen from the Document list.
-2. The owner activates Create reading link and copies the resulting link.
-   See [Document screen](#53-document-screen) for navigation and placement,
-   and [sharing Behaviour](#52-sharing-behaviour) for outcomes.
-3. The owner sends the link through an external communication service.
-   Delivery is an external assumption, not an action supplied by this product.
-4. The recipient opens the link and reads the Document without signing in.
-   See [sharing Behaviour](#52-sharing-behaviour).
+1. The recipient opens the received reading link.
+2. The recipient reads the Document without signing in.
+   See [Document screen](#53-document-screen) for navigation and
+   [sharing Behaviour](#52-sharing-behaviour) for outcomes.
 
 ### 3.3. Failure and recovery
 
-If link creation fails, the owner sees failure and can retry, as described
-in [sharing Behaviour](#52-sharing-behaviour).
 Recovery when the recipient cannot open the link is not yet described.
+Retain this unresolved decision; propose a separate recovery scenario when
+the recovery goal and starting condition are known.
 
 ## 4. Proposed changes
 
 Require the recipient to sign in before reading. This proposal conflicts with
-step 4 and [sharing Behaviour](#52-sharing-behaviour).
+step 2 and [sharing Behaviour](#52-sharing-behaviour).
 Motivation: the proposed [sign-in rule](#54-proposed-sign-in-rule).
 No journey revision has been approved.
 
@@ -116,12 +115,15 @@ No journey revision has been approved.
 
 Reviewed: 16 November 2026, the fictional descriptions in sections 5.1–5.3
 of this reference, after the design decision in section 1.
-Scope: the journey in section 3, including link-creation failure and retry.
+Scope check: one recipient, one reading goal, a received link as the starting
+condition and readable content as the outcome. Both actions serve that outcome.
+Scope: the recipient-reading journey in section 3 only.
 Supporting descriptions: the linked Document concept, Behaviour and screen.
 Missing description: recipient link-opening failure and recovery.
-Noticed conflict: the pending sign-in rule conflicts with journey step 4;
+Noticed conflict: the pending sign-in rule conflicts with journey step 2;
 the rule is a proposal, not an approved conflicting requirement.
-Unreviewed scope: expiration, revocation and other user scenarios.
+Unreviewed scope: owner link creation, failure retry, expiration, revocation
+and other user scenarios.
 Unresolved decisions: recipient failure recovery and the sign-in proposal.
 No audit was requested or performed.
 
@@ -135,7 +137,7 @@ examined. Specification review does not establish working software.
 
 ### 7.1. Fictional discussion
 
-On 16 November 2026, the human says: “Approve the journey where the recipient reads without an account. For sharing, approve Create reading link, returning a link to copy, and reporting creation failure with retry. We have not decided what happens when the recipient cannot open the link.”
+On 16 November 2026, the human says: “Approve the two separate journeys: the owner creates a reading link, and the recipient reads a received link without an account. For sharing, approve Create reading link, returning a link to copy, and reporting creation failure with retry. We have not decided what happens when the recipient cannot open the link.”
 
 Later the human says: “Prepare a proposal requiring recipient sign-in. I have not approved changing the journey.” That later instruction requests a proposal and does not replace the earlier approval.
 
@@ -186,3 +188,24 @@ No replacement recorded; first decision in this fictional history.
 Recipient link-opening failure recovery remains undecided.
 No approval of the later sign-in proposal is included.
 ```
+
+## 8. Split a broad Heidrun Store proposal
+
+This additional example is fictional guidance, not a description or approval of Heidrun Store. No Heidrun Store card or documentation is changed. Suppose source discussion A requests “Manage a subscription: renew, cancel, recover from failed payment and reach expiry,” and source discussion B requests “View Product License results, or refresh after Heidrun Store becomes available again.” Neither discussion supplies approval. Repeated alternatives warn that these proposals combine distinct goals and starting conditions.
+
+Propose separate documents, keeping the source discussion and the mapped source fragment in each document's Source section:
+
+| Proposed document and goal | Starting condition | Observable outcome | Source mapping and unresolved decisions |
+| --- | --- | --- | --- |
+| `renew-subscription.md`: Renew a subscription | A person has a subscription eligible for renewal. | Renewal is confirmed. | A: renewal; renewal timing and confirmation remain undecided. |
+| `cancel-renewal.md`: Cancel renewal while retaining paid access | A person has paid access and renewal enabled. | Renewal is disabled and paid access remains. | A: cancellation; the end of paid access needs an approved description. |
+| `correct-renewal-payment.md`: Correct a failed renewal payment during the Grace period | A person has a failed renewal payment during the Grace period. | The correction outcome is visible. | A: payment failure and recovery; whether correction retries payment immediately remains undecided. |
+| `view-expired-access.md`: View access after expiry | A person's paid access has expired. | The person sees the current access result. | A: expiry; expiry itself is a starting condition, not an invented user action. What the person should see remains undecided. |
+| `view-product-license-results.md`: View current Product License results | A person can open current Product License results. | Current Product License results are visible. | B: viewing; which results and freshness information appear remains undecided. |
+| `refresh-license-results.md`: Refresh License results after Heidrun Store becomes available again | A person has stale License results after an outage; Heidrun Store is available again. | Refreshed License results are visible. | B: recovery and refresh; retry controls and the result of another failure remain undecided. |
+
+The map accounts for renewal, cancellation, payment failure, recovery, expiry, viewing and refresh. Keep supplied actions in their corresponding proposal; if an action cannot yet be assigned, record the action as unresolved with its original source instead of dropping the action. Necessary navigation, confirmation and result-reading actions may take several steps without requiring another scenario. “If confirmation is required, confirm cancellation” can remain a necessary condition within cancellation; “alternatively correct a failed payment” introduces a separate starting condition and goal.
+
+For every proposed document, keep Human approval as Proposal, Specification review as Not reviewed until the requested walkthrough occurs, and Software verification as Software not exercised unless actual checks are recorded. Link real approved concepts, Behaviour and User Interface descriptions when available; the table supplies no such evidence. Ask the human to approve the focused journeys and decide the listed gaps. Approving cancellation alone does not approve payment recovery, expiry handling or refresh. Even approval of all journeys does not resolve their missing product decisions or establish working software.
+
+If the broad source was already an approved scenario, retain the approved scenario and its approval evidence. Put the proposed split and source mapping in Proposed changes. Only after authorization of the exact replacements, record the decision, create the approved replacements with their precise approval scopes, and link the replacement and retirement records according to the lifecycle rules. Do not silently transfer approval or remove the broad approved document.
