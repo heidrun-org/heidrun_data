@@ -1,7 +1,7 @@
 # Symbiospec index
 
 - Created: 8 November 2026
-- Last updated: 15 November 2026
+- Last updated: 17 November 2026
 - Status: Maintained index for agents and tools
 - Related framing: [Project instructions](../../AGENTS.md)
 - Related rules: [Symbiospec](../../.agents/skills/symbio_spec/SKILL.md)
@@ -17,6 +17,7 @@ This file lists the files and subfolders of Symbiospec.
 - [Styling](styling/index.md): the reserved area for Styling.
 - [Platform Support](platform_support/index.md): the reserved area for Platform Support.
 - [System Overview](system_overview/index.md): the reserved area for System Overview.
+- [User scenarios](user_scenarios/index.md): Proposed journeys for the basic and advanced Heidrun Data workflows.
 
 
 - [format-version.md](format-version.md): the current Symbiospec storage format.
