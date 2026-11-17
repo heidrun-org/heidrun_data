@@ -24,16 +24,16 @@ Proposal. The developer asked to start the user scenario workflow. Approval of t
 
 ### 3.1. Goal and starting conditions
 
-Proposed journey. A developer is returning to an existing feature and has access to the repository and its imported records.
+Proposed journey. A developer is returning to Voice input in Heidrun Code and wants to know where to resume. The developer can specify the repository version and has access to the checkout and imported records.
 
 ### 3.2. Actions and expected outcome
 
-1. Name the feature and ask the coding agent for its status before resuming work.
-2. Read a report on what was implemented and tested, what remains open, and where to resume work.
+1. Ask the coding agent for the status of Voice input in the selected repository version.
+2. Read the report and identify where to resume work. The report names the version examined and links its conclusions about implementation, testing, and open work to their evidence.
 
 ### 3.3. Failure and recovery
 
-The outcome is blocked if the required records cannot be read. Symbiospec leaves failure feedback and recovery open.
+The report identifies missing evidence and distinguishes tests checked directly for the report from results reported in earlier chats. When the evidence identifies no next step, the report says so. Recovery when the selected version cannot be examined is open.
 
 ## 4. Proposed changes
 
@@ -41,7 +41,7 @@ None.
 
 ## 5. Specification review
 
-Reviewed on 17 November 2026 against the [repository revision](https://github.com/heidrun-org/heidrun_data/commit/d2593a27179571bef68296fca96a9f8d1f343cfd), using the published Heidrun Data Symbiospec in that checkout. The starting condition, action and result serve one developer goal. The [Source glossary](../glossary/data_layer.md#2-source) describes imported records. Symbiospec leaves the report request and presentation, the expected result when records are incomplete, and failure recovery open. Other journeys and runtime behaviour were outside this review.
+Reviewed on 17 November 2026 against the [reviewed repository revision](https://github.com/heidrun-org/heidrun_data/commit/b64e1ad2fa91b19b6bdef34c3d949ac57d505dbd). The stated starting condition, actions and result serve one developer goal. [Source glossary](../glossary/data_layer.md#2-source) describes the source records. Symbiospec leaves the report entry point, the version and evidence to inspect, and how to present open work and incomplete test evidence open. The saved report supplies a worked example. The review covered this journey and its specification links. Runtime behaviour was outside the review.
 
 ## 6. Software verification
 

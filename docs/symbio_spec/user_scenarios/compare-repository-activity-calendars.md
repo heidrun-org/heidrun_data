@@ -24,16 +24,16 @@ Proposal. The developer asked to start the user scenario workflow. Approval of t
 
 ### 3.1. Goal and starting conditions
 
-Proposed journey. A developer has imported activity records for several repositories and has chosen a year to examine.
+Proposed journey. A developer wants to compare daily activity across Heidrun Code, Heidrun Notebook, and Heidrun Data over the same one-year period. The developer has imported records for the three repositories and knows the period and time zone.
 
 ### 3.2. Actions and expected outcome
 
-1. Open the calendars for the repositories and select a measure to compare.
-2. See that measure by day for each repository and inspect individual daily values.
+1. Ask the coding agent for activity calendars for the three repositories, the same date range, and the same time zone.
+2. Open the returned calendars and choose a measure, such as commits. Compare that measure on the same day across repositories and inspect each repository’s daily value.
 
 ### 3.3. Failure and recovery
 
-The outcome is blocked if the required records cannot be read. Symbiospec leaves failure feedback and recovery open.
+The calendars distinguish a day with zero recorded activity from a day with unavailable data. If a measure has partial data, the calendars identify that limitation. Recovery when the calendars cannot be generated is open.
 
 ## 4. Proposed changes
 
@@ -41,7 +41,7 @@ None.
 
 ## 5. Specification review
 
-Reviewed on 17 November 2026 against the [repository revision](https://github.com/heidrun-org/heidrun_data/commit/d2593a27179571bef68296fca96a9f8d1f343cfd), using the published Heidrun Data Symbiospec in that checkout. The starting condition, action and result serve one developer goal. The [Source glossary](../glossary/data_layer.md#2-source) describes imported records. Symbiospec leaves the report request and presentation, the expected result when records are incomplete, and failure recovery open. Other journeys and runtime behaviour were outside this review.
+Reviewed on 17 November 2026 against the [reviewed repository revision](https://github.com/heidrun-org/heidrun_data/commit/b64e1ad2fa91b19b6bdef34c3d949ac57d505dbd). The stated starting condition, actions and result serve one developer goal. [Source glossary](../glossary/data_layer.md#2-source) describes the source records. Symbiospec leaves calendar access, comparable date ranges and measures, and the display of missing and partial data open. The saved report illustrates those distinctions. The review covered this journey and its specification links. Runtime behaviour was outside the review.
 
 ## 6. Software verification
 

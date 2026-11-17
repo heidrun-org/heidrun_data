@@ -24,16 +24,16 @@ Proposal. The developer asked to start the user scenario workflow. Approval of t
 
 ### 3.1. Goal and starting conditions
 
-Proposed journey. A developer has a repository, a local date, and imported coding agent usage data for that day.
+Proposed journey. A developer wants to know when estimated coding agent costs were highest for Heidrun Notebook on 23 October 2026. The developer has imported coding agent usage and uses the Europe/Paris time zone for that day.
 
 ### 3.2. Actions and expected outcome
 
-1. Ask for token usage and estimated cost grouped into three-hour periods.
-2. See the costs per period and identify the period with the highest estimated cost.
+1. Ask the coding agent for the repository’s token usage and estimated cost in three-hour periods for the chosen date and time zone.
+2. Open the report and see the token total and estimated cost for each period. Identify the highest-cost period when the usage coverage and prices support that comparison.
 
 ### 3.3. Failure and recovery
 
-The outcome is blocked if the required records cannot be read. Symbiospec leaves failure feedback and recovery open.
+Mark a period’s estimate as partial when usage has missing prices. If incomplete records or missing prices could change the result, say that the highest-cost period cannot be determined from the available data.
 
 ## 4. Proposed changes
 
@@ -41,7 +41,7 @@ None.
 
 ## 5. Specification review
 
-Reviewed on 17 November 2026 against the [repository revision](https://github.com/heidrun-org/heidrun_data/commit/d2593a27179571bef68296fca96a9f8d1f343cfd), using the published Heidrun Data Symbiospec in that checkout. The starting condition, action and result serve one developer goal. The [Source glossary](../glossary/data_layer.md#2-source) describes imported records. Symbiospec leaves the report request and presentation, the expected result when records are incomplete, and failure recovery open. Other journeys and runtime behaviour were outside this review.
+Reviewed on 17 November 2026 against the [reviewed repository revision](https://github.com/heidrun-org/heidrun_data/commit/b64e1ad2fa91b19b6bdef34c3d949ac57d505dbd). The stated starting condition, actions and result serve one developer goal. [Source glossary](../glossary/data_layer.md#2-source) describes the source records. Symbiospec leaves usage time grouping, cost coverage, and report access open. The saved report shows partial estimates, and the treatment of an indeterminate highest cost is a proposed result. The review covered this journey and its specification links. Runtime behaviour was outside the review.
 
 ## 6. Software verification
 

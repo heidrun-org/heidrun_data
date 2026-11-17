@@ -24,16 +24,16 @@ Proposal. The developer asked to start the user scenario workflow. Approval of t
 
 ### 3.1. Goal and starting conditions
 
-Proposed journey. A developer has a repository, a local date, and the imported commits and pull requests for that day.
+Proposed journey. A developer wants to review changes in Heidrun Notebook on 23 October 2026 and has imported the repository’s commits and pull requests. The local day is in the Europe/Paris time zone.
 
 ### 3.2. Actions and expected outcome
 
-1. Ask for the day’s changes grouped into three-hour periods.
-2. See the commit and pull request counts per period and open the records behind a period.
+1. Ask the coding agent for a report for the repository, date, and time zone.
+2. Open the report and see commit and pull request counts for each three-hour period. The report places commits by commit time and pull requests by opening time. Open a period to inspect its records.
 
 ### 3.3. Failure and recovery
 
-The outcome is blocked if the required records cannot be read. Symbiospec leaves failure feedback and recovery open.
+The report shows how current the records are for each source and identifies gaps that could make a period incomplete. Recovery when the report cannot be generated is open.
 
 ## 4. Proposed changes
 
@@ -41,7 +41,7 @@ None.
 
 ## 5. Specification review
 
-Reviewed on 17 November 2026 against the [repository revision](https://github.com/heidrun-org/heidrun_data/commit/d2593a27179571bef68296fca96a9f8d1f343cfd), using the published Heidrun Data Symbiospec in that checkout. The starting condition, action and result serve one developer goal. The [Source glossary](../glossary/data_layer.md#2-source) describes imported records. Symbiospec leaves the report request and presentation, the expected result when records are incomplete, and failure recovery open. Other journeys and runtime behaviour were outside this review.
+Reviewed on 17 November 2026 against the [reviewed repository revision](https://github.com/heidrun-org/heidrun_data/commit/b64e1ad2fa91b19b6bdef34c3d949ac57d505dbd). The stated starting condition, actions and result serve one developer goal. [Source glossary](../glossary/data_layer.md#2-source) describes the source records. Symbiospec identifies commit and pull request records but leaves time zone selection, period boundaries, which events are counted, and access to the report open. The saved report supplies the counting method for this example. The review covered this journey and its specification links. Runtime behaviour was outside the review.
 
 ## 6. Software verification
 

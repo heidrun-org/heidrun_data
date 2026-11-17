@@ -16,6 +16,8 @@ Select the repository and find its user activity records from yesterday.
 
 Mixed source. The developer requested one search per source in the batch discussion and selected the proposed search set. The [Source glossary](../glossary/data_layer.md#2-source) identifies the record type. The [repository query example](../../../README.md#usage-scenario) illustrates querying imported data.
 
+The [User activity record fields](../../../packages/data_layers/data_layer_user_activity/README.md#the-database) describes the folder and timestamps available for this example.
+
 ## 2. Human approval
 
 Proposal. The developer asked to start the user scenario workflow. Approval of this journey is pending.
@@ -24,16 +26,16 @@ Proposal. The developer asked to start the user scenario workflow. Approval of t
 
 ### 3.1. Goal and starting conditions
 
-Proposed journey. A developer has already imported user activity records for the workspace and wants to find the relevant records.
+Proposed journey. A developer wants to recall when they worked on a repository yesterday. They know the repository’s workspace folder and the time zone used to define yesterday.
 
 ### 3.2. Actions and expected outcome
 
-1. Select the repository and find its user activity records from yesterday.
-2. See the matching recorded activity in time order.
+1. Search the imported user activity records for that workspace folder and the periods that overlap yesterday in the selected time zone.
+2. See the matching start and end times in chronological order.
 
 ### 3.3. Failure and recovery
 
-The outcome is blocked if the required records cannot be read. Symbiospec leaves failure feedback and recovery open.
+When the selected records are available and the search finds no matches, say so. When the relevant records are unavailable or the search is incomplete, identify the gap. Recovery is open.
 
 ## 4. Proposed changes
 
@@ -41,8 +43,8 @@ None.
 
 ## 5. Specification review
 
-Reviewed on 17 November 2026 against the [repository revision](https://github.com/heidrun-org/heidrun_data/commit/d2593a27179571bef68296fca96a9f8d1f343cfd), using the published Heidrun Data Symbiospec in that checkout. The starting condition, action and result serve one developer goal. The [Source glossary](../glossary/data_layer.md#2-source) supports the starting data. Symbiospec leaves the search entry point, matching and display rules, empty results, and failure recovery open. Other journeys and runtime behaviour were outside this review.
+Reviewed on 17 November 2026 against the [reviewed repository revision](https://github.com/heidrun-org/heidrun_data/commit/b64e1ad2fa91b19b6bdef34c3d949ac57d505dbd). The stated starting condition, actions and result serve one developer goal. [Source glossary](../glossary/data_layer.md#2-source) supports the record type. The imported glossary identifies user activity records. Symbiospec leaves the link between a repository and a workspace folder, the time zone, and the rules for periods crossing midnight open. This journey assumes the developer can identify the folder. The search entry point, feedback on availability, and recovery still need supporting descriptions. The review covered this journey and its specification links. Runtime behaviour was outside the review.
 
 ## 6. Software verification
 
-Software not exercised. Any saved report linked above is historical evidence from the testbed.
+Software not exercised.

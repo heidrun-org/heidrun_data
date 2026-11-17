@@ -16,6 +16,8 @@ A developer uses initialize to bring Git commits into Heidrun Data.
 
 Mixed source. The developer requested one initialize and one update journey per source in the batch discussion. The source and synchronization behaviour come from the [Source glossary](../glossary/data_layer.md#2-source) and [Initialize and update](../behaviour/synchronization.md#1-initialize-and-update).
 
+The [heidrun_data command reference](../../../packages/apps/heidrun_data/README.md#command-line) documents the command and source selection as implementation context.
+
 ## 2. Human approval
 
 Proposal. The developer asked to start the user scenario workflow. Approval of this journey is pending.
@@ -24,16 +26,17 @@ Proposal. The developer asked to start the user scenario workflow. Approval of t
 
 ### 3.1. Goal and starting conditions
 
-Proposed journey. A developer has available Git commits for the repository and a Heidrun Data database without a prior import of that source.
+Proposed journey. A developer wants the available history in Heidrun Data. The selected source contains an older commit identified by its full Git revision, and the target database has no prior import for this scope.
 
 ### 3.2. Actions and expected outcome
 
-1. Run initialize for the `source_control` source. See [Initialize and update](../behaviour/synchronization.md#1-initialize-and-update).
-2. Confirm that the database contains the available Git commits for the repository.
+1. Select the local repository folder and target database and run `heidrun_data initialize source_control` with `--folder` and `--database`.
+2. See the import summary for the selected source, including how many records were written.
+3. Query the same database for an older commit identified by its full Git revision. The expected record appears.
 
 ### 3.3. Failure and recovery
 
-The outcome is blocked if the required records cannot be read. Symbiospec leaves failure feedback and recovery open.
+If Heidrun Data cannot read the repository folder, the developer sees which source failed. Recovery is open.
 
 ## 4. Proposed changes
 
@@ -41,8 +44,8 @@ None.
 
 ## 5. Specification review
 
-Reviewed on 17 November 2026 against the [repository revision](https://github.com/heidrun-org/heidrun_data/commit/d2593a27179571bef68296fca96a9f8d1f343cfd), using the published Heidrun Data Symbiospec in that checkout. The starting condition, action and result serve one developer goal. The [Source glossary](../glossary/data_layer.md#2-source) identifies the records and [Initialize and update](../behaviour/synchronization.md#1-initialize-and-update) describes the intended import. The specification leaves the command entry point, how to confirm the import, and failure recovery open. The imported descriptions have unresolved historical approval. Other journeys and runtime behaviour were outside this review.
+Reviewed on 17 November 2026 against the [reviewed repository revision](https://github.com/heidrun-org/heidrun_data/commit/b64e1ad2fa91b19b6bdef34c3d949ac57d505dbd). The stated starting condition, actions and result serve one developer goal. [Source glossary](../glossary/data_layer.md#2-source) identifies the records and [Initialize and update](../behaviour/synchronization.md#1-initialize-and-update) describes the mode and repeat behaviour. Historical approval of those descriptions is unverified. Symbiospec leaves the command entry point, confirmation feedback, and recovery open. The entry point and observable check above are proposed for this journey. The review covered this journey and its specification links. Runtime behaviour was outside the review.
 
 ## 6. Software verification
 
-Software not exercised. Any saved report linked above is historical evidence from the testbed.
+Software not exercised.

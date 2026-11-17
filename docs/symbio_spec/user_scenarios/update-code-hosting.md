@@ -16,6 +16,8 @@ A developer uses update to bring GitHub issues and pull requests into Heidrun Da
 
 Mixed source. The developer requested one initialize and one update journey per source in the batch discussion. The source and synchronization behaviour come from the [Source glossary](../glossary/data_layer.md#2-source) and [Initialize and update](../behaviour/synchronization.md#1-initialize-and-update).
 
+The [heidrun_data command reference](../../../packages/apps/heidrun_data/README.md#command-line) documents the command and source selection as implementation context.
+
 ## 2. Human approval
 
 Proposal. The developer asked to start the user scenario workflow. Approval of this journey is pending.
@@ -24,16 +26,18 @@ Proposal. The developer asked to start the user scenario workflow. Approval of t
 
 ### 3.1. Goal and starting conditions
 
-Proposed journey. A developer previously imported GitHub issues and pull requests for the repository, and at least one GitHub issue or pull request has been added or changed.
+Proposed journey. The developer previously imported an open GitHub issue into the target database. The same issue has since been closed on GitHub.
 
 ### 3.2. Actions and expected outcome
 
-1. Run update for the `code_hosting` source. See [Initialize and update](../behaviour/synchronization.md#1-initialize-and-update).
-2. Confirm that the changed records are present and that each record appears once. Repeating the update with the same source data adds no duplicate records.
+1. Select the same GitHub repository and target database and run `heidrun_data update code_hosting` with `--repository` and `--database`.
+2. See the update summary for the selected source.
+3. Query the same database by repository and issue number. Exactly one record appears for the issue, with state closed.
+4. Repeat the update with the same source data. The records checked in the previous step still appear once each.
 
 ### 3.3. Failure and recovery
 
-The outcome is blocked if the required records cannot be read. Symbiospec leaves failure feedback and recovery open.
+If Heidrun Data cannot retrieve records from GitHub, the developer sees which source failed. Recovery is open.
 
 ## 4. Proposed changes
 
@@ -41,8 +45,8 @@ None.
 
 ## 5. Specification review
 
-Reviewed on 17 November 2026 against the [repository revision](https://github.com/heidrun-org/heidrun_data/commit/d2593a27179571bef68296fca96a9f8d1f343cfd), using the published Heidrun Data Symbiospec in that checkout. The starting condition, action and result serve one developer goal. The [Source glossary](../glossary/data_layer.md#2-source) identifies the records and [Initialize and update](../behaviour/synchronization.md#1-initialize-and-update) describes the intended import. The specification leaves the command entry point, how to confirm the import, and failure recovery open. The imported descriptions have unresolved historical approval. Other journeys and runtime behaviour were outside this review.
+Reviewed on 17 November 2026 against the [reviewed repository revision](https://github.com/heidrun-org/heidrun_data/commit/b64e1ad2fa91b19b6bdef34c3d949ac57d505dbd). The stated starting condition, actions and result serve one developer goal. [Source glossary](../glossary/data_layer.md#2-source) identifies the records and [Initialize and update](../behaviour/synchronization.md#1-initialize-and-update) describes the mode and repeat behaviour. Historical approval of those descriptions is unverified. Symbiospec leaves the command entry point, confirmation feedback, and recovery open. The entry point and observable check above are proposed for this journey. The review covered this journey and its specification links. Runtime behaviour was outside the review.
 
 ## 6. Software verification
 
-Software not exercised. Any saved report linked above is historical evidence from the testbed.
+Software not exercised.

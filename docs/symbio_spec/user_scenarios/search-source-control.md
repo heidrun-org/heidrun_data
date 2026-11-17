@@ -24,16 +24,16 @@ Proposal. The developer asked to start the user scenario workflow. Approval of t
 
 ### 3.1. Goal and starting conditions
 
-Proposed journey. A developer has already imported Git commits for the repository and wants to find the relevant records.
+Proposed journey. A developer has imported the Git history for one repository and wants to find work whose commit message mentions “cache”.
 
 ### 3.2. Actions and expected outcome
 
-1. Search the repository’s imported commit messages for “cache”.
-2. See the matching commits, newest first.
+1. Search the imported commit messages for “cache”, within the selected repository. Match the text regardless of letter case.
+2. See the matching commit subjects and identifiers, ordered newest first by commit time.
 
 ### 3.3. Failure and recovery
 
-The outcome is blocked if the required records cannot be read. Symbiospec leaves failure feedback and recovery open.
+When the selected records are available and the search finds no matches, say so. When the relevant records are unavailable or the search is incomplete, identify the gap. Recovery is open.
 
 ## 4. Proposed changes
 
@@ -41,8 +41,8 @@ None.
 
 ## 5. Specification review
 
-Reviewed on 17 November 2026 against the [repository revision](https://github.com/heidrun-org/heidrun_data/commit/d2593a27179571bef68296fca96a9f8d1f343cfd), using the published Heidrun Data Symbiospec in that checkout. The starting condition, action and result serve one developer goal. The [Source glossary](../glossary/data_layer.md#2-source) supports the starting data. Symbiospec leaves the search entry point, matching and display rules, empty results, and failure recovery open. Other journeys and runtime behaviour were outside this review.
+Reviewed on 17 November 2026 against the [reviewed repository revision](https://github.com/heidrun-org/heidrun_data/commit/b64e1ad2fa91b19b6bdef34c3d949ac57d505dbd). The stated starting condition, actions and result serve one developer goal. [Source glossary](../glossary/data_layer.md#2-source) supports the record type. The query example in the repository README shows how to order imported commits. Symbiospec does not specify the searchable message fields or matching rules. The search entry point, feedback on availability, and recovery still need supporting descriptions. The review covered this journey and its specification links. Runtime behaviour was outside the review.
 
 ## 6. Software verification
 
-Software not exercised. Any saved report linked above is historical evidence from the testbed.
+Software not exercised.
