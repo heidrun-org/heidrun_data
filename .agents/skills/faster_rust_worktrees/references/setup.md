@@ -7,7 +7,7 @@ After the chosen tool revision is available on GitHub:
 ```bash
 npx --yes github:jeromeetienne/faster_rust_worktrees#<reviewed-reference> --help
 ```
-
+ 
 Replace `<reviewed-reference>` with an available reviewed branch, tag, or full commit identifier. A receiving repository can pin the Git dependency and invoke the installed executable instead. The repository is public; ordinary public GitHub access is sufficient. Development uses a pnpm monorepo; the repository-root npm entry package exposes the nested executable and includes runtime dependencies so GitHub installation does not need pnpm or workspace dependency resolution.
 
 ## Configuration
