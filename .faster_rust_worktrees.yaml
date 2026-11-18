@@ -1,0 +1,24 @@
+baseRef: origin/main
+worktreeDirectory: .agents/worktrees
+targetDirectories: [target]
+cargoCommands:
+  - cwd: packages/data_layers/data_layer_coding_agents
+    argv: [cargo, build]
+  - cwd: packages/data_layers/data_layer_code_hosting
+    argv: [cargo, build]
+  - cwd: packages/data_layers/data_layer_source_control
+    argv: [cargo, build]
+  - cwd: packages/data_layers/data_layer_user_activity
+    argv: [cargo, build]
+  - cwd: packages/apps/heidrun_data
+    argv: [cargo, build]
+  - cwd: packages/data_layers/data_layer_coding_agents
+    argv: [cargo, test, --no-run]
+  - cwd: packages/data_layers/data_layer_code_hosting
+    argv: [cargo, test, --no-run]
+  - cwd: packages/data_layers/data_layer_source_control
+    argv: [cargo, test, --no-run]
+  - cwd: packages/data_layers/data_layer_user_activity
+    argv: [cargo, test, --no-run]
+  - cwd: packages/apps/heidrun_data
+    argv: [cargo, test, --no-run]

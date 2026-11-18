@@ -15,7 +15,7 @@ The skill names no detail of this repository: it reads the values of this reposi
 ### Issue Fix Workflow values
 
 - Target branch: `main`
-- Worktree creation command: `git fetch && git worktree add .agents/worktrees/<branch name> -b <branch name> origin/main`, run at the root of the main checkout.
+- Worktree creation command: `git fetch && pnpm worktree create <branch name>`, run at the root of the main checkout.
 - Worktree folder: `.agents/worktrees/<branch name>`, inside the main checkout. Git ignores the folder `.agents/worktrees`.
 - Launch command: `cd .agents/worktrees/<branch name> && pnpm install && pnpm build && ./target/debug/heidrun_data --help` (the build of the worktree is in its own folder `target`, so it does not change the build of the main checkout)
 - Issue tracker commands: this repository is on GitHub, so use the `gh` command. The matching `glab` commands for GitLab are in [github_and_gitlab_support.md](docs/symbio_spec/behaviour/github_and_gitlab_support.md).

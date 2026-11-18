@@ -16,6 +16,21 @@ This repository is a pnpm workspace. Each package is a subfolder of the folder `
 - `pnpm build`: build every package.
 - `pnpm test`: run the tests of every package.
 
+## Worktrees
+
+Build the main checkout with `pnpm build` so Faster Rust Work Trees can reuse its Cargo output. From the main checkout, run:
+
+```sh
+git fetch && pnpm worktree create my-branch
+cd .agents/worktrees/my-branch
+pnpm install
+pnpm build
+```
+
+The worktree starts from `origin/main`. When the source and build settings match, Cargo reuses the cloned output. Check the creation report for `copy-on-write cloned` and the build log for zero `Compiling` lines.
+
+Run `pnpm worktree prune` in the checkout you want to clean to preview obsolete Cargo output. The [configuration](.faster_rust_worktrees.yaml) preserves the regular debug build and tests. Include any release or custom build variants you want to keep before applying the preview with `pnpm worktree prune --apply`. Stop other builds before applying, then run `pnpm build` and `pnpm test` to verify reuse.
+
 ## Usage scenario
 
 Run these commands in order from the root of this repository. They build the command line tool `heidrun_data`, fill a new SQLite file with the history of this repository, and then read this history. The SQLite file is in `/tmp`, so the commands do not change the SQLite file of the Heidrun Code application. The command `gh` must be installed and logged in.
