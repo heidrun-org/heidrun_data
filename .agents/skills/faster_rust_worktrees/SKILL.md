@@ -31,6 +31,8 @@ The tool does not rewrite paths embedded in programs or arbitrary generated asse
 
 ## Cleanup and evidence
 
-`clean --days 14` previews old registered worktree target folders and excludes the main checkout. `prune` runs every configured Cargo command from the configured working directory, keeps the union of recognized compilation hashes, and previews obsolete hashed output. Unknown names and incremental caches are retained. Failed commands or unrecognized logs prevent removal. Both commands need `--apply` to remove output, and require builds to be stopped; installation alone does not authorize removal.
+Use `prune` first when asked to remove obsolete Cargo files while preserving an already-built checkout. Add every build and test variant to `cargoCommands`, including any release profile or feature set the user wants to keep. Run `prune` to preview the candidates. When removal is requested, stop other builds and run `prune --apply`. Run the actual build and test commands afterward and confirm zero recompilations. See [selective cleanup](references/setup.md#cleanup).
+
+Use `clean --days 14` to preview entire old target folders in registered worktrees. This command excludes the main checkout.
 
 Record environment, exact revision, commands, setup effort, unclear instructions, and manual interventions. For efficiency claims, warm the original checkout, compare ordinary and optimized worktrees at identical settings three times, and report creation time, first-build time, compiled crates, and physical disk measurement uncertainty. Apparent cloned sizes do not measure extra physical storage. Preserve first-attempt evidence before improving instructions or the tool.

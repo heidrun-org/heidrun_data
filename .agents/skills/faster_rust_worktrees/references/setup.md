@@ -47,9 +47,16 @@ Modification dates are reused only for identical tracked files. Changed and unce
 
 ## Cleanup
 
-A Cargo `.rustc_info.json` marker is required before cleanup. Source files, symbolic-link managed paths, and uncertain descendants are protected. Stale age considers output access and modification dates, but operating systems may defer access-time updates: age is a heuristic, not proof that output is unused.
+Use `prune` to remove obsolete Cargo output and preserve the builds and tests you still use. Run the following steps from the checkout you want to clean, using the reviewed executable described above.
 
-Pruning relies on Cargo debug fingerprint logs, which are not a stable interface. Every configured command must succeed and emit recognized hashes. Unknown entries and incremental caches are retained. Ensure all variants are configured; output for omitted variants can be considered obsolete. Preview may compile outdated sources. Removal recomputes the plan on each invocation; stop concurrent builds before applying.
+1. In `cargoCommands`, list every direct Cargo build and test command whose output you want to preserve. Match the working directory, features, profile, compilation target, and environment of each usual command. For example, if you use both debug and release builds, include `cargo build` and `cargo build --release`. Include the corresponding test variants, such as `cargo test --release --no-run`, to preserve their compiled tests.
+2. Run `faster_rust_worktrees prune` to preview the candidate paths. Preview runs the configured commands and may compile outdated sources. Output for an omitted variant can appear in the preview.
+3. When removal is requested, stop other builds and run `faster_rust_worktrees prune --apply`. Apply computes and validates a fresh plan before deleting files.
+4. Run the actual build and test commands with the same settings. Check that all commands pass and report zero `Compiling` lines.
+
+Pruning uses Cargo debug fingerprint logs to identify compiled outputs. Each configured command must succeed and emit recognized hashes. Unknown entries and incremental caches are retained. Cleanup requires a Cargo `.rustc_info.json` marker and protects tracked sources and symbolic links.
+
+Use `clean --days 14` to preview the removal of entire old target folders in registered secondary worktrees. Add `--apply` when removal is requested and other builds have stopped. File access and modification dates determine age. The operating system can update access dates later.
 
 ## Workspace consolidation
 
