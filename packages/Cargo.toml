@@ -1,0 +1,9 @@
+[workspace]
+resolver = "2"
+members = [
+    "apps/heidrun_data",
+    "data_layers/data_layer_code_hosting",
+    "data_layers/data_layer_coding_agents",
+    "data_layers/data_layer_source_control",
+    "data_layers/data_layer_user_activity",
+]

@@ -9,6 +9,7 @@ Holds the product packages and developer tools of Heidrun Data, grouped by respo
 - `dev_tools/`: developer-only checks; see its CONTEXT.md.
 
 ## Rules
+- The five Rust packages share the Cargo workspace and lockfile in this folder. Run their build and tests through the repository's pnpm commands.
 - Every package belongs in data_layers, apps, or dev_tools; no package sits directly here.
 - Product packages never depend on dev_tools.
 
